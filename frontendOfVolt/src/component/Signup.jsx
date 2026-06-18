@@ -3,33 +3,33 @@ import { useNavigate, Link } from 'react-router-dom';
 import { styles } from '../styles/SignupStyles';
 
 const Signup = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        username: '',
-        empId: '',
-        role: 'User',
-        officeEmail: '',
-        phoneNumber: '',
-        joiningDate: ''
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    empId: '',
+    role: 'User',
+    officeEmail: '',
+    phoneNumber: '',
+    joiningDate: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
+  };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSignup = (e) => {
+    e.preventDefault();
+    if (formData.role === 'Admin') {
+      navigate('/admin-dashboard');
+    } else {
+      navigate('/user-dashboard');
+    }
+  };
 
-    const handleSignup = (e) => {
-        e.preventDefault();
-        if (formData.role === 'Admin') {
-            navigate('/admin-dashboard');
-        } else {
-            navigate('/user-dashboard');
-        }
-    };
-
-    return (
+  return (
     <div style={styles.container}>
       <form onSubmit={handleSignup} style={styles.card}>
         <div style={styles.rowGroup}>
