@@ -22,6 +22,18 @@ const Signup = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
+
+    const userData = {
+      username: formData.username,
+      joiningDate: formData.joiningDate,
+      officeEmail: formData.officeEmail,
+      role: formData.role,
+      empId: formData.empId,
+      phoneNumber: formData.phoneNumber
+    };
+
+    localStorage.setItem('userData', JSON.stringify(userData));
+
     if (formData.role === 'Admin') {
       navigate('/admin-dashboard');
     } else {

@@ -547,4 +547,19 @@ export const styles = {
       backgroundColor: '#333',
     }
   },
+
+  deleteButton: {
+    background: 'none',
+    border: 'none',
+    color: '#c62828',
+    fontSize: '16px',
+    cursor: 'pointer',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    transition: 'all 0.2s',
+    fontWeight: '600',
+    ':hover': {
+      backgroundColor: '#ffebee',
+    }
+  },
 };

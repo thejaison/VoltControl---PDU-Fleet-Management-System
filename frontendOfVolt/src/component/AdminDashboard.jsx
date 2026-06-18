@@ -3,11 +3,28 @@ import { styles } from "../styles/DashboardStyles";
 import "../styles/DashboardStyles.css"
 
 const AdminDashboard = () => {
+
+  const [userData, setUserData] = useState({
+    username: '',
+    joiningDate: '',
+    officeEmail: ''
+  })
+
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
+
+    const storedUserData = localStorage.getItem('userData');
+    if(storedUserData) {
+      const parsedData = JSON.parse(storedUserData);
+      setUserData({
+        username: parsedData.username || '',
+        joiningDate: parsedData.joiningDate || '',
+        officeEmail: parsedData.officeEmail || ''
+      });
+    }
   }, []);
 
   const [devices, setDevices] = useState([
@@ -43,7 +60,7 @@ const AdminDashboard = () => {
       serialNumber: 'C8174T00932',
       adapterType: 'XeroX Expansion Module',
       enabledStatus: 'Enabled',
-      operationalStatus: 'Fine',
+      operationalStatus: 'Online',
       operationalDetails: 'All systems operational',
       lastSeen: '2026-06-18 12:10:10 UTC',
       createdTimestamp: '2024-03-10 11:15:00 UTC',
@@ -57,8 +74,13 @@ const AdminDashboard = () => {
   const [editingDevice, setEditingDevice] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [sortBasis, setSortBasis] = useState('name');
-
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [filterStatus, setFilterStatus] = useState('None');
+
+  // The filtering logic
+  const filteredDevices = filterStatus === 'None' ? devices :
+    devices.filter(device => device.operationalStatus === filterStatus);
+
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
     assetId: '',
@@ -70,7 +92,7 @@ const AdminDashboard = () => {
     serialNumber: '',
     adapterType: '',
     enabledStatus: 'Enabled',
-    operationalStatus: 'Fine',
+    operationalStatus: 'Online',
   })
 
   const handleStatusChange = (index, field, value) => {
@@ -135,7 +157,7 @@ const AdminDashboard = () => {
       serialNumber: '',
       adapterType: '',
       enabledStatus: 'Enabled',
-      operationalStatus: 'Fine',
+      operationalStatus: 'Online',
     });
   };
 
@@ -163,6 +185,25 @@ const AdminDashboard = () => {
     }));
   };
 
+  const handleDeleteDevice = (deviceId) => {
+    const deviceToDelete = devices.find(device => device.id === deviceId);
+
+    if(window.confirm(`Are you sure you want to delete device "${deviceToDelete?.deviceName}"?`)) {
+      const updatedDevices = devices.filter(device => device.id !== deviceId);
+      setDevices(updatedDevices);
+
+      if(expandedDevice === deviceId) {
+        setExpandedDevice(null);
+      }
+
+      if(selectedDevices.includes(deviceId)) {
+        setSelectedDevices(prev => prev.filter(id => id !== deviceId));
+      }
+
+      alert('Device deleted successfully!');
+    }
+  };
+
   const handleScan = () => {
     alert('Scan functionality will be implemented in the backend.');
   };
@@ -177,15 +218,21 @@ const AdminDashboard = () => {
       <header style={styles.header} className="dvc-header">
         <div style={styles.logoSection}>
           <div className="dvc-logo-badge">𝝯</div>
-          <span style={styles.metaText}>Zurich • 09:00 • hello@noteworthy.studio</span>
+          <span style={styles.metaText}>
+            {userData.username || 'User'} • 
+            {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'} • 
+            {userData.officeEmail || 'user@email.com'}
+          </span>
         </div>
 
         <div style={styles.navSection}>
           <button className="dvc-nav-btn is-active">Devices</button>
           <button className="dvc-nav-btn">Studio</button>
           <button className="dvc-admin-chip">
-            <span className="dvc-admin-avatar">A</span>
-            Hi Admin!
+            <span className="dvc-admin-avatar">
+              {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}
+            </span>
+            Hi {userData.username || 'Admin'}!
           </button>
         </div>
       </header>
@@ -196,7 +243,11 @@ const AdminDashboard = () => {
             <h1 style={styles.title}>VoltControl Asset Center</h1>
             <div style={styles.subTitleSection}>
               <span style={styles.subTitle}>Monitored Infrastructure Nodes</span>
-              <span style={styles.countBadge}>{devices.length.toString().padStart(2, '0')}</span>
+              <span style={styles.countBadge}>
+                {filterStatus === 'None'
+                  ? devices.length.toString().padStart(2, '0')
+                : `${filteredDevices.length}/${devices.length}`}
+              </span>
             </div>
           </div>
 
@@ -210,6 +261,8 @@ const AdminDashboard = () => {
               />
             </div>
 
+            
+            
             <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
               <select style={{padding: '8px 12px', borderRadius: '6px', border: '1px solid #d0d0d0', fontSize: '14px', background: 'white'}}>
                 <option value="name">Device Name</option>
@@ -217,6 +270,22 @@ const AdminDashboard = () => {
                 <option value="hostname">Hostname</option>
                 <option value="assetId">Asset ID</option>
                 <option value="serialNum">Serial No</option>
+              </select>
+            </label>
+
+            {/* for the filtering stuff */}
+            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                style={{padding: '8px 12px', borderRadius: '6px', border: '1px solid #d0d0d0', fontSize: '14px', background: 'white'}}
+              >
+                <option value="None">None</option>
+                <option value="Online">Online</option>
+                <option value="Offline">Offline</option>
+                <option value="Warning">Warning</option>
+                <option value="Unknown">Unknown</option>
+                <option value="Disabled">Disabled</option>
               </select>
             </label>
 
@@ -240,7 +309,7 @@ const AdminDashboard = () => {
         </div>
 
         <div style={styles.deviceList}>
-          {devices.map((device, index) => (
+          {filteredDevices.map((device, index) => (
             <div key={device.uuid} style={styles.deviceCard}>
               <div style={styles.deviceHeader}>
                 <div style={styles.deviceHeaderLeft}>
@@ -259,6 +328,15 @@ const AdminDashboard = () => {
                   <span style={styles.badge(device.operationalStatus)}>
                     ● {device.operationalStatus}
                   </span>
+
+                  <button
+                    onClick={() => handleDeleteDevice(device.id)}
+                    style={styles.deleteButton}
+                    title="Delete Device"
+                  >
+                    ✕
+                  </button>
+
                   <span
                     style={styles.expandIcon}
                     onClick={() => toggleDevice(device.id)}  
@@ -468,10 +546,11 @@ const AdminDashboard = () => {
                             onChange={(e) => handleEditChange('operationalStatus', e.target.value)}
                             style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}
                           >
-                            <option value="Fine">Fine</option>
+                            <option value="Online">Online</option>
+                            <option value="Offline">Offline</option>
                             <option value="Warning">Warning</option>
-                            <option value="Error">Error</option>
-                            <option value="Maintainance">Maintainance</option>
+                            <option value="Unkown">Unkown</option>
+                            <option value="Disabled">Disabled</option>
                           </select>
                         ) : (
                           <select
@@ -479,10 +558,11 @@ const AdminDashboard = () => {
                             onChange={(e) => handleStatusChange(index, 'operationalStatus', e.target.value)}
                             style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(device.operationalStatus) }}
                           >
-                            <option value="Fine">Fine</option>
+                            <option value="Online">Online</option>
+                            <option value="Offline">Offline</option>
                             <option value="Warning">Warning</option>
-                            <option value="Error">Error</option>
-                            <option value="Maintainance">Maintainance</option>
+                            <option value="Unkown">Unkown</option>
+                            <option value="Disabled">Disabled</option>
                           </select>
                         )}
                       </div>
@@ -650,10 +730,11 @@ const AdminDashboard = () => {
                       onChange={(e) => handleNewDeviceChange('operationalStatus', e.target.value)}
                       style={styles.modalSelect}
                     >
-                      <option value="Fine">Fine</option>
+                      <option value="Online">Online</option>
+                      <option value="Offline">Offline</option>
                       <option value="Warning">Warning</option>
-                      <option value="Error">Error</option>
-                      <option value="Maintainance">Maintainance</option>
+                      <option value="Unknown">Unknown</option>
+                      <option value="Disabled">Disabled</option>
                     </select>
                   </div>
                 </div>
