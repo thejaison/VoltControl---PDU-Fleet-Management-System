@@ -35,9 +35,9 @@ const Signup = () => {
     localStorage.setItem('userData', JSON.stringify(userData));
 
     if (formData.role === 'Admin') {
-      navigate('/admin-dashboard');
+      navigate('/admin/dashboard');
     } else {
-      navigate('/user-dashboard');
+      navigate('/user/dashboard');
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles/DashboardStyles";
 import "../styles/DashboardStyles.css"
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AdminDashboard = () => {
 
@@ -10,6 +11,44 @@ const AdminDashboard = () => {
     officeEmail: ''
   })
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.state?.importSuccess) {
+
+      const importedDevices = location.state.importedDevices || [];
+
+      if(importedDevices.length > 0) {
+        setDevices(prevDevices => {
+
+          const existingKeys = new Set(prevDevices.map(d => `${d.deviceName}-${d.assetId}`));
+
+          const uniqueImported = importedDevices.filter(d =>
+            !existingKeys.has(`${d.deviceName}-${d.assetId}`)
+          );
+
+          if(uniqueImported.length === 0) {
+            alert('These devices have already been imported!');
+            return prevDevices;
+          }
+
+          const newDevices = uniqueImported.map((device, index) => ({
+            ...device,
+            id: (prevDevices.length + index + 1).toString().padStart(2, '0')
+          }));
+
+          return [...prevDevices, ...newDevices];
+        });
+      }
+
+      const count = location.state.importedCount || 0;
+      alert(`Successfully imported ${count} devices!`);
+
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap';
@@ -18,13 +57,21 @@ const AdminDashboard = () => {
 
     const storedUserData = localStorage.getItem('userData');
     if(storedUserData) {
-      const parsedData = JSON.parse(storedUserData);
-      setUserData({
-        username: parsedData.username || '',
-        joiningDate: parsedData.joiningDate || '',
-        officeEmail: parsedData.officeEmail || ''
-      });
+      try {
+        const parsedData = JSON.parse(storedUserData);
+        setUserData({
+            username: parsedData.username || '',
+            joiningDate: parsedData.joiningDate || '',
+            officeEmail: parsedData.officeEmail || ''
+          });
+      } catch(error) {
+        console.error('Error loading user data:', error);
+      }
     }
+
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   const [devices, setDevices] = useState([
@@ -209,7 +256,7 @@ const AdminDashboard = () => {
   };
 
   const handleImport = () => {
-    alert('Import functionality will be implemented in the backend.');
+    navigate('/admin/import');
   };
 
 
@@ -264,7 +311,7 @@ const AdminDashboard = () => {
             
             
             <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
-              <select style={{padding: '8px 12px', borderRadius: '6px', border: '1px solid #d0d0d0', fontSize: '14px', background: 'white'}}>
+              <select style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}>
                 <option value="name">Device Name</option>
                 <option value="ipAddress">IP Address</option>
                 <option value="hostname">Hostname</option>
@@ -278,7 +325,7 @@ const AdminDashboard = () => {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                style={{padding: '8px 12px', borderRadius: '6px', border: '1px solid #d0d0d0', fontSize: '14px', background: 'white'}}
+                style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}
               >
                 <option value="None">None</option>
                 <option value="Online">Online</option>
