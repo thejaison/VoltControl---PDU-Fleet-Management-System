@@ -343,10 +343,12 @@ export const styles = {
   },
   badge: (status) => {
     const colors = {
-      Fine: { bg: '#e8f5e9', color: '#2e7d32' },
+      Online: { bg: '#e8f5e9', color: '#2e7d32' },
       Warning: { bg: '#fff3e0', color: '#e65100' },
       Error: { bg: '#ffebee', color: '#c62828' },
-      Maintainance: { bg: '#e3f2fd', color: '#0d47a1' },
+      Offline: { bg: '#e3f2fd', color: '#000000' },
+      Enabled: { bg: '#e8f5e9', color: '#2e7d32' },
+      Disabled: { bg: '#f5f5f5', color: '#ff0000' },
     };
     const selected = colors[status] || colors.Fine;
     return {

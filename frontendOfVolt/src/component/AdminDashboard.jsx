@@ -122,11 +122,16 @@ const AdminDashboard = () => {
   const [editedData, setEditedData] = useState({});
   const [sortBasis, setSortBasis] = useState('name');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [filterStatus, setFilterStatus] = useState('None');
+  const [filterOperationalStatus, setFilterOperationalStatus] = useState('None');
+  const [filterEnabledStatus, setFilterEnabledStatus] = useState('None');
 
   // The filtering logic
-  const filteredDevices = filterStatus === 'None' ? devices :
-    devices.filter(device => device.operationalStatus === filterStatus);
+  const filteredDevices = devices.filter(device => {
+    const matchesOperational = filterOperationalStatus === 'None' || device.operationalStatus === filterOperationalStatus;
+    const matchesEnabled = filterEnabledStatus === 'None' || device.enabledStatus === filterEnabledStatus;
+
+    return matchesOperational && matchesEnabled;
+  })
 
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
@@ -142,9 +147,34 @@ const AdminDashboard = () => {
     operationalStatus: 'Online',
   })
 
-  const handleStatusChange = (index, field, value) => {
-    const updatedDevices = [...devices];
-    updatedDevices[index][field] = value;
+  const handleStatusChange = (deviceId, field, value) => {
+    let updatedDevices = [...devices];
+
+    if(selectedDevices.includes(deviceId)) {
+
+      updatedDevices = updatedDevices.map(device => {
+        if(selectedDevices.includes(device.id)) {
+          return {
+            ...device,
+            [field]: value,
+            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
+          };
+        }
+        return device;
+      });
+    } else {
+      updatedDevices = updatedDevices.map(device => {
+        if(device.id === deviceId) {
+          return {
+            ...device,
+            [field]: value,
+            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
+          };
+        }
+        return device;
+      });
+    }
+
     setDevices(updatedDevices);
   };
 
@@ -176,14 +206,37 @@ const AdminDashboard = () => {
   }
 
   const handleSaveEdit = () => {
-    const updatedDevices = devices.map(device =>
-      device.id === editingDevice ? editedData : device
-    );
+    let updatedDevices = [...devices];
+
+    if (selectedDevices.includes(editingDevice)) {
+
+      updatedDevices = updatedDevices.map(device => {
+        if (selectedDevices.includes(device.id)) {
+          return {
+            ...device,
+            enabledStatus: editedData.enabledStatus || device.enabledStatus,
+            operationalStatus: editedData.operationalStatus || device.operationalStatus,
+            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
+          };
+        }
+        return device;
+      });
+    } else {
+      updatedDevices = updatedDevices.map(device => {
+        if(device.id === editingDevice) {
+          return {
+            ...device,
+            ...editedData,
+            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
+          };
+        }
+        return device;
+      });
+    }
 
     setDevices(updatedDevices);
     setEditingDevice(null);
     setEditedData({});
-    alert('Device updated successfully!');  // change in the future for a better experience
   };
 
   const handleCancelEdit = () => {
@@ -291,7 +344,7 @@ const AdminDashboard = () => {
             <div style={styles.subTitleSection}>
               <span style={styles.subTitle}>Monitored Infrastructure Nodes</span>
               <span style={styles.countBadge}>
-                {filterStatus === 'None'
+                {filterOperationalStatus === 'None' && filterEnabledStatus === 'None'
                   ? devices.length.toString().padStart(2, '0')
                 : `${filteredDevices.length}/${devices.length}`}
               </span>
@@ -323,35 +376,92 @@ const AdminDashboard = () => {
             {/* for the filtering stuff */}
             <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
               <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
+                value={selectedDevices.length > 0 ? '' : filterOperationalStatus}
+                onChange={(e) => {
+                  if(selectedDevices.length > 0) {
+                    setDevices(prev => prev.map(device =>
+                      selectedDevices.includes(device.id)
+                        ? { ...device, operationalStatus: e.target.value, updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' }
+                        : device
+                    ));
+                    setFilterOperationalStatus('None');
+                  } else {
+                    setFilterOperationalStatus(e.target.value);
+                  }
+                }}
                 style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}
               >
-                <option value="None">None</option>
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-                <option value="Warning">Warning</option>
-                <option value="Unknown">Unknown</option>
-                <option value="Disabled">Disabled</option>
+                {selectedDevices.length > 0 ? (
+                  <>
+                    <option value="" disabled>Change Status</option>
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                    <option value="Warning">Warning</option>
+                    <option value="Unknown">Unknown</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="None">None</option>
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                    <option value="Warning">Warning</option>
+                    <option value="Unknown">Unknown</option>
+                  </>
+                )}
               </select>
             </label>
 
-              <button
-                className="dvc-icon-btn"
-                style={{...styles.iconButton, marginLeft: '5px'}}
-                onClick={handleCreateDevice}
-                title="Create Device"
+            {/* Filter for the Enable status */}
+            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
+              <select
+                value={selectedDevices.length > 0 ? '' : filterEnabledStatus}
+                onChange={(e) => {
+                  if(selectedDevices.length > 0) {
+                    setDevices(prev => prev.map(device =>
+                      selectedDevices.includes(device.id)
+                        ? { ...device, enabledStatus: e.target.value, updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' }
+                        : device
+                    ));
+                    setFilterEnabledStatus('None');
+                  } else {
+                    setFilterEnabledStatus(e.target.value);
+                  }
+                }}
+                style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}
               >
-                +
-              </button>
+                {selectedDevices.length > 0 ? (
+                  <>
+                    <option value="" disabled>Change Status</option>
+                    <option value="Enabled">Enabled</option>
+                    <option value="Disabled">Disabled</option>
+                  </>
+                ):(
+                  <>
+                    <option value="None">None</option>
+                    <option value="Enabled">Enabled</option>
+                    <option value="Disabled">Disabled</option>
+                  </>
+                )}
+              </select>
+            </label>
 
-              <button className="dvc-scan-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleScan}>
-                Scan
-              </button>
+            
+            <button
+              className="dvc-icon-btn"
+              style={{...styles.iconButton, marginLeft: '5px'}}
+              onClick={handleCreateDevice}
+              title="Create Device"
+            >
+              +
+            </button>
 
-              <button className="dvc-action-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleImport}>
-                Import
-              </button>
+            <button className="dvc-scan-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleScan}>
+              Scan
+            </button>
+
+            <button className="dvc-action-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleImport}>
+              Import
+            </button>
           </div>
         </div>
 
@@ -374,6 +484,11 @@ const AdminDashboard = () => {
                 <div style={styles.deviceHeaderRight}>
                   <span style={styles.badge(device.operationalStatus)}>
                     ● {device.operationalStatus}
+                  </span>
+
+                  {/* We will show the disable enable status */}
+                  <span style={styles.badge(device.enabledStatus)}>
+                    ● {device.enabledStatus}
                   </span>
 
                   <button
@@ -576,7 +691,7 @@ const AdminDashboard = () => {
                         ) : (
                           <select
                             value={device.enabledStatus}
-                            onChange={(e) => handleStatusChange(index, 'enabledStatus', e.target.value)}
+                            onChange={(e) => handleStatusChange(device.id, 'enabledStatus', e.target.value)}
                             style={{ ...styles.selectDropdown, ...styles.enabledSelectBorder(device.enabledStatus) }}
                           >
                             <option value="Enabled">Enabled</option>
@@ -596,20 +711,18 @@ const AdminDashboard = () => {
                             <option value="Online">Online</option>
                             <option value="Offline">Offline</option>
                             <option value="Warning">Warning</option>
-                            <option value="Unkown">Unkown</option>
-                            <option value="Disabled">Disabled</option>
+                            <option value="Unknown">Unknown</option>
                           </select>
                         ) : (
                           <select
                             value={device.operationalStatus}
-                            onChange={(e) => handleStatusChange(index, 'operationalStatus', e.target.value)}
+                            onChange={(e) => handleStatusChange(device.id, 'operationalStatus', e.target.value)}
                             style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(device.operationalStatus) }}
                           >
                             <option value="Online">Online</option>
                             <option value="Offline">Offline</option>
                             <option value="Warning">Warning</option>
-                            <option value="Unkown">Unkown</option>
-                            <option value="Disabled">Disabled</option>
+                            <option value="Unknown">Unknown</option>
                           </select>
                         )}
                       </div>

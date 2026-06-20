@@ -3,9 +3,9 @@ export const styles = {
         maxWidth: '1200px',
         margin: '0 auto',
         padding: '40px 20px',
-        backgroundColor: '#0a0e1a',
+        backgroundColor: '#f8fafc',
         minHeight: '100vh',
-        color: '#e0e7ff',
+        color: '#111827',
         fontFamily: "'Montserrat', sans-serif"
     },
 
@@ -15,7 +15,7 @@ export const styles = {
         alignItems: 'center',
         marginBottom: '30px',
         paddingBottom: '20px',
-        borderBottom: '1px solid #1a2a4a'
+        borderBottom: '1px solid #d1d5db'
     },
 
     importTitle: {
@@ -44,14 +44,18 @@ export const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: '24px',
+        backgroundColor: '#ffffff',
+        borderRadius: '24px',
+        padding: '28px',
+        boxShadow: '0 24px 60px rgba(15, 23, 42, 0.08)',
     },
 
     importInstructions: {
-        backgroundColor: '#090b11',
+        backgroundColor: '#ffffff',
         padding: '24px',
         borderRadius: '16px',
-        border: '1px solid #141921',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.18)',
+        border: '1px solid #000000',
+        boxShadow: '0 20px 45px rgba(0, 0, 0, 0.12)',
     },
 
     importList: {
@@ -64,7 +68,7 @@ export const styles = {
     },
 
     importSampleLink: {
-        color: '#fff',
+        color: '#111827',
         textDecoration: 'none',
         display: 'inline-flex',
         alignItems: 'center',
@@ -72,18 +76,18 @@ export const styles = {
         fontSize: '13px',
         fontWeight: '500',
         padding: '10px 22px',
-        backgroundColor: '#111',
+        backgroundColor: '#ffffff',
         borderRadius: '10px',
-        border: '1px solid #333',
+        border: '1px solid #000000',
         transition: 'all 0.2s ease',
     },
 
     importDropZone: {
-        border: '1px dashed #333',
+        border: '1px dashed #000000',
         borderRadius: '16px',
         padding: '44px 22px',
         textAlign: 'center',
-        backgroundColor: '#07070f',
+        backgroundColor: '#ffffff',
         transition: 'all 0.3s ease',
         minHeight: '240px',
         display: 'flex',
@@ -91,32 +95,33 @@ export const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
+        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.12)',
     },
 
     importDropZoneDragging: {
-        border: '1px solid #fff',
-        backgroundColor: '#111',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.08)',
+        border: '1px solid #000000',
+        backgroundColor: '#f3f4f6',
+        boxShadow: '0 0 0 1px rgba(0,0,0,0.06)',
     },
 
     importDropZoneFileLoaded: {
-        borderColor: '#444',
+        borderColor: '#000000',
         borderStyle: 'solid',
-        backgroundColor: '#08090f',
+        backgroundColor: '#ffffff',
     },
 
     importDropIcon: {
         fontSize: '40px',
         marginBottom: '8px',
-        opacity: 0.8,
+        opacity: 0.85,
     },
 
     importDropIconCircle: {
         width: '64px',
         height: '64px',
         borderRadius: '50%',
-        backgroundColor: '#111',
-        border: '1px solid #2a2a2a',
+        backgroundColor: '#000000',
+        border: '1px solid #111111',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -126,12 +131,12 @@ export const styles = {
     importDropText: {
         fontSize: '16px',
         fontWeight: '500',
-        color: '#fff',
+        color: '#111827',
         margin: '0',
     },
 
     importDropSubtext: {
-        color: '#7d8899',
+        color: '#6b7280',
         margin: '4px 0',
         fontSize: '13px',
     },
@@ -139,8 +144,8 @@ export const styles = {
     importBrowseButton: {
         display: 'inline-block',
         padding: '10px 28px',
-        backgroundColor: '#fff',
-        color: '#000',
+        backgroundColor: '#000000',
+        color: '#ffffff',
         borderRadius: '10px',
         cursor: 'pointer',
         fontSize: '14px',
@@ -159,11 +164,11 @@ export const styles = {
         alignItems: 'center',
         gap: '14px',
         padding: '18px 20px',
-        backgroundColor: '#111',
+        backgroundColor: '#000000',
         borderRadius: '14px',
         width: '100%',
         maxWidth: '520px',
-        border: '1px dashed #333',
+        border: '1px solid #111111',
     },
 
     importFileIcon: {
@@ -174,24 +179,24 @@ export const styles = {
     importFileIconBox: {
         width: '44px',
         height: '52px',
-        backgroundColor: '#0d0d0d',
+        backgroundColor: '#000000',
         borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        border: '1px solid #333',
+        border: '1px solid #111111',
     },
 
     importFileName: {
         fontWeight: '600',
-        color: '#fff',
+        color: '#ffffff',
         margin: 0,
         fontSize: '15px',
     },
 
     importFileSize: {
-        color: '#7d8899',
+        color: '#9ca3af',
         fontSize: '12px',
         margin: '2px 0 0 0',
     },
@@ -200,33 +205,33 @@ export const styles = {
         width: '28px',
         height: '28px',
         borderRadius: '50%',
-        backgroundColor: '#111',
-        color: '#fff',
+        backgroundColor: '#000000',
+        color: '#ffffff',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '13px',
         fontWeight: '700',
         flexShrink: 0,
-        border: '1px solid #444',
+        border: '1px solid #111111',
     },
 
     importRemoveFile: {
-        background: 'transparent',
-        border: 'none',
-        color: '#9ca3af',
+        background: '#ffffff',
+        border: '1px solid #d1d5db',
+        color: '#111827',
         cursor: 'pointer',
         fontSize: '16px',
         marginLeft: 'auto',
-        padding: '4px 6px',
-        borderRadius: '4px',
+        padding: '6px 8px',
+        borderRadius: '6px',
         flexShrink: 0,
     },
 
     importError: {
-        backgroundColor: '#09090d',
-        border: '1px solid #3b3131',
-        color: '#ff8b8b',
+        backgroundColor: '#fef2f2',
+        border: '1px solid #fecaca',
+        color: '#991b1b',
         padding: '14px 16px',
         borderRadius: '10px',
         display: 'flex',
@@ -236,10 +241,10 @@ export const styles = {
     },
 
     importPreview: {
-        backgroundColor: '#07080e',
+        backgroundColor: '#ffffff',
         borderRadius: '16px',
         padding: '24px',
-        border: '1px solid #16181f',
+        border: '1px solid #d1d5db',
     },
 
     importPreviewHeader: {
@@ -248,18 +253,18 @@ export const styles = {
         alignItems: 'center',
         marginBottom: '18px',
         paddingBottom: '14px',
-        borderBottom: '1px solid #16181f',
+        borderBottom: '1px solid #e5e7eb',
     },
 
     importPreviewTitle: {
         margin: 0,
         fontSize: '16px',
         fontWeight: '700',
-        color: '#f8fafc',
+        color: '#111827',
     },
 
     importPreviewCount: {
-        color: '#7d8899',
+        color: '#6b7280',
         fontSize: '13px',
     },
 
@@ -267,7 +272,7 @@ export const styles = {
         overflowX: 'auto',
         marginBottom: '20px',
         borderRadius: '12px',
-        border: '1px solid #16181f',
+        border: '1px solid #e5e7eb',
     },
 
     importTable: {
@@ -277,22 +282,22 @@ export const styles = {
     },
 
     importTableHeader: {
-        backgroundColor: '#07080e',
+        backgroundColor: '#f8fafc',
         padding: '12px 14px',
         textAlign: 'left',
         fontWeight: '500',
         fontSize: '11px',
-        color: '#7d8899',
+        color: '#6b7280',
         letterSpacing: '0.06em',
         textTransform: 'uppercase',
-        borderBottom: '1px solid #16181f',
+        borderBottom: '1px solid #e5e7eb',
         whiteSpace: 'nowrap',
     },
 
     importTableCell: {
         padding: '12px 14px',
-        borderBottom: '1px solid #14161c',
-        color: '#d1d5db',
+        borderBottom: '1px solid #f3f4f6',
+        color: '#111827',
         fontSize: '13px',
     },
 
@@ -306,8 +311,8 @@ export const styles = {
 
     importConfirmButton: {
         padding: '10px 26px',
-        backgroundColor: '#fff',
-        color: '#000',
+        backgroundColor: '#000000',
+        color: '#ffffff',
         border: 'none',
         borderRadius: '10px',
         fontWeight: '700',
@@ -317,9 +322,9 @@ export const styles = {
 
     importClearButton: {
         padding: '10px 26px',
-        backgroundColor: 'transparent',
-        color: '#9ca3af',
-        border: '1px solid #262a34',
+        backgroundColor: '#ffffff',
+        color: '#111827',
+        border: '1px solid #000000',
         borderRadius: '10px',
         fontSize: '13px',
         cursor: 'pointer',
@@ -338,27 +343,28 @@ export const styles = {
         justifyContent: 'center',
         width: '48px',
         height: '48px',
-        backgroundColor: '#111',
-        color: '#fff',
+        backgroundColor: '#ffffff',
+        color: '#111827',
         fontWeight: '700',
         fontSize: '13px',
         borderRadius: '10px',
-        border: '1px solid #333',
+        border: '1px solid #000000',
         flexShrink: 0,
         letterSpacing: '0.05em',
+        boxShadow: '0 12px 24px rgba(0,0,0,0.12)',
     },
 
     importInstructionsTitle: {
         margin: '0 0 4px 0',
         fontSize: '20px',
         fontWeight: '600',
-        color: '#fff',
+        color: '#111827',
     },
 
     importInstructionsSubtitle: {
         margin: 0,
         fontSize: '13px',
-        color: '#666',
+        color: '#6b7280',
     },
 
     importFieldsGrid: {
@@ -371,25 +377,26 @@ export const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
-        padding: '12px 14px',
-        backgroundColor: '#111',
-        border: '1px solid #222',
-        borderRadius: '8px',
+        padding: '16px 18px',
+        backgroundColor: '#ffffff',
+        border: '1px solid #000000',
+        borderRadius: '14px',
         position: 'relative',
         cursor: 'default',
+        boxShadow: '0 16px 36px rgba(0, 0, 0, 0.12)',
     },
 
     importFieldCardRequired: {
-        borderColor: '#444',
-        backgroundColor: '#161616',
+        borderColor: '#000000',
+        backgroundColor: '#ffffff',
     },
 
     importFieldIconCircle: {
         width: '34px',
         height: '34px',
         borderRadius: '50%',
-        backgroundColor: '#1a1a1a',
-        border: '1px solid #333',
+        backgroundColor: '#111827',
+        border: '1px solid #000000',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -397,17 +404,17 @@ export const styles = {
     },
 
     importFieldLabel: {
-        fontSize: '11px',
-        fontWeight: '600',
-        color: '#ccc',
-        letterSpacing: '0.05em',
+        fontSize: '12px',
+        fontWeight: '700',
+        color: '#111827',
+        letterSpacing: '0.08em',
         flex: 1,
     },
 
     importFieldNum: {
         fontSize: '11px',
-        color: '#444',
-        fontWeight: '500',
+        color: '#6b7280',
+        fontWeight: '600',
     },
 
     importDropHints: {

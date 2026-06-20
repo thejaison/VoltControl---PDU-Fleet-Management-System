@@ -199,7 +199,7 @@ const ImportingCsvData = () => {
     };
 
     return (
-        <div style={{ ...styles.importContent, padding: '30px', backgroundColor: '#05070f', borderRadius: '24px', boxShadow: '0 30px 80px rgba(0,0,0,0.24)' }}>
+        <div style={{ ...styles.importContent, padding: '30px', backgroundColor: '#f8fafc', borderRadius: '24px', boxShadow: '0 30px 80px rgba(15,23,42,0.08)' }}>
             <div style={styles.importInstructions}>
                 <div style={styles.importInstructionsHeader}>
                     <span style={styles.importCsvBadge}>CSV</span>
