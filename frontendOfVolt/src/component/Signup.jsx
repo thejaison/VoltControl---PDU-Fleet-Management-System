@@ -10,8 +10,12 @@ const Signup = () => {
     role: 'User',
     officeEmail: '',
     phoneNumber: '',
-    joiningDate: ''
+    joiningDate: '',
+    password: '',
+    confirmPassword: ''
   });
+
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -23,21 +27,53 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    const userData = {
-      username: formData.username,
-      joiningDate: formData.joiningDate,
-      officeEmail: formData.officeEmail,
-      role: formData.role,
-      empId: formData.empId,
-      phoneNumber: formData.phoneNumber
-    };
+    setShowPasswordModal(true);
+  };
 
-    localStorage.setItem('userData', JSON.stringify(userData));
+  const handleFinalSubmit = async (e) => {
+    e.preventDefault();
 
-    if (formData.role === 'Admin') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/user/dashboard');
+    if(formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      if(response.ok) {
+        alert("Sign up successful! Please check dashboard routing.");
+        setShowPasswordModal(false);
+
+        localStorage.setItem("loggedInEmpId", formData.empId);
+
+        if(formData.role === 'Admin') {
+          navigate('/admin/dashboard', {
+            state: {
+              username: formData.username,
+              joiningDate: formData.joiningDate,
+              officeEmail: formData.officeEmail
+            }
+          });
+        } else {
+          navigate('/user/dashboard', {
+            state: { 
+              username: formData.username,
+              joiningDate: formData.joiningDate,
+              officeEmail: formData.officeEmail
+            }
+          });
+        }
+      } else {
+        const errorMsg = await response.text();
+        alert(errorMsg);
+      }
+    } catch (error) {
+      console.error("Error during setup submission connection:", error);
     }
   };
 
@@ -101,6 +137,58 @@ const Signup = () => {
           </Link>
         </div>
       </form>
+
+      {showPasswordModal && (
+        <div style={styles.modalOverlay}>
+          <div style={{ ...styles.card, maxWidth: '400px', width: '90%', padding: '36px' }}>
+
+            <h3 style={{...styles.title, fontSize: '24px', textAlign: 'center', marginBottom: '10px'}}>Set Your Password</h3>
+ 
+            <form onSubmit={handleFinalSubmit} style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Password:</label>
+                <input 
+                  type="password" 
+                  name="password" 
+                  value={formData.password} 
+                  onChange={handleChange} 
+                  style={styles.input} 
+                  required 
+                />
+              </div>
+
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Confirm Password:</label>
+                <input 
+                  type="password" 
+                  name="confirmPassword" 
+                  value={formData.confirmPassword} 
+                  onChange={handleChange} 
+                  style={styles.input} 
+                  required 
+                />
+              </div>
+
+              <div style={styles.modalButtonGroup}>
+                <button
+                  type="submit"
+                  style={{ ...styles.button, ...styles.smallButtonPrimary }}
+                >
+                  CONFIRM & SIGN UP
+                </button>
+
+                <button 
+                  type="button" 
+                  onClick={() => setShowPasswordModal(false)} 
+                  style={{ ...styles.button, ...styles.smallButtonCancel }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

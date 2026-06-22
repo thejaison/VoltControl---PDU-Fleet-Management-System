@@ -7,6 +7,7 @@ const Login = () => {
     const[formData, setFormData] = useState({
         username: '',
         empId: '',
+        password: '',
     });
 
     const handleChange = (e) => {
@@ -16,11 +17,50 @@ const Login = () => {
     });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // form the db logic this data fetches from the postgresql and tells whether the login is user or admin
-    navigate("/user-dashboard");
+    try {
+        const response = await fetch("http://localhost:8080/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: formData.username,
+                empId: formData.empId,
+                password: formData.password
+            }),
+        });
+
+        if(response.ok) {
+            const data = await response.json();
+
+            localStorage.setItem("loggedInEmpId", formData.empId);
+
+            if(data.role === "Admin") {
+                navigate("/admin/dashboard", {
+                    state: {
+                        username: data.id.username,
+                        joiningDate: data.joiningDate,
+                        officeEmail: data.officeMail
+                    }
+                });
+            } else {
+                navigate("/user/dashboard", {
+                    state: {
+                        username: data.id.username,
+                        joiningDate: data.joiningDate,
+                        officeEmail: data.officeMail
+                    }
+                });
+            }
+        } else {
+            const msg = await response.text();
+            alert(msg);
+        }
+    } catch (error) {
+        console.error("Login connection error instance:", error);
+        alert("Backend server is not running!"); // change these in future
+    }
   };
 
   return (
@@ -44,6 +84,18 @@ const Login = () => {
                     type="text"
                     name="empId"
                     value={formData.empId}
+                    onChange={handleChange}
+                    style={styles.input}
+                    required
+                />
+            </div>
+
+            <div style={styles.formGroup}>
+                <label style={styles.label}>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
                     onChange={handleChange}
                     style={styles.input}
                     required

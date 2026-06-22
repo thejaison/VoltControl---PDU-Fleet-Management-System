@@ -131,5 +131,40 @@ export const styles = {
     cursor: 'pointer',
     fontWeight: '600',
     fontSize: '14px'
+  },
+
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(15, 23, 42, 0.4)', // Matching your shadow tone with a soft dim
+    backdropFilter: 'blur(4px)',               // Smooth background blur
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  modalButtonGroup: {
+    display: 'flex',
+    gap: '14px',
+    marginTop: '12px',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  smallButtonPrimary: {
+    width: 'auto',
+    padding: '12px 28px',
+    marginTop: 0,
+    fontSize: '14px'
+  },
+  smallButtonCancel: {
+    backgroundColor: '#64748b', // Slate gray finish matching your screenshot
+    color: '#ffffff',
+    width: 'auto',
+    padding: '12px 28px',
+    marginTop: 0,
+    fontSize: '14px'
   }
 };

@@ -16,7 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/user/dashboard" element={<UserDashboard />} />
 
         <Route path="/admin/import" element={<ImportingCsvData />} />
 

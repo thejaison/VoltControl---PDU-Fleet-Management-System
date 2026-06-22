@@ -55,23 +55,40 @@ const AdminDashboard = () => {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
-    const storedUserData = localStorage.getItem('userData');
-    if(storedUserData) {
-      try {
-        const parsedData = JSON.parse(storedUserData);
-        setUserData({
-            username: parsedData.username || '',
-            joiningDate: parsedData.joiningDate || '',
-            officeEmail: parsedData.officeEmail || ''
-          });
-      } catch(error) {
-        console.error('Error loading user data:', error);
-      }
+    if(location.state?.username) {
+      setUserData({
+        username: location.state.username || '',
+        joiningDate: location.state.joiningDate || '',
+        officeEmail: location.state.officeEmail || ''
+      });
+      return;
     }
 
-    return () => {
-      document.head.removeChild(link);
+    const empId = localStorage.getItem('loggedInEmpId');
+
+    if(!empId) {
+      console.error("No employee identity tracked! Redirecting or handling default state.");
+      return;
+    }
+
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/users/${empId}`);
+        if(response.ok) {
+          const databaseUser = await response.json();
+
+          setUserData({
+            username: databaseUser.username || '',
+            joiningDate: databaseUser.joiningDate || '',
+            officeEmail: databaseUser.officeEmail || ''
+          });
+        }
+      } catch (error) {
+        console.error("Network communication error with backend controller:", error);
+      }
     };
+
+    fetchProfileData();
   }, []);
 
   const [devices, setDevices] = useState([
