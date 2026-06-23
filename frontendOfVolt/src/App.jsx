@@ -5,6 +5,7 @@ import Login from "./component/Login";
 import AdminDashboard from "./component/AdminDashboard";
 import UserDashboard from "./component/UserDashboard";
 import ImportingCsvData from "./component/Csvimports/ImportingCsvData";
+import AdminDetailView from "./component/Adminview/AdminDetailView";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/user/dashboard" element={<UserDashboard />} />
 
         <Route path="/admin/import" element={<ImportingCsvData />} />
+        <Route path="/admin/detail" element={<AdminDetailView />} />
 
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>

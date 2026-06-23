@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles/DashboardStyles";
 import "../styles/DashboardStyles.css"
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, data } from "react-router-dom";
 
 const AdminDashboard = () => {
 
@@ -91,47 +91,21 @@ const AdminDashboard = () => {
     fetchProfileData();
   }, []);
 
-  const [devices, setDevices] = useState([
-    {
-      id: '01',
-      uuid: 'b2c3d4e5-f6a7-8901-2345-67890abcdef1',
-      deviceName: 'PDU-B-04-B',
-      assetId: 'AST-009413',
-      site: 'Site-A (Frankfurt, Germany)',
-      location: 'Row 8, Rack 4, U 42',
-      ipAddress: '10.40.24.45',
-      hostname: 'pdu-b04b.datacenter.local',
-      model: 'Raritan PX3-5490R',
-      serialNumber: 'C8174T00931',
-      adapterType: 'XeroX Expansion Module',
-      enabledStatus: 'Enabled',
-      operationalStatus: 'Warning', 
-      operationalDetails: 'Phase 1 Imminent Overload',
-      lastSeen: '2026-06-18 12:15:10 UTC',
-      createdTimestamp: '2024-03-10 11:15:00 UTC',
-      updatedTimestamp: '2026-06-15 09:20:15 UTC'
-    },
-    {
-      id: '02',
-      uuid: 'c3d4e5f6-a7b8-9012-3456-7890abcdef12',
-      deviceName: 'PDU-A-03-C',
-      assetId: 'AST-009414',
-      site: 'Site-B (London, UK)',
-      location: 'Row 3, Rack 2, U 15',
-      ipAddress: '10.40.24.46',
-      hostname: 'pdu-a03c.datacenter.local',
-      model: 'Raritan PX3-5490R',
-      serialNumber: 'C8174T00932',
-      adapterType: 'XeroX Expansion Module',
-      enabledStatus: 'Enabled',
-      operationalStatus: 'Online',
-      operationalDetails: 'All systems operational',
-      lastSeen: '2026-06-18 12:10:10 UTC',
-      createdTimestamp: '2024-03-10 11:15:00 UTC',
-      updatedTimestamp: '2026-06-15 09:20:15 UTC'
-    },
-    
-  ]);
+  const [devices, setDevices] = useState([]); // Changes here
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/devices')
+      .then(res => res.json())
+      .then(data => {
+        const mapped = data.map((d, i) => ({
+          ...d,
+        id: (i + 1).toString().padStart(2, '0'),
+        dbId: d.id  // keep real DB id for update/delete
+        }));
+        setDevices(mapped);
+      })
+  }, []);
+
 
   const [expandedDevice, setExpandedDevice] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState([]); // Initialize as an empty array to avoid errors
@@ -222,36 +196,19 @@ const AdminDashboard = () => {
     }));
   }
 
-  const handleSaveEdit = () => {
-    let updatedDevices = [...devices];
+  const handleSaveEdit = async () => {
+    const deviceToUpdate = devices.find(d => d.id === editingDevice);
 
-    if (selectedDevices.includes(editingDevice)) {
-
-      updatedDevices = updatedDevices.map(device => {
-        if (selectedDevices.includes(device.id)) {
-          return {
-            ...device,
-            enabledStatus: editedData.enabledStatus || device.enabledStatus,
-            operationalStatus: editedData.operationalStatus || device.operationalStatus,
-            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-          };
-        }
-        return device;
-      });
-    } else {
-      updatedDevices = updatedDevices.map(device => {
-        if(device.id === editingDevice) {
-          return {
-            ...device,
-            ...editedData,
-            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-          };
-        }
-        return device;
-      });
-    }
-
-    setDevices(updatedDevices);
+    await fetch(`http://localhost:8080/api/devices/${deviceToUpdate.dbId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editedData)
+    });
+    setDevices(prev => prev.map(d =>
+      d.id === editingDevice
+        ? { ...d, ...editedData, updatedTimestamp: new Date().toISOString() }
+        : d
+    ));
     setEditingDevice(null);
     setEditedData({});
   };
@@ -278,21 +235,27 @@ const AdminDashboard = () => {
     });
   };
 
-  const handleCreateDeviceSubmit = () => {
-    const newDevice = {
-      id: (devices.length + 1).toString().padStart(2, '0'),
-      uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, () => 
-        (Math.random() * 16 | 0).toString(16)
-      ),
+  const handleCreateDeviceSubmit = async () => {
+    const newUuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, () => (Math.random() * 16 | 0).toString(16));
+
+    const payload = {
       ...newDeviceData,
+      uuid: newUuid,
       operationalDetails: 'New device created',
       lastSeen: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
-      createdTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
-      updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
     };
-    setDevices([...devices, newDevice]);
+    const res = await fetch('http://localhost:8080/api/devices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const saved = await res.json();
+    setDevices(prev => [...prev, {
+      ...saved,
+      id: (prev.length + 1).toString().padStart(2, '0'),
+      dbId: saved.id
+    }]);
     setShowCreateModal(false);
-    alert('New Device added'); // We wil remove this thiing in the future for the betterment of the UI
   };
 
   const handleNewDeviceChange = (field, value) => {
@@ -302,22 +265,18 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleDeleteDevice = (deviceId) => {
-    const deviceToDelete = devices.find(device => device.id === deviceId);
+  const handleDeleteDevice = async (deviceId) => {
+    const deviceToDelete = devices.find(d => d.id === deviceId);
 
-    if(window.confirm(`Are you sure you want to delete device "${deviceToDelete?.deviceName}"?`)) {
-      const updatedDevices = devices.filter(device => device.id !== deviceId);
-      setDevices(updatedDevices);
-
-      if(expandedDevice === deviceId) {
-        setExpandedDevice(null);
-      }
-
+    if(window.confirm(`Are you sure you want to delete "${deviceToDelete?.deviceName}"?`)) {
+      await fetch(`http://localhost:8080/api/devices/${deviceToDelete.dbId}`, {
+        method: 'DELETE'
+      });
+      setDevices(prev => prev.filter(d => d.id !== deviceId));
+      if(expandedDevice === deviceId) setExpandedDevice(null);
       if(selectedDevices.includes(deviceId)) {
         setSelectedDevices(prev => prev.filter(id => id !== deviceId));
       }
-
-      alert('Device deleted successfully!');
     }
   };
 
@@ -345,7 +304,10 @@ const AdminDashboard = () => {
         <div style={styles.navSection}>
           <button className="dvc-nav-btn is-active">Devices</button>
           <button className="dvc-nav-btn">Studio</button>
-          <button className="dvc-admin-chip">
+          <button 
+            className="dvc-admin-chip"
+            onClick={() => navigate('/admin/detail', { state: { userData, devices } })}
+          >
             <span className="dvc-admin-avatar">
               {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}
             </span>
