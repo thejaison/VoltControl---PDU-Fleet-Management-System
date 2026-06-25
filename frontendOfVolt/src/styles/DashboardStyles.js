@@ -100,8 +100,9 @@ export const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
-    flexWrap: 'nowrap',
+    flexWrap: 'wrap',
     marginLeft: 'auto',
+    justifyContent: 'flex-end',
   },
   searchInput: {
     padding: '8px 16px',
@@ -328,38 +329,33 @@ export const styles = {
     backgroundColor: 'white',
     fontSize: '13px',
     cursor: 'pointer',
-    minWidth: '140px',
+    width: '140px',       // fixed width — add this
+    minWidth: '140px',    // keep this too
+    maxWidth: '140px',    // add this
     color: '#1a1a1a',
     fontWeight: '500',
     transition: 'border-color 0.2s',
-    ':hover': {
-      borderColor: '#1a1a1a',
-    },
-    ':focus': {
-      outline: 'none',
-      borderColor: '#1a1a1a',
-      boxShadow: '0 0 0 2px rgba(26,26,26,0.1)',
-    }
   },
   badge: (status) => {
     const colors = {
-      Online: { bg: '#e8f5e9', color: '#2e7d32' },
-      Warning: { bg: '#fff3e0', color: '#e65100' },
-      Error: { bg: '#ffebee', color: '#c62828' },
-      Offline: { bg: '#e3f2fd', color: '#000000' },
-      Enabled: { bg: '#e8f5e9', color: '#2e7d32' },
-      Disabled: { bg: '#f5f5f5', color: '#ff0000' },
+        Online:   { bg: '#e8f5e9', color: '#2e7d32' },
+        Warning:  { bg: '#fff3e0', color: '#e65100' },
+        Error:    { bg: '#ffebee', color: '#c62828' },
+        Offline:  { bg: '#fce4ec', color: '#880e4f' },
+        Enabled:  { bg: '#e8f5e9', color: '#2e7d32' },
+        Disabled: { bg: '#f5f5f5', color: '#ff0000' },
+        Unknown:  { bg: '#f3f4f6', color: '#6b7280' },
     };
-    const selected = colors[status] || colors.Fine;
+    const selected = colors[status] || { bg: '#f3f4f6', color: '#6b7280' }; // safe fallback, no more colors.Fine
     return {
-      display: 'inline-block',
-      padding: '4px 12px',
-      borderRadius: '12px',
-      backgroundColor: selected.bg,
-      color: selected.color,
-      fontSize: '12px',
-      fontWeight: '600',
-      whiteSpace: 'nowrap',
+        display: 'inline-block',
+        padding: '4px 12px',
+        borderRadius: '12px',
+        backgroundColor: selected.bg,
+        color: selected.color,
+        fontSize: '12px',
+        fontWeight: '600',
+        whiteSpace: 'nowrap',
     };
   },
 
@@ -563,5 +559,19 @@ export const styles = {
     ':hover': {
       backgroundColor: '#ffebee',
     }
+  },
+
+  deleteSelectedBtn: {
+    background: '#ef4444',
+    color: '#fff',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: '600',
+    borderRadius: '8px',
+    padding: '8px 16px',
+    fontSize: '14px',
+    marginLeft: '5px',
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
   },
 };

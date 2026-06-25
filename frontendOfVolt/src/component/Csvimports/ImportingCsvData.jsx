@@ -144,7 +144,7 @@ const ImportingCsvData = () => {
         reader.readAsText(file);
     };
 
-    const handleImportData = () => {
+    const handleImportData = async () => {
         if(csvData.length === 0) {
             setErrorMessage('No data to import');
             setImportStatus('error');
@@ -155,35 +155,67 @@ const ImportingCsvData = () => {
 
         try {
 
-            const newDevices = csvData.map((row, index) => ({
-                uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, () => 
+            const results = [];
+            const errors = [];
+
+            for(let i=0; i<csvData.length; i++) {
+                const row = csvData[i];
+
+                const newUuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, () =>
                     (Math.random() * 16 | 0).toString(16)
-                ),
-                deviceName: row.deviceName || '',
-                assetId: row.assetId || '',
-                site: row.site || '',
-                location: row.location || '',
-                ipAddress: row.ipAddress || '',
-                hostname: row.hostname || '',
-                model: row.model || '',
-                serialNumber: row.serialNumber || '',
-                adapterType: row.adapterType || '',
-                enabledStatus: row.enabledStatus || 'Enabled',
-                operationalStatus: row.operationalStatus || 'Online',
-                operationalDetails: 'Imported from CSV',
-                lastSeen: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
-                createdTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
-                updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-            }));
+                );
+
+                const payload = {
+                    uuid: newUuid,
+                    deviceName: row.deviceName || '',
+                    assetId: row.assetId || '',
+                    site: row.site || '',
+                    location: row.location || '',
+                    ipAddress: row.ipAddress || '',
+                    hostname: row.hostname || '',
+                    model: row.model || '',
+                    serialNumber: row.serialNumber || '',
+                    adapterType: row.adapterType || '',
+                    enabledStatus: row.enabledStatus || 'Enabled',
+                    operationalStatus: row.operationalStatus || 'Online',
+                    operationalDetails: 'Imported from CSV',
+                    lastSeen: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
+                };
+
+                try {
+                    const res = await fetch('http://localhost:8080/api/devices', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if(!res.ok) {
+                        const errText = await res.text();
+                        errors.push(`Row ${i + 1} (${row.deviceName}): ${errText}`);
+                    } else {
+                        const saved = await res.json();
+                        results.push(saved);
+                    }
+
+                } catch (rowError) {
+                    errors.push(`Row ${i + 1} (${row.deviceName}): Network error`);
+                }
+            }
+
+            if(errors.length > 0 && results.length === 0) {
+                setErrorMessage(`All imports failed:\n${errors.join('\n')}`);
+                setImportStatus('error');
+                return;
+            }
 
             setImportStatus('success');
 
             setTimeout(() => {
                 navigate('/admin/dashboard', {
                     state: {
-                        importSuccess: true, 
-                        importedCount: newDevices.length,
-                        importedDevices: newDevices
+                        importSuccess: true,
+                        importedCount: results.length,
+                        failedCount: errors.length,
                     }
                 });
             }, 1500);

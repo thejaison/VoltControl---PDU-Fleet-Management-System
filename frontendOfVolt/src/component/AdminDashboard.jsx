@@ -17,34 +17,21 @@ const AdminDashboard = () => {
   useEffect(() => {
     if(location.state?.importSuccess) {
 
-      const importedDevices = location.state.importedDevices || [];
-
-      if(importedDevices.length > 0) {
-        setDevices(prevDevices => {
-
-          const existingKeys = new Set(prevDevices.map(d => `${d.deviceName}-${d.assetId}`));
-
-          const uniqueImported = importedDevices.filter(d =>
-            !existingKeys.has(`${d.deviceName}-${d.assetId}`)
-          );
-
-          if(uniqueImported.length === 0) {
-            alert('These devices have already been imported!');
-            return prevDevices;
-          }
-
-          const newDevices = uniqueImported.map((device, index) => ({
-            ...device,
-            id: (prevDevices.length + index + 1).toString().padStart(2, '0')
-          }));
-
-          return [...prevDevices, ...newDevices];
-        });
-      }
-
       const count = location.state.importedCount || 0;
-      alert(`Successfully imported ${count} devices!`);
+      const failed = location.state.failedCount || 0;
 
+      fetch('http://localhost:8080/api/devices')
+        .then(res => res.json())
+        .then(data => {
+          const mapped = data.map((d, i) => ({
+            ...d,
+            id: (i + 1).toString().padStart(2, '0'),
+            dbId: d.id
+          }));
+        setDevices(mapped);
+      });
+
+      alert(`Successfully imported ${count} devices!${failed > 0 ? ` (${failed} failed)` : ''}`);
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location, navigate]);
@@ -265,20 +252,23 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleDeleteDevice = async (deviceId) => {
-    const deviceToDelete = devices.find(d => d.id === deviceId);
+  const handleDeleteSelected = async () => {
+    if (selectedDevices.length === 0) return;
 
-    if(window.confirm(`Are you sure you want to delete "${deviceToDelete?.deviceName}"?`)) {
-      await fetch(`http://localhost:8080/api/devices/${deviceToDelete.dbId}`, {
-        method: 'DELETE'
-      });
-      setDevices(prev => prev.filter(d => d.id !== deviceId));
-      if(expandedDevice === deviceId) setExpandedDevice(null);
-      if(selectedDevices.includes(deviceId)) {
-        setSelectedDevices(prev => prev.filter(id => id !== deviceId));
-      }
-    }
-  };
+    if (!window.confirm(`Are you sure you want to delete ${selectedDevices.length} device(s)?`)) return;
+
+    const toDelete = devices.filter(d => selectedDevices.includes(d.id));
+
+    await Promise.all(
+        toDelete.map(device =>
+            fetch(`http://localhost:8080/api/devices/${device.dbId}`, { method: 'DELETE' })
+        )
+    );
+
+    setDevices(prev => prev.filter(d => !selectedDevices.includes(d.id)));
+    if (selectedDevices.includes(expandedDevice)) setExpandedDevice(null);
+    setSelectedDevices([]);
+  }
 
   const handleScan = () => {
     alert('Scan functionality will be implemented in the backend.');
@@ -441,6 +431,16 @@ const AdminDashboard = () => {
             <button className="dvc-action-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleImport}>
               Import
             </button>
+
+            {selectedDevices.length > 0 && (
+              <button
+                onClick={handleDeleteSelected}
+                style={styles.deleteSelectedBtn}
+                className="dvc-delete-btn"
+              >
+                🗑 Delete ({selectedDevices.length})
+              </button>
+            )}
           </div>
         </div>
 
@@ -469,14 +469,6 @@ const AdminDashboard = () => {
                   <span style={styles.badge(device.enabledStatus)}>
                     ● {device.enabledStatus}
                   </span>
-
-                  <button
-                    onClick={() => handleDeleteDevice(device.id)}
-                    style={styles.deleteButton}
-                    title="Delete Device"
-                  >
-                    ✕
-                  </button>
 
                   <span
                     style={styles.expandIcon}

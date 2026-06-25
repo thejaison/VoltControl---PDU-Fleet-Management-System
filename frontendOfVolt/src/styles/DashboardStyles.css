@@ -158,6 +158,7 @@
   align-items: center;
   gap: 5px;
   margin-left: 10px;
+  flex-shrink: 0;
 }
 .dvc-sort-select:hover { border-color: #1a1a1a; }
 .dvc-sort-select select {
@@ -167,5 +168,10 @@
   font-size: 14px;
   background: white;
   cursor: pointer;
+  min-width: 0;
 }
 .dvc-sort-select svg { color: #8c8c8c; flex-shrink: 0; pointer-events: none; }
+
+.dvc-delete-btn {
+  flex-shrink: 0;
+}
