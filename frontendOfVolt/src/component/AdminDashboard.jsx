@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles/DashboardStyles";
 import "../styles/DashboardStyles.css"
-import { useNavigate, useLocation, data } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AdminDashboard = () => {
 
@@ -103,12 +103,17 @@ const AdminDashboard = () => {
   const [filterOperationalStatus, setFilterOperationalStatus] = useState('None');
   const [filterEnabledStatus, setFilterEnabledStatus] = useState('None');
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchField, setSearchField] = useState('deviceName');
+
   // The filtering logic
   const filteredDevices = devices.filter(device => {
     const matchesOperational = filterOperationalStatus === 'None' || device.operationalStatus === filterOperationalStatus;
     const matchesEnabled = filterEnabledStatus === 'None' || device.enabledStatus === filterEnabledStatus;
 
-    return matchesOperational && matchesEnabled;
+    const matchesSearch = searchQuery === '' ||
+      (device[searchField] || '').toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesOperational && matchesEnabled && matchesSearch;
   })
 
   const [newDeviceData, setNewDeviceData] = useState({
@@ -335,18 +340,24 @@ const AdminDashboard = () => {
                 placeholder="Search devices..."
                 className="dvc-search-input"
                 style={styles.searchInput}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             
             
             <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
-              <select style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}>
-                <option value="name">Device Name</option>
+              <select
+                value={searchField}
+                onChange={(e) => setSearchField(e.target.value)}
+                style={{ ...styles.selectDropdown, ...styles.statusSelectBorder(editedData.operationalStatus || 'Fine') }}
+              >
+                <option value="deviceName">Device Name</option>
                 <option value="ipAddress">IP Address</option>
                 <option value="hostname">Hostname</option>
                 <option value="assetId">Asset ID</option>
-                <option value="serialNum">Serial No</option>
+                <option value="serialNumber">Serial No</option>
               </select>
             </label>
 
