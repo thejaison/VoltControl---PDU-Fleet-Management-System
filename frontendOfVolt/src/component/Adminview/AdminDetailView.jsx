@@ -1,14 +1,36 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+// import { data, useLocation, useNavigate } from "react-router-dom"; -> We dont use it now
+import { useLocation, useNavigate } from "react-router-dom"; // We are not using data
 import { styles } from "../../styles/Adminviewstyles";
 
 const AdminDetailView = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { userData = {}, devices = [] } = location.state || {};
+    const { userData = {}, empId = '' } = location.state || {};
+    const [devices, setDevices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
     const [searchUsername, setSearchUsername] = useState('');
     const [messageText, setMessageText] = useState('');
+
+    useEffect(() => {
+
+        if(!empId) return;
+
+        fetch(`http://localhost:8080/api/devices/by-admin/${empId}`)
+            .then(res => res.json())
+            .then(data => {
+                const mapped = data.map((d, i) => ({
+                    ...d,
+                    id: (i + 1).toString().padStart(2, '0'),
+                    dbId: d.id
+                }));
+                setDevices(mapped);
+            })
+            .catch(err => console.error("Failed to fetch admin devices:", err))
+            .finally(() => setLoading(false));
+    }, [empId]);
 
     return (
         <div style={styles.container}>
@@ -41,7 +63,9 @@ const AdminDetailView = () => {
                 <div style={styles.devicesPanel}>
                     <div style={styles.devicesPanelTitle}>DEVICES ADDED</div>
 
-                    {devices.lenght === 0 ? (
+                    {loading ? (
+                        <div style={styles.noDevices}>Loading...</div>
+                    ) : devices.length === 0 ? (
                         <div style={styles.noDevices}>No devices added yet.</div>
                     ) : (
                         devices.map(device => (

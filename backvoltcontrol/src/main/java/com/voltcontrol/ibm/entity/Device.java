@@ -35,6 +35,8 @@ public class Device {
     private LocalDateTime createdTimestamp;
     private LocalDateTime updatedTimestamp;
 
+    private String createdByEmpId;
+
     @PrePersist
     protected void onCreate() {
         this.createdTimestamp = LocalDateTime.now();
@@ -181,5 +183,13 @@ public class Device {
 
     public void setUpdatedTimestamp(LocalDateTime updatedTimestamp) {
         this.updatedTimestamp = updatedTimestamp;
+    }
+
+    public String getCreatedByEmpId() {
+        return createdByEmpId;
+    }
+
+    public void setCreatedByEmpId(String createdByEmpId) {
+        this.createdByEmpId = createdByEmpId;
     }
 }

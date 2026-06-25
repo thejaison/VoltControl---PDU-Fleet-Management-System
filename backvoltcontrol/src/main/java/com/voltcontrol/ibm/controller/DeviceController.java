@@ -61,6 +61,12 @@ public class DeviceController {
         return ResponseEntity.ok("Device deleted.");
     }
 
+    @GetMapping("/by-admin/{empId}")
+    public ResponseEntity<List<Device>> getDeviceByAdmin(@PathVariable String empId) {
+        List<Device> devices = deviceRepository.findByCreatedByEmpId(empId);
+        return ResponseEntity.ok(devices);
+    }
+
     private void mapDtoToDevice(DeviceDto dto, Device device) {
         device.setDeviceName(dto.getDeviceName());
         device.setAssetId(dto.getAssetId());
@@ -76,5 +82,6 @@ public class DeviceController {
         device.setOperationalDetails(dto.getOperationalDetails());
         device.setUuid(dto.getUuid());
         device.setLastSeen(dto.getLastSeen());
+        device.setCreatedByEmpId(dto.getCreatedByEmpId());
     }
 }

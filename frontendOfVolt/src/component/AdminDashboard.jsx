@@ -225,11 +225,14 @@ const AdminDashboard = () => {
   const handleCreateDeviceSubmit = async () => {
     const newUuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, () => (Math.random() * 16 | 0).toString(16));
 
+    const empId = localStorage.getItem('loggedInEmpId');
+
     const payload = {
       ...newDeviceData,
       uuid: newUuid,
       operationalDetails: 'New device created',
       lastSeen: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
+      createdByEmpId: empId,
     };
     const res = await fetch('http://localhost:8080/api/devices', {
       method: 'POST',
@@ -296,7 +299,12 @@ const AdminDashboard = () => {
           <button className="dvc-nav-btn">Studio</button>
           <button 
             className="dvc-admin-chip"
-            onClick={() => navigate('/admin/detail', { state: { userData, devices } })}
+            onClick={() => navigate('/admin/detail', {
+              state: {
+                userData,
+                empId: localStorage.getItem('loggedInEmpId')
+              }
+            })}
           >
             <span className="dvc-admin-avatar">
               {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}

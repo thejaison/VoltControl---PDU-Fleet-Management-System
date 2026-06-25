@@ -17,6 +17,8 @@ public class DeviceDto {
     private String uuid;
     private String lastSeen;
 
+    private String createdByEmpId;
+
     public String getDeviceName() {
         return deviceName;
     }
@@ -127,5 +129,13 @@ public class DeviceDto {
 
     public void setLastSeen(String lastSeen) {
         this.lastSeen = lastSeen;
+    }
+
+    public String getCreatedByEmpId() {
+        return createdByEmpId;
+    }
+
+    public void setCreatedByEmpId(String createdByEmpId) {
+        this.createdByEmpId = createdByEmpId;
     }
 }
