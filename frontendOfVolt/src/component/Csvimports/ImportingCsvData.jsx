@@ -231,7 +231,8 @@ const ImportingCsvData = () => {
     };
 
     return (
-        <div style={{ ...styles.importContent, padding: '30px', backgroundColor: '#f8fafc', borderRadius: '24px', boxShadow: '0 30px 80px rgba(15,23,42,0.08)' }}>
+        <div style={styles.importContainer}>
+            <div className="minimal-import-card" style={styles.importContent}>
             <div style={styles.importInstructions}>
                 <div style={styles.importInstructionsHeader}>
                     <span style={styles.importCsvBadge}>CSV</span>
@@ -406,6 +407,7 @@ const ImportingCsvData = () => {
                     </div>
                 </div>
             )}
+            </div>
         </div>
     );
 };
