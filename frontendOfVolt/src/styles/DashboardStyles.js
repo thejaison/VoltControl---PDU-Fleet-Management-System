@@ -66,11 +66,10 @@ export const styles = {
   },
   titleSection: {
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignItems: 'flex-start',
     marginBottom: '30px',
-    flexWrap: 'wrap',
-    gap: '20px',
+    gap: '16px',
   },
   title: {
     fontSize: '28px',
@@ -101,8 +100,8 @@ export const styles = {
     alignItems: 'center',
     gap: '10px',
     flexWrap: 'wrap',
-    marginLeft: 'auto',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    width: '100%',
   },
   searchInput: {
     padding: '8px 16px',

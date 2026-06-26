@@ -345,9 +345,7 @@ const AdminDashboard = () => {
               />
             </div>
 
-            
-            
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
+            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={searchField}
                 onChange={(e) => setSearchField(e.target.value)}
@@ -362,7 +360,7 @@ const AdminDashboard = () => {
             </label>
 
             {/* for the filtering stuff */}
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
+            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={selectedDevices.length > 0 ? '' : filterOperationalStatus}
                 onChange={(e) => {
@@ -400,7 +398,7 @@ const AdminDashboard = () => {
             </label>
 
             {/* Filter for the Enable status */}
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px'}}>
+            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={selectedDevices.length > 0 ? '' : filterEnabledStatus}
                 onChange={(e) => {
@@ -433,21 +431,20 @@ const AdminDashboard = () => {
               </select>
             </label>
 
-            
             <button
               className="dvc-icon-btn"
-              style={{...styles.iconButton, marginLeft: '5px'}}
+              style={styles.iconButton}
               onClick={handleCreateDevice}
               title="Create Device"
             >
               +
             </button>
 
-            <button className="dvc-scan-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleScan}>
+            <button className="dvc-scan-btn" style={styles.actionButton} onClick={handleScan}>
               Scan
             </button>
 
-            <button className="dvc-action-btn" style={{...styles.actionButton, marginLeft: '5px'}} onClick={handleImport}>
+            <button className="dvc-action-btn" style={styles.actionButton} onClick={handleImport}>
               Import
             </button>
 

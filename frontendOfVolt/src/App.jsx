@@ -5,7 +5,7 @@ import Login from "./component/Login";
 import AdminDashboard from "./component/AdminDashboard";
 import UserDashboard from "./component/UserDashboard";
 import ImportingCsvData from "./component/Csvimports/ImportingCsvData";
-import AdminDetailView from "./component/Adminview/AdminDetailView";
+import AdminDetailView from "./component/AccountView/AdminDetailView";
 
 function App() {
   return (
