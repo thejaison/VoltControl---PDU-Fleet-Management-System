@@ -36,11 +36,6 @@ public class DeviceController {
     @Autowired
     private DeviceRepository deviceRepository;
 
-    @GetMapping
-    public List<Device> getAllDevices() {
-        return deviceRepository.findAll();
-    }
-
     @PostMapping
     public ResponseEntity<Device> createDevice(@RequestBody DeviceDto dto) {
         Device device = new Device();

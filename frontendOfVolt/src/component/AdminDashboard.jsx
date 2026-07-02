@@ -20,16 +20,7 @@ const AdminDashboard = () => {
       const count = location.state.importedCount || 0;
       const failed = location.state.failedCount || 0;
 
-      fetch('http://localhost:8080/api/devices')
-        .then(res => res.json())
-        .then(data => {
-          const mapped = data.map((d, i) => ({
-            ...d,
-            id: (i + 1).toString().padStart(2, '0'),
-            dbId: d.id
-          }));
-        setDevices(mapped);
-      });
+      fetchDevices();
 
       alert(`Successfully imported ${count} devices!${failed > 0 ? ` (${failed} failed)` : ''}`);
       navigate(location.pathname, { replace: true, state: {} });
@@ -80,19 +71,6 @@ const AdminDashboard = () => {
 
   const [devices, setDevices] = useState([]); // Changes here
 
-  useEffect(() => {
-    fetch('http://localhost:8080/api/devices')
-      .then(res => res.json())
-      .then(data => {
-        const mapped = data.map((d, i) => ({
-          ...d,
-        id: (i + 1).toString().padStart(2, '0'),
-        dbId: d.id  // keep real DB id for update/delete
-        }));
-        setDevices(mapped);
-      })
-  }, []);
-
 
   const [expandedDevice, setExpandedDevice] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState([]); // Initialize as an empty array to avoid errors
@@ -106,15 +84,10 @@ const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchField, setSearchField] = useState('deviceName');
 
-  // The filtering logic
-  const filteredDevices = devices.filter(device => {
-    const matchesOperational = filterOperationalStatus === 'None' || device.operationalStatus === filterOperationalStatus;
-    const matchesEnabled = filterEnabledStatus === 'None' || device.enabledStatus === filterEnabledStatus;
-
-    const matchesSearch = searchQuery === '' ||
-      (device[searchField] || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesOperational && matchesEnabled && matchesSearch;
-  })
+  const [currentPage, setCurrentPage] =  useState(0);
+  const [pageSize,setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
@@ -245,11 +218,7 @@ const AdminDashboard = () => {
       body: JSON.stringify(payload)
     });
     const saved = await res.json();
-    setDevices(prev => [...prev, {
-      ...saved,
-      id: (prev.length + 1).toString().padStart(2, '0'),
-      dbId: saved.id
-    }]);
+    await fetchDevices();
     setShowCreateModal(false);
   };
 
@@ -273,13 +242,56 @@ const AdminDashboard = () => {
         )
     );
 
-    setDevices(prev => prev.filter(d => !selectedDevices.includes(d.id)));
+    await fetchDevices();
     if (selectedDevices.includes(expandedDevice)) setExpandedDevice(null);
     setSelectedDevices([]);
   }
 
   const handleScan = () => {
     alert('Scan functionality will be implemented in the backend.');
+  };
+
+  const fetchDevices = async () => {
+    const params = new URLSearchParams({
+      page: currentPage,
+      size: pageSize,
+    });
+
+    if(searchQuery) {
+      params.append('search', searchQuery);
+      params.append('searchField', searchField);
+    }
+    if (filterOperationalStatus !== 'None')
+      params.append('operationalStatus', filterOperationalStatus);
+    if (filterEnabledStatus !== 'None')
+      params.append('enabledStatus', filterEnabledStatus);
+
+    const res = await fetch(`http://localhost:8080/api/devices?${params.toString()}`);
+    const data = await res.json();
+
+    if (data.totalPages > 0 && currentPage >= data.totalPages) {
+      setCurrentPage(data.totalPages - 1);
+      return;
+    }
+
+    const mapped = data.content.map((d, i) => ({
+      ...d,
+      id: (currentPage * pageSize + i + 1).toString().padStart(2, '0'),
+      dbId: d.id
+    }));
+
+    setDevices(mapped);
+    setTotalPages(data.totalPages);
+    setTotalItems(data.totalItems);
+  };
+
+  useEffect(() => {
+    fetchDevices();
+  }, [currentPage, pageSize, searchQuery, searchField, filterOperationalStatus, filterEnabledStatus]);
+
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    setCurrentPage(0);
   };
 
   const handleImport = () => {
@@ -326,13 +338,14 @@ const AdminDashboard = () => {
             <div style={styles.subTitleSection}>
               <span style={styles.subTitle}>Monitored Infrastructure Nodes</span>
               <span style={styles.countBadge}>
-                {filterOperationalStatus === 'None' && filterEnabledStatus === 'None'
-                  ? devices.length.toString().padStart(2, '0')
-                : `${filteredDevices.length}/${devices.length}`}
+                {totalItems.toString().padStart(2, '0')}
               </span>
             </div>
           </div>
 
+        </div>
+
+        <div style={styles.controlsSection}>
           <div style={styles.actionButtons}>
             <div className="dvc-search-wrap" style={{display: 'flex', alignItems: 'center'}}>
               <input
@@ -341,7 +354,7 @@ const AdminDashboard = () => {
                 className="dvc-search-input"
                 style={styles.searchInput}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
               />
             </div>
 
@@ -458,10 +471,59 @@ const AdminDashboard = () => {
               </button>
             )}
           </div>
+
+          <div style={styles.paginationBar}>
+            <div style={styles.paginationInfo}>
+              Showing {devices.length === 0 ? 0 : currentPage * pageSize + 1}–
+              {Math.min((currentPage + 1) * pageSize, totalItems)} of {totalItems}
+            </div>
+
+            <div style={styles.paginationControls}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                Show:
+                <select
+                  value={pageSize}
+                  onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(0); }}
+                  style={styles.selectDropdown}
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </label>
+
+              <button
+                style={styles.pageNavButton}
+                disabled={currentPage === 0}
+                onClick={() => setCurrentPage(p => p - 1)}
+              >
+                ← Previous
+              </button>
+
+              {Array.from({length: totalPages }, (_, i) => i).map(p => (
+                <button
+                  key={p}
+                  style={p === currentPage ? styles.pageNumberActive : styles.pageNumber}
+                  onClick={() => setCurrentPage(p)}
+                >
+                  {p + 1}
+                </button>
+              ))}
+
+              <button
+                style={styles.pageNavButton}
+                disabled={currentPage >= totalPages - 1}
+                onClick={() => setCurrentPage(p => p + 1)}
+              >
+                Next →
+              </button>
+            </div>
+          </div>
         </div>
 
         <div style={styles.deviceList}>
-          {filteredDevices.map((device, index) => (
+          {devices.map((device, index) => (
             <div key={device.uuid} style={styles.deviceCard}>
               <div style={styles.deviceHeader}>
                 <div style={styles.deviceHeaderLeft}>
