@@ -1,0 +1,47 @@
+🔥 Core Features ->
+✅ Login / Authentication
+❌ JWT Authentication
+✅ Role-Based Access Control
+✅ User Management (CRUD)
+✅ Device Registration (Create Device)
+✅ Update Device
+✅ Delete Device
+✅ Enable / Disable Device
+✅ Device List
+✅ Search Devices
+❌ Sorting
+✅ Filtering
+✅ Device Details Page
+✅ CSV Import Preview
+✅ CSV Import Commit
+✅ Dashboard Statistics
+❌ Logout
+⌛ Pagination
+❌ BCrypt Password Hashing (User Passwords)
+❌ PDU Password Encryption
+❌ Scan Job Creation
+❌ Scan Execution
+❌ Scan Progress Monitoring
+❌ Scan Results Storage & Display
+❌ Scan Cancellation
+
+🛠 Backend Improvements -> 
+✅ Form Validation
+✅ Responsive Design
+❌ Global Exception Handler (@ControllerAdvice)
+❌ Swagger / OpenAPI Documentation
+❌ Health Check APIs (/health, /ready)
+
+📈 Production Quality -> 
+❌ Notifications (Toasts, Confirmation Dialogs)
+❌ Audit Logging
+❌ Backend Testing (JUnit / Mockito)
+
+🚀 Deployment -> 
+❌ Docker & Docker Compose
+❌ Environment Variables (.env, Secrets)
+❌ Logging (SLF4J / Logback)
+
+⭐ Nice-to-Have Features ->
+❌ Reports (PDF / Excel / CSV)
+❌ Scheduled Scans
