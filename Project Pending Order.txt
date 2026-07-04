@@ -16,7 +16,7 @@
 ✅ CSV Import Commit
 ✅ Dashboard Statistics
 ❌ Logout
-⌛ Pagination
+✅ Pagination
 ❌ BCrypt Password Hashing (User Passwords)
 ❌ PDU Password Encryption
 ❌ Scan Job Creation

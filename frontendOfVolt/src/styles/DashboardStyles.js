@@ -627,4 +627,9 @@ export const styles = {
     fontSize: '13px',
     fontWeight: 600,
   },
+  logoutButtonStyle: {
+    marginLeft: '10px', 
+    cursor: 'pointer',
+    color: '#ff4d4d'
+  }
 };

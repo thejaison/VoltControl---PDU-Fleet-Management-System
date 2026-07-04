@@ -298,6 +298,11 @@ const AdminDashboard = () => {
     navigate('/admin/import');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('loggedInEmpId');
+    navigate('/login');
+  }
+
 
   return (
     <div style={styles.container}>
@@ -327,6 +332,14 @@ const AdminDashboard = () => {
               {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}
             </span>
             Hi {userData.username || 'Admin'}!
+          </button>
+
+          <button
+            className="dvc-nav-btn"
+            onClick={handleLogout}
+            style={styles.logoutButtonStyle}
+          >
+            Logout
           </button>
         </div>
       </header>

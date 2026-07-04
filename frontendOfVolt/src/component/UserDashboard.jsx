@@ -29,7 +29,7 @@ const UserDashboard = () => {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
-    if(location.state?.username) {
+    if (location.state?.username) {
       setUserData({
         username: location.state.username || '',
         joiningDate: location.state.joiningDate || '',
@@ -39,7 +39,7 @@ const UserDashboard = () => {
     }
 
     const empId = localStorage.getItem('loggedInEmpId');
-    if(!empId) {
+    if (!empId) {
       console.error("No employee identity tracked! Redirecting or handling default state.");
       return;
     }
@@ -47,7 +47,7 @@ const UserDashboard = () => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(`http://localhost:8080/api/users/${empId}`);
-        if(response.ok) {
+        if (response.ok) {
           const databaseUser = await response.json();
           setUserData({
             username: databaseUser.username || '',
@@ -82,7 +82,7 @@ const UserDashboard = () => {
 
     const matchesSearch = searchQuery === '' ||
       (device[searchField] || '').toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesOperational && matchesEnabled && matchesSearch;
   });
 
@@ -100,8 +100,8 @@ const UserDashboard = () => {
         <div style={styles.logoSection}>
           <div className="dvc-logo-badge">𝝯</div>
           <span style={styles.metaText}>
-            {userData.username || 'User'} • 
-            {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'} • 
+            {userData.username || 'User'} •
+            {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'} •
             {userData.officeEmail || 'user@email.com'}
           </span>
         </div>
@@ -109,7 +109,7 @@ const UserDashboard = () => {
         <div style={styles.navSection}>
           <button className="dvc-nav-btn is-active">Devices</button>
           <button className="dvc-nav-btn">Studio</button>
-          <button 
+          <button
             className="dvc-admin-chip"
             onClick={() => navigate('/AccountView/UserDetailView.jsx', {
               state: {
@@ -225,7 +225,7 @@ const UserDashboard = () => {
 
                   <span
                     style={styles.expandIcon}
-                    onClick={() => toggleDevice(device.id)}  
+                    onClick={() => toggleDevice(device.id)}
                   >
                     {expandedDevice === device.id ? '▼' : '▶'}
                   </span>
