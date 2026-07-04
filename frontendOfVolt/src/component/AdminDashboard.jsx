@@ -142,6 +142,22 @@ const AdminDashboard = () => {
     );
   };
 
+  // To select everything
+  const isAllSelected = devices.length > 0 && devices.every(device => selectedDevices.includes(device.id));
+
+  const handleSelectAllToggle = () => {
+    if(isAllSelected) {
+      const currentIds = devices.map(d => d.id);
+      setSelectedDevices(prev => prev.filter(id => !currentIds.includes(id)));
+    } else {
+      const currentIds = devices.map(d => d.id);
+      setSelectedDevices(prev => {
+        const distinctIds = new Set([...prev, ...currentIds]);
+        return Array.from(distinctIds);
+      });
+    }
+  };
+
   const toggleDevice = (id) => {
     setExpandedDevice(expandedDevice === id ? null : id);
     if(expandedDevice !== id) {
@@ -486,6 +502,16 @@ const AdminDashboard = () => {
           </div>
 
           <div style={styles.paginationBar}>
+            <div style={styles.logoutButtonStyle}>
+              <input
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={handleSelectAllToggle}
+                style={{ ...styles.checkbox, cursor: 'pointer' }}
+                title="Select all on this page"
+              />
+            </div>
+
             <div style={styles.paginationInfo}>
               Showing {devices.length === 0 ? 0 : currentPage * pageSize + 1}–
               {Math.min((currentPage + 1) * pageSize, totalItems)} of {totalItems}

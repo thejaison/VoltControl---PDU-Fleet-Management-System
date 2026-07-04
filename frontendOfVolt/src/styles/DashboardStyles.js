@@ -631,5 +631,12 @@ export const styles = {
     marginLeft: '10px', 
     cursor: 'pointer',
     color: '#ff4d4d'
+  },
+  logoutButtonStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: '12px',
+    marginLeft: '10px',
+    cursor: 'pointer'
   }
 };
