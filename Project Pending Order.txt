@@ -1,4 +1,4 @@
-Chnage the status and it should be saved that way
+Change the status and it should be saved that way
 
 🔥 Core Features ->
 ✅ Login / Authentication
@@ -20,7 +20,7 @@ Chnage the status and it should be saved that way
 ✅ Logout
 ✅ Pagination
 ✅ Select All
-❌ BCrypt Password Hashing (User Passwords) -> Using spring security
+✅ BCrypt Password Hashing (User Passwords) -> Using spring security
 ❌ PDU Password Encryption
 ❌ Scan Job Creation
 ❌ Scan Execution

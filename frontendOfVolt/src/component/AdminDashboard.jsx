@@ -89,6 +89,8 @@ const AdminDashboard = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
+  const [pendingChanges, setPendingChanges] = useState({});
+
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
     assetId: '',
@@ -104,34 +106,20 @@ const AdminDashboard = () => {
   })
 
   const handleStatusChange = (deviceId, field, value) => {
-    let updatedDevices = [...devices];
+    const targetIds = selectedDevices.includes(deviceId) ? selectedDevices : [deviceId];
 
-    if(selectedDevices.includes(deviceId)) {
+    setDevices(prev => prev.map(device =>
+      targetIds.includes(device.id) ? { ...device, [field]: value } : device
+    ));
 
-      updatedDevices = updatedDevices.map(device => {
-        if(selectedDevices.includes(device.id)) {
-          return {
-            ...device,
-            [field]: value,
-            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-          };
-        }
-        return device;
+    setPendingChanges(prev => {
+      const updated = { ...prev };
+      targetIds.forEach(id => {
+        updated[id] = { ...(updated[id] || {}), [field]: value };
       });
-    } else {
-      updatedDevices = updatedDevices.map(device => {
-        if(device.id === deviceId) {
-          return {
-            ...device,
-            [field]: value,
-            updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-          };
-        }
-        return device;
-      });
-    }
 
-    setDevices(updatedDevices);
+      return updated;
+    });
   };
 
   const toggleSelectDevice = (id) => {
@@ -163,6 +151,21 @@ const AdminDashboard = () => {
     if(expandedDevice !== id) {
       setEditingDevice(null);
     }
+  }
+
+  const handleBulkStatusChange = (field, value) => {
+    setDevices(prev => prev.map(device =>
+      selectedDevices.includes(device.id) ? { ...device, [field]: value } : device
+    ));
+
+    setPendingChanges(prev => {
+      const updated = { ...prev };
+      selectedDevices.forEach(id => {
+        updated[id] = { ...(updated[id] || {}), [field]: value };
+      });
+
+      return updated;
+    })
   }
 
   const handleEditClick = (device) => {
@@ -310,6 +313,36 @@ const AdminDashboard = () => {
     setCurrentPage(0);
   };
 
+  const handleSaveChanges = async () => {
+    const idsToSave = Object.keys(pendingChanges);
+    if (idsToSave.length === 0) return;
+
+    try {
+      await Promise.all(
+        idsToSave.map(id => {
+          const device = devices.find(d => d.id === id);
+          if (!device) return Promise.resolve();
+
+          return fetch(`http://localhost:8080/api/devices/${device.dbId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(device)
+          });
+        })
+      );
+      setPendingChanges({});
+      await fetchDevices();
+    } catch (error) {
+      console.error("Failed to save changes:", error);
+      alert("Failed to save changes. Please try again.");
+    }
+  };
+
+  const handleDiscardChanges = async () => {
+    setPendingChanges({});
+    await fetchDevices();
+  }
+
   const handleImport = () => {
     navigate('/admin/import');
   };
@@ -407,11 +440,7 @@ const AdminDashboard = () => {
                 value={selectedDevices.length > 0 ? '' : filterOperationalStatus}
                 onChange={(e) => {
                   if(selectedDevices.length > 0) {
-                    setDevices(prev => prev.map(device =>
-                      selectedDevices.includes(device.id)
-                        ? { ...device, operationalStatus: e.target.value, updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' }
-                        : device
-                    ));
+                    handleBulkStatusChange('operationalStatus', e.target.value);
                     setFilterOperationalStatus('None');
                   } else {
                     setFilterOperationalStatus(e.target.value);
@@ -445,11 +474,7 @@ const AdminDashboard = () => {
                 value={selectedDevices.length > 0 ? '' : filterEnabledStatus}
                 onChange={(e) => {
                   if(selectedDevices.length > 0) {
-                    setDevices(prev => prev.map(device =>
-                      selectedDevices.includes(device.id)
-                        ? { ...device, enabledStatus: e.target.value, updatedTimestamp: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' }
-                        : device
-                    ));
+                    handleBulkStatusChange('enabledStatus', e.target.value);
                     setFilterEnabledStatus('None');
                   } else {
                     setFilterEnabledStatus(e.target.value);
@@ -498,6 +523,18 @@ const AdminDashboard = () => {
               >
                 🗑 Delete ({selectedDevices.length})
               </button>
+            )}
+
+            {Object.keys(pendingChanges).length > 0 && (
+              <>
+                <button style={styles.actionButton} onClick={handleSaveChanges}>
+                  💾 Save Changes ({Object.keys(pendingChanges).length})
+                </button>
+
+                <button style={styles.cancelButton} onClick={handleDiscardChanges}>
+                  Discard
+                </button>
+              </>
             )}
           </div>
 
