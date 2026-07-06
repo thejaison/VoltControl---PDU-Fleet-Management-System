@@ -1,3 +1,5 @@
+Chnage the status and it should be saved that way
+
 🔥 Core Features ->
 ✅ Login / Authentication
 ❌ JWT Authentication
@@ -15,9 +17,10 @@
 ✅ CSV Import Preview
 ✅ CSV Import Commit
 ✅ Dashboard Statistics
-❌ Logout
+✅ Logout
 ✅ Pagination
-❌ BCrypt Password Hashing (User Passwords)
+✅ Select All
+❌ BCrypt Password Hashing (User Passwords) -> Using spring security
 ❌ PDU Password Encryption
 ❌ Scan Job Creation
 ❌ Scan Execution

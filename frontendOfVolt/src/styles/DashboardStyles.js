@@ -632,7 +632,7 @@ export const styles = {
     cursor: 'pointer',
     color: '#ff4d4d'
   },
-  logoutButtonStyle: {
+  selectALLButton: {
     display: 'flex',
     alignItems: 'center',
     paddingLeft: '12px',

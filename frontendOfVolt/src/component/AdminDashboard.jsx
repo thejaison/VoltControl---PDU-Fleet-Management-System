@@ -502,7 +502,7 @@ const AdminDashboard = () => {
           </div>
 
           <div style={styles.paginationBar}>
-            <div style={styles.logoutButtonStyle}>
+            <div style={styles.selectALLButton}>
               <input
                 type="checkbox"
                 checked={isAllSelected}
