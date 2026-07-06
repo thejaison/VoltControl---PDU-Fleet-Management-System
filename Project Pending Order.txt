@@ -1,5 +1,3 @@
-Change the status and it should be saved that way
-
 🔥 Core Features ->
 ✅ Login / Authentication
 ❌ JWT Authentication

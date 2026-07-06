@@ -86,6 +86,10 @@ public class DeviceController {
         device.setUuid(dto.getUuid());
         device.setLastSeen(dto.getLastSeen());
         device.setCreatedByEmpId(dto.getCreatedByEmpId());
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            device.setPassword(dto.getPassword());
+        }
     }
 
     @GetMapping

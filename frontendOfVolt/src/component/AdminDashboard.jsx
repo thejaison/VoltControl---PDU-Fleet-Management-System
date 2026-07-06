@@ -91,6 +91,9 @@ const AdminDashboard = () => {
 
   const [pendingChanges, setPendingChanges] = useState({});
 
+  const [passwordModalDevice, setPasswordModalDevice] = useState(null);
+  const [passwordModalValue, setPasswordModalValue] = useState('');
+
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
     assetId: '',
@@ -103,6 +106,7 @@ const AdminDashboard = () => {
     adapterType: '',
     enabledStatus: 'Enabled',
     operationalStatus: 'Online',
+    password: '',
   })
 
   const handleStatusChange = (deviceId, field, value) => {
@@ -197,6 +201,41 @@ const AdminDashboard = () => {
     setEditedData({});
   };
 
+  const handleOpenPasswordModal = (device) => {
+    setPasswordModalDevice(device);
+    setPasswordModalValue(device.password || '');
+  };
+
+  const handleClosePasswordModal = () => {
+    setPasswordModalDevice(null);
+    setPasswordModalValue('');
+  };
+
+  const generateModalPassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
+    const array = new Uint32Array(14);
+    window.crypto.getRandomValues(array);
+    let pwd = '';
+
+    for (let i = 0; i < 14; i++) {
+      pwd += chars[array[i] % chars.length];
+    }
+    setPasswordModalValue(pwd);
+  }
+
+  const handleSavePassword = async () => {
+    if (!passwordModalDevice) return;
+
+    await fetch(`http://localhost:8080/api/devices/${passwordModalDevice.dbId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...passwordModalDevice, password: passwordModalValue })
+    });
+
+    await fetchDevices();
+    handleClosePasswordModal();
+  }
+
   const handleCancelEdit = () => {
     setEditingDevice(null);
     setEditedData({});
@@ -216,6 +255,7 @@ const AdminDashboard = () => {
       adapterType: '',
       enabledStatus: 'Enabled',
       operationalStatus: 'Online',
+      password: '',
     });
   };
 
@@ -247,6 +287,19 @@ const AdminDashboard = () => {
       [field]: value
     }));
   };
+
+  const generateDevicePassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
+    let pwd = '';
+    const array = new Uint32Array(14);
+    window.crypto.getRandomValues(array);
+
+    for(let i = 0; i < 14; i++) {
+      pwd += chars[array[i] % chars.length];
+    }
+
+    handleNewDeviceChange('password', pwd);
+  }
 
   const handleDeleteSelected = async () => {
     if (selectedDevices.length === 0) return;
@@ -624,6 +677,15 @@ const AdminDashboard = () => {
                     ● {device.enabledStatus}
                   </span>
 
+                  <button
+                    className="dvc-icon-btn"
+                    style={styles.actionButton}
+                    onClick={(e) => { e.stopPropagation(); handleOpenPasswordModal(device); }}
+                    title={device.password ? 'Edit Password' : 'Create Password'}
+                  >
+                    {device.password ? '🔑 Edit Password' : '🔑 Create Password'}
+                  </button>
+
                   <span
                     style={styles.expandIcon}
                     onClick={() => toggleDevice(device.id)}  
@@ -997,6 +1059,29 @@ const AdminDashboard = () => {
                   </div>
 
                   <div style={styles.modalField}>
+                    <label style={styles.modalLabel}>Password *</label>
+
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <input
+                        type="text"
+                        value={newDeviceData.password}
+                        onChange={(e) => handleNewDeviceChange('password', e.target.value)}
+                        style={{ ...styles.modalInput, flex: 1 }}
+                        placeholder="Enter device password"
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={generateDevicePassword}
+                        style={styles.iconButton}
+                        title="Generate password"
+                      >
+                        🎲
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={styles.modalField}>
                     <label style={styles.modalLabel}>Enabled Status</label>
                     <select
                       value={newDeviceData.enabledStatus}
@@ -1030,6 +1115,59 @@ const AdminDashboard = () => {
                 </button>
                 <button style={styles.modalCreate} onClick={handleCreateDeviceSubmit}>
                   Create Device
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {passwordModalDevice && (
+          <div style={styles.modalOverlay}>
+            <div style={styles.modal}>
+              <div style={styles.modalHeader}>
+                <h2 style={styles.modalTitle}>
+                  {passwordModalDevice.password ? 'Edit Password' : 'Create Password'} — {passwordModalDevice.deviceName}
+                </h2>
+                <button style={styles.modalBody} onClick={handleClosePasswordModal}>
+                  ✕
+                </button>
+              </div>
+
+              <div style={styles.modalBody}>
+                <div style={styles.modalField}>
+                  <label style={styles.modalLabel}>Password *</label>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <input
+                      type="text"
+                      value={passwordModalValue}
+                      onChange={(e) => setPasswordModalValue(e.target.value)}
+                      style={{ ...styles.modalInput, flex: 1 }}
+                      placeholder="Enter password"
+                      autoComplete="new-password"
+                    />
+                    <button
+                      type="button"
+                      onClick={generateModalPassword}
+                      style={styles.iconButton}
+                      title="Generate password"
+                    >
+                      🎲
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div style={styles.modalFooter}>
+                <button style={styles.modalCancel} onClick={handleClosePasswordModal}>
+                  Cancel
+                </button>
+
+                <button
+                  style={styles.modalCreate}
+                  onClick={handleSavePassword}
+                  disabled={!passwordModalValue.trim()}
+                >
+                  Save Password
                 </button>
               </div>
             </div>
