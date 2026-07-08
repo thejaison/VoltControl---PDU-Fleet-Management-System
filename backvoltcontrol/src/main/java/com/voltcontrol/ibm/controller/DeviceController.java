@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,7 @@ import com.voltcontrol.ibm.dto.DeviceDto;
 import com.voltcontrol.ibm.entity.Device;
 import com.voltcontrol.ibm.repository.DeviceRepository;
 import com.voltcontrol.ibm.repository.DeviceSpecifications;
+import com.voltcontrol.ibm.util.PasswordEncryptionUtil;
 
 @RestController
 @RequestMapping("/api/devices")
@@ -35,6 +37,9 @@ public class DeviceController {
 
     @Autowired
     private DeviceRepository deviceRepository;
+
+    @Autowired
+    private PasswordEncryptionUtil passwordEncryptionUtil;
 
     @PostMapping
     public ResponseEntity<Device> createDevice(@RequestBody DeviceDto dto) {
@@ -64,6 +69,41 @@ public class DeviceController {
         return ResponseEntity.ok("Device deleted.");
     }
 
+    @PostMapping("/{id}/verify-password")
+    public ResponseEntity<?> verifyPassword(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Optional<Device> opt = deviceRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+        }
+
+        Device device = opt.get();
+        String submitted = body.get("password");
+
+        boolean matches = false;
+        if (device.getPassword() != null && submitted != null) {
+            String decrypted = passwordEncryptionUtil.decrypt(device.getPassword());
+            matches = decrypted.equals(submitted);
+        }
+
+        return ResponseEntity.ok(Map.of("matches", matches));
+    }
+
+    @GetMapping("/{id}/reveal-password")
+    public ResponseEntity<?> revealPassword(@PathVariable Long id) {
+        Optional<Device> opt = deviceRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+        }
+
+        Device device = opt.get();
+        if (device.getPassword() == null) {
+            return ResponseEntity.ok(Map.of("password", ""));
+        }
+
+        String decrypted = passwordEncryptionUtil.decrypt(device.getPassword());
+        return ResponseEntity.ok(Map.of("password", decrypted));
+    }
+
     @GetMapping("/by-admin/{empId}")
     public ResponseEntity<List<Device>> getDeviceByAdmin(@PathVariable String empId) {
         List<Device> devices = deviceRepository.findByCreatedByEmpId(empId);
@@ -88,7 +128,7 @@ public class DeviceController {
         device.setCreatedByEmpId(dto.getCreatedByEmpId());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            device.setPassword(dto.getPassword());
+            device.setPassword(passwordEncryptionUtil.encrypt(dto.getPassword()));
         }
     }
 

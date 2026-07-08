@@ -9,6 +9,9 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "devices")
 public class Device {
@@ -154,12 +157,18 @@ public class Device {
         this.operationalDetails = operationalDetails;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @JsonProperty("hasPassword")
+    public boolean isHasPassword() {
+        return password != null && !password.isEmpty();
     }
 
     public String getUuid() {

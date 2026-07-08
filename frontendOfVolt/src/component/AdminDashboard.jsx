@@ -93,6 +93,9 @@ const AdminDashboard = () => {
 
   const [passwordModalDevice, setPasswordModalDevice] = useState(null);
   const [passwordModalValue, setPasswordModalValue] = useState('');
+  const [currentPasswordInput, setCurrentPasswordInput] = useState('');
+  const [passwordMismatchError, setPasswordMismatchError] = useState(false);
+  const [currentPasswordVerified, setCurrentPasswordVerified] = useState(false);
 
   const [newDeviceData, setNewDeviceData] = useState({
     deviceName: '',
@@ -203,12 +206,18 @@ const AdminDashboard = () => {
 
   const handleOpenPasswordModal = (device) => {
     setPasswordModalDevice(device);
-    setPasswordModalValue(device.password || '');
+    setPasswordModalValue('');
+    setCurrentPasswordInput('');
+    setPasswordMismatchError(false);
+    setCurrentPasswordVerified(!device.hasPassword);
   };
 
   const handleClosePasswordModal = () => {
     setPasswordModalDevice(null);
     setPasswordModalValue('');
+    setCurrentPasswordInput('');
+    setPasswordMismatchError(false);
+    setCurrentPasswordVerified(false);
   };
 
   const generateModalPassword = () => {
@@ -221,10 +230,10 @@ const AdminDashboard = () => {
       pwd += chars[array[i] % chars.length];
     }
     setPasswordModalValue(pwd);
-  }
+  };
 
   const handleSavePassword = async () => {
-    if (!passwordModalDevice) return;
+    if (!passwordModalDevice || !currentPasswordVerified) return;
 
     await fetch(`http://localhost:8080/api/devices/${passwordModalDevice.dbId}`, {
       method: 'PUT',
@@ -234,6 +243,22 @@ const AdminDashboard = () => {
 
     await fetchDevices();
     handleClosePasswordModal();
+  }
+
+  const handleVerifyCurrentPassword = async () => {
+    const res = await fetch(`http://localhost:8080/api/devices/${passwordModalDevice.dbId}/verify-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: currentPasswordInput })
+    });
+    const { matches } = await res.json();
+
+    if(matches) {
+      setCurrentPasswordVerified(true);
+      setPasswordMismatchError(false);
+    } else {
+      setPasswordMismatchError(true);
+    }
   }
 
   const handleCancelEdit = () => {
@@ -683,7 +708,7 @@ const AdminDashboard = () => {
                     onClick={(e) => { e.stopPropagation(); handleOpenPasswordModal(device); }}
                     title={device.password ? 'Edit Password' : 'Create Password'}
                   >
-                    {device.password ? '🔑 Edit Password' : '🔑 Create Password'}
+                    {device.hasPassword ? '🔑 Edit Password' : '🔑 Create Password'}
                   </button>
 
                   <span
@@ -1121,12 +1146,12 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {passwordModalDevice && (
+        {passwordModalDevice  && (
           <div style={styles.modalOverlay}>
             <div style={styles.modal}>
               <div style={styles.modalHeader}>
                 <h2 style={styles.modalTitle}>
-                  {passwordModalDevice.password ? 'Edit Password' : 'Create Password'} — {passwordModalDevice.deviceName}
+                  {passwordModalDevice.hasPassword ? 'Edit Password' : 'Create Password'} — {passwordModalDevice.deviceName}
                 </h2>
                 <button style={styles.modalBody} onClick={handleClosePasswordModal}>
                   ✕
@@ -1134,38 +1159,56 @@ const AdminDashboard = () => {
               </div>
 
               <div style={styles.modalBody}>
-                <div style={styles.modalField}>
-                  <label style={styles.modalLabel}>Password *</label>
-                  <div style={{ display: 'flex', gap: '6px' }}>
+                {passwordModalDevice.hasPassword && !currentPasswordVerified && (
+                  <div style={styles.modalField}>
+                    <label style={styles.modalLabel}>Current Password *</label>
                     <input
                       type="text"
-                      value={passwordModalValue}
-                      onChange={(e) => setPasswordModalValue(e.target.value)}
-                      style={{ ...styles.modalInput, flex: 1 }}
-                      placeholder="Enter password"
-                      autoComplete="new-password"
+                      value={currentPasswordInput}
+                      onChange={(e) => { setCurrentPasswordInput(e.target.value); setPasswordMismatchError(false); }}
+                      style={styles.modalInput}
+                      placeholder="Enter current password to continue"
+                      autoComplete="off"
                     />
+                    {passwordMismatchError && (
+                      <span style={{ color: 'red', fontSize: '12px' }}>Current password is incorrect.</span>
+                    )}
                     <button
                       type="button"
-                      onClick={generateModalPassword}
-                      style={styles.iconButton}
-                      title="Generate password"
+                      style={{ ...styles.actionButton, marginTop: '8px' }}
+                      onClick={handleVerifyCurrentPassword}
                     >
-                      🎲
+                      Verify
                     </button>
                   </div>
-                </div>
+                )}
+
+                {currentPasswordVerified && (
+                  <div style={styles.modalField}>
+                    <label style={styles.modalLabel}>{passwordModalDevice.hasPassword ? 'New Password *' : 'Password *'}</label>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <input
+                        type="text"
+                        value={passwordModalValue}
+                        onChange={(e) => setPasswordModalValue(e.target.value)}
+                        style={{ ...styles.modalInput, flex: 1 }}
+                        placeholder="Enter password"
+                        autoComplete="new-password"
+                      />
+                      <button type="button" onClick={generateModalPassword} style={styles.iconButton} title="Generate password">
+                        🎲
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div style={styles.modalFooter}>
-                <button style={styles.modalCancel} onClick={handleClosePasswordModal}>
-                  Cancel
-                </button>
-
+                <button style={styles.modalCancel} onClick={handleClosePasswordModal}>Cancel</button>
                 <button
                   style={styles.modalCreate}
                   onClick={handleSavePassword}
-                  disabled={!passwordModalValue.trim()}
+                  disabled={!currentPasswordVerified || !passwordModalValue.trim()}
                 >
                   Save Password
                 </button>
