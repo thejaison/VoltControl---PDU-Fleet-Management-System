@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import { data, useLocation, useNavigate } from "react-router-dom"; -> We dont use it now
-import { useLocation, useNavigate } from "react-router-dom"; // We are not using data
-import { styles } from "../../styles/Adminviewstyles";
+import { useLocation, useNavigate } from "react-router-dom";
+import { styles } from "../../styles/files/AdminDetailViewStyles";
 
 const AdminDetailView = () => {
     const location = useLocation();

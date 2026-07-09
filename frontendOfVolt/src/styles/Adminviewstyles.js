@@ -151,4 +151,12 @@ export const styles = {
     outline: 'none',
     boxSizing: 'border-box',
   },
+  revealedPasswordChip: {
+    fontFamily: 'monospace',
+    fontSize: '13px',
+    background: '#f0f0f0',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    userSelect: 'all'
+  },
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import { styles } from '../styles/SignupStyles';
+import { styles } from '../styles/files/SignupStyles';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -80,6 +80,10 @@ const Signup = () => {
   return (
     <div style={styles.container}>
       <form onSubmit={handleSignup} style={styles.card}>
+        <div style={styles.header}>
+          <h1 style={styles.title}>Create Your Account</h1>
+          <p style={styles.subtitle}>Join your team with an elegant onboarding flow designed for premium workflows.</p>
+        </div>
         <div style={styles.rowGroup}>
           <div style={styles.column}>
             <div style={styles.formGroup}>
@@ -130,9 +134,9 @@ const Signup = () => {
 
         <button type="submit" style={styles.button}>SIGN UP</button>
 
-        <div style={{ textAlign: "center", marginTop: "15px", fontSize: "14px", fontFamily: "sans-serif" }}>
+        <div style={styles.noteText}>
           <span>Already have an account? </span>
-          <Link to="/login" style={{ color: "#000000", fontWeight: "bold", textDecoration: "none" }}>
+          <Link to="/login" style={styles.link}>
             Login
           </Link>
         </div>
@@ -140,8 +144,7 @@ const Signup = () => {
 
       {showPasswordModal && (
         <div style={styles.modalOverlay}>
-          <div style={{ ...styles.card, maxWidth: '400px', width: '90%', padding: '36px' }}>
-
+          <div style={styles.modalCard}>
             <h3 style={{...styles.title, fontSize: '24px', textAlign: 'center', marginBottom: '10px'}}>Set Your Password</h3>
  
             <form onSubmit={handleFinalSubmit} style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>

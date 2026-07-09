@@ -1,6 +1,6 @@
 import React, {useState, useCallback } from "react";
 import { useNavigate } from 'react-router-dom';
-import { styles } from "../../styles/Importcsv";
+import { styles } from "../../styles/files/ImportCsvStyles";
 
 const ImportingCsvData = () => {
     const navigate = useNavigate();

@@ -1,16 +1,20 @@
 export const styles = {
   container: {
     fontFamily: "'Montserrat', sans-serif",
-    backgroundColor: '#f5f7fa',
+    background: 'radial-gradient(circle at 16% 8%, rgba(255, 112, 67, 0.12), transparent 30%), linear-gradient(135deg, #f7f7f5 0%, #eeeeec 100%)',
     minHeight: '100vh',
-    padding: '20px 40px',
+    padding: '24px 40px',
+    color: '#181816',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '20px 0',
-    borderBottom: '1px solid #e0e0e0',
+    padding: '18px 22px',
+    border: '1px solid rgba(24, 24, 22, 0.06)',
+    borderRadius: '24px',
+    background: 'rgba(255, 255, 255, 0.92)',
+    boxShadow: '0 24px 56px rgba(24, 24, 22, 0.08)',
     marginBottom: '30px',
   },
   logoSection: {
@@ -25,7 +29,7 @@ export const styles = {
   },
   metaText: {
     fontSize: '13px',
-    color: '#8c8c8c',
+    color: '#70737b',
   },
   navSection: {
     display: 'flex',
@@ -36,7 +40,7 @@ export const styles = {
     padding: '8px 20px',
     backgroundColor: 'transparent',
     border: 'none',
-    color: '#1a1a1a',
+    color: '#181816',
     fontWeight: '600',
     fontSize: '14px',
     cursor: 'pointer',
@@ -48,7 +52,7 @@ export const styles = {
   },
   navButtonAction: {
     padding: '8px 20px',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#181816',
     border: 'none',
     color: 'white',
     fontWeight: '600',
@@ -61,7 +65,7 @@ export const styles = {
     }
   },
   mainContent: {
-    maxWidth: '1400px',
+    maxWidth: '1320px',
     margin: '0 auto',
   },
   titleSection: {
@@ -80,7 +84,7 @@ export const styles = {
   title: {
     fontSize: '28px',
     fontWeight: '700',
-    color: '#1a1a1a',
+    color: '#181816',
     marginBottom: '10px',
   },
   subTitleSection: {
@@ -90,11 +94,11 @@ export const styles = {
   },
   subTitle: {
     fontSize: '16px',
-    color: '#555',
+    color: '#70737b',
     fontWeight: '500',
   },
   countBadge: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#181816',
     color: 'white',
     padding: '2px 10px',
     borderRadius: '12px',
@@ -111,24 +115,24 @@ export const styles = {
   },
   searchInput: {
     padding: '8px 16px',
-    borderRadius: '6px',
-    border: '1px solid #d0d0d0',
+    borderRadius: '999px',
+    border: '1px solid #e3e3df',
     fontSize: '14px',
     minWidth: '200px',
-    width: '200px', // Add fixed width
+    width: '220px',
     outline: 'none',
     transition: 'border-color 0.2s',
     ':focus': {
-      borderColor: '#1a1a1a',
-      boxShadow: '0 0 0 2px rgba(26,26,26,0.1)',
+    borderColor: '#ff7043',
+      boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
     }
   },
   iconButton: {
     padding: '8px 12px',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#181816',
     color: 'white',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '16px',
     fontSize: '20px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -139,7 +143,7 @@ export const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     ':hover': {
-      backgroundColor: '#333',
+      backgroundColor: '#2a2a27',
       transform: 'scale(1.05)',
     }
   },
@@ -147,15 +151,15 @@ export const styles = {
     padding: '8px 16px',
     backgroundColor: 'white',
     color: '#1a1a1a',
-    border: '1px solid #d0d0d0',
-    borderRadius: '6px',
+    border: '1px solid #e3e3df',
+    borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
       backgroundColor: '#f0f0f0',
-      borderColor: '#1a1a1a',
+      borderColor: '#ff7043',
     }
   },
   deviceList: {
@@ -165,8 +169,9 @@ export const styles = {
   },
   deviceCard: {
     backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+    borderRadius: '20px',
+    boxShadow: '0 18px 44px rgba(24, 24, 22, 0.08)',
+    border: '1px solid rgba(24, 24, 22, 0.06)',
     overflow: 'hidden',
     transition: 'all 0.3s ease',
   },
@@ -174,7 +179,7 @@ export const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '16px 20px',
+    padding: '18px 20px',
     transition: 'background-color 0.2s',
   },
   deviceHeaderLeft: {
@@ -191,21 +196,21 @@ export const styles = {
   },
   deviceNumber: {
     fontWeight: '600',
-    color: '#8c8c8c',
+    color: '#70737b',
     fontSize: '14px',
     minWidth: '30px',
   },
   deviceName: {
     fontWeight: '600',
     fontSize: '16px',
-    color: '#1a1a1a',
+    color: '#181816',
   },
   assetIdBadge: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'rgba(255, 112, 67, 0.10)',
     padding: '4px 12px',
     borderRadius: '12px',
     fontSize: '12px',
-    color: '#555',
+    color: '#f4511e',
     fontWeight: '500',
   },
   deviceHeaderRight: {
@@ -215,20 +220,20 @@ export const styles = {
   },
   expandIcon: {
     fontSize: '14px',
-    color: '#8c8c8c',
+    color: '#70737b',
     fontWeight: '600',
     cursor: 'pointer',
     padding: '5px 10px',
-    borderRadius: '4px',
+    borderRadius: '14px',
     transition: 'background-color 0.2s',
     ':hover': {
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#f2f2ef',
     }
   },
   deviceDetails: {
     padding: '20px',
     borderTop: '1px solid #e8e8e8',
-    backgroundColor: '#fafbfc',
+    backgroundColor: '#fbfbfa',
   },
   detailsHeader: {
     display: 'flex',
@@ -236,12 +241,12 @@ export const styles = {
     alignItems: 'center',
     marginBottom: '20px',
     paddingBottom: '12px',
-    borderBottom: '2px solid #e8e8e8',
+    borderBottom: '1px solid #e9e9e5',
   },
   detailsTitle: {
     fontSize: '16px',
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#181816',
   },
   detailsActions: {
     display: 'flex',
@@ -249,31 +254,31 @@ export const styles = {
   },
   editButton: {
     padding: '6px 16px',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#181816',
     color: 'white',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
-      backgroundColor: '#333',
+      backgroundColor: '#2a2a27',
       transform: 'scale(1.05)',
     }
   },
   saveButton: {
     padding: '6px 16px',
-    backgroundColor: '#2e7d32',
+    backgroundColor: '#ff7043',
     color: 'white',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
-      backgroundColor: '#1b5e20',
+      backgroundColor: '#f4511e',
       transform: 'scale(1.05)',
     }
   },
@@ -282,7 +287,7 @@ export const styles = {
     backgroundColor: '#c62828',
     color: 'white',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -305,50 +310,50 @@ export const styles = {
   detailLabel: {
     fontSize: '11px',
     fontWeight: '600',
-    color: '#8c8c8c',
+    color: '#70737b',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
   detailValue: {
     fontSize: '14px',
-    color: '#000000',
+    color: '#181816',
     wordBreak: 'break-word',
     fontWeight: '500',
   },
   editInput: {
     padding: '6px 8px',
-    borderRadius: '4px',
-    border: '1px solid #1a1a1a',
+    borderRadius: '14px',
+    border: '1px solid #e3e3df',
     fontSize: '14px',
     outline: 'none',
     backgroundColor: 'white',
-    color: '#1a1a1a',
+    color: '#181816',
     ':focus': {
-      boxShadow: '0 0 0 2px rgba(26,26,26,0.1)',
+      boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
     }
   },
   selectDropdown: {
     padding: '6px 10px',
-    borderRadius: '4px',
-    border: '1px solid #d0d0d0',
+    borderRadius: '14px',
+    border: '1px solid #e3e3df',
     backgroundColor: 'white',
     fontSize: '13px',
     cursor: 'pointer',
     width: '140px',       // fixed width — add this
     minWidth: '140px',    // keep this too
     maxWidth: '140px',    // add this
-    color: '#1a1a1a',
+    color: '#181816',
     fontWeight: '500',
     transition: 'border-color 0.2s',
   },
   badge: (status) => {
     const colors = {
-        Online:   { bg: '#e8f5e9', color: '#2e7d32' },
-        Warning:  { bg: '#fff3e0', color: '#e65100' },
-        Error:    { bg: '#ffebee', color: '#c62828' },
-        Offline:  { bg: '#fce4ec', color: '#880e4f' },
-        Enabled:  { bg: '#e8f5e9', color: '#2e7d32' },
-        Disabled: { bg: '#f5f5f5', color: '#ff0000' },
+        Online:   { bg: 'rgba(255, 112, 67, 0.11)', color: '#f4511e' },
+        Warning:  { bg: '#fff0e9', color: '#f4511e' },
+        Error:    { bg: 'rgba(24, 24, 22, 0.08)', color: '#181816' },
+        Offline:  { bg: 'rgba(24, 24, 22, 0.08)', color: '#181816' },
+        Enabled:  { bg: 'rgba(255, 112, 67, 0.11)', color: '#f4511e' },
+        Disabled: { bg: '#f2f2ef', color: '#70737b' },
         Unknown:  { bg: '#f3f4f6', color: '#6b7280' },
     };
     const selected = colors[status] || { bg: '#f3f4f6', color: '#6b7280' }; // safe fallback, no more colors.Fine
@@ -366,15 +371,15 @@ export const styles = {
 
   statusSelectBorder: (status) => {
     const colors = {
-      Fine: '#2e7d32',
-      Warning: '#e65100',
-      Error: '#c62828',
-      Maintainance: '#0d47a1',
+      Fine: '#ff7043',
+      Warning: '#f4511e',
+      Error: '#181816',
+      Maintainance: '#70737b',
     };
     return { borderColor: colors[status] || colors.Fine, borderWidth: '1.5px' };
   },
   enabledSelectBorder: (status) => ({
-    borderColor: status === 'Enabled' ? '#2e7d32' : '#9e9e9e',
+    borderColor: status === 'Enabled' ? '#ff7043' : '#9e9e9e',
     borderWidth: '1.5px',
   }),
 
@@ -394,8 +399,8 @@ export const styles = {
       width: '0',
     },
     '& input:checked ~ span': {
-      backgroundColor: '#1a1a1a',
-      borderColor: '#1a1a1a',
+      backgroundColor: '#ff7043',
+      borderColor: '#ff7043',
     },
     '& input:checked ~ span:after': {
       display: 'block',
@@ -439,13 +444,13 @@ export const styles = {
   },
   modal: {
     backgroundColor: 'white',
-    borderRadius: '12px',
+    borderRadius: '24px',
     padding: '30px',
     maxWidth: '800px',
     width: '90%',
     maxHeight: '90vh',
     overflowY: 'auto',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+    boxShadow: '0 28px 70px rgba(24,24,22,0.18)',
   },
   modalHeader: {
     display: 'flex',
@@ -458,7 +463,7 @@ export const styles = {
   modalTitle: {
     fontSize: '24px',
     fontWeight: '700',
-    color: '#1a1a1a',
+    color: '#181816',
     margin: 0,
   },
   modalClose: {
@@ -469,7 +474,7 @@ export const styles = {
     color: '#999',
     padding: '5px',
     ':hover': {
-      color: '#1a1a1a',
+      color: '#181816',
     }
   },
   modalBody: {
@@ -494,25 +499,25 @@ export const styles = {
   },
   modalInput: {
     padding: '8px 12px',
-    borderRadius: '6px',
+    borderRadius: '14px',
     border: '1px solid #d0d0d0',
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.2s',
     ':focus': {
-      borderColor: '#1a1a1a',
+      borderColor: '#ff7043',
     }
   },
   modalSelect: {
     padding: '8px 12px',
-    borderRadius: '6px',
+    borderRadius: '14px',
     border: '1px solid #d0d0d0',
     fontSize: '14px',
     outline: 'none',
     backgroundColor: 'white',
     cursor: 'pointer',
     ':focus': {
-      borderColor: '#1a1a1a',
+      borderColor: '#ff7043',
     }
   },
   modalFooter: {
@@ -527,7 +532,7 @@ export const styles = {
     backgroundColor: 'transparent',
     color: '#555',
     border: '1px solid #d0d0d0',
-    borderRadius: '6px',
+    borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -538,16 +543,16 @@ export const styles = {
   },
   modalCreate: {
     padding: '10px 24px',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#ff7043',
     color: 'white',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
-      backgroundColor: '#333',
+      backgroundColor: '#f4511e',
     }
   },
 
@@ -572,7 +577,7 @@ export const styles = {
     border: 'none',
     cursor: 'pointer',
     fontWeight: '600',
-    borderRadius: '8px',
+    borderRadius: '999px',
     padding: '8px 16px',
     fontSize: '14px',
     marginLeft: '5px',
@@ -590,7 +595,7 @@ export const styles = {
   },
   paginationInfo: {
     fontSize: '13px',
-    color: '#9aa0aa',
+    color: '#70737b',
   },
   paginationControls: {
     display: 'flex',
@@ -621,7 +626,7 @@ export const styles = {
     height: '30px',
     borderRadius: '6px',
     border: '1px solid #6366f1',
-    background: '#6366f1',
+    background: '#ff7043',
     color: '#fff',
     cursor: 'pointer',
     fontSize: '13px',
@@ -630,7 +635,7 @@ export const styles = {
   logoutButtonStyle: {
     marginLeft: '10px', 
     cursor: 'pointer',
-    color: '#ff4d4d'
+    color: '#f4511e'
   },
   selectALLButton: {
     display: 'flex',

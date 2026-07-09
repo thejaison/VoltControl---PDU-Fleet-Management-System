@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { styles } from "../styles/DashboardStyles";
-import "../styles/DashboardStyles.css"
 import { useNavigate, useLocation } from "react-router-dom";
+import { styles } from "../styles/files/AdminDashboardStyles";
 
 const AdminDashboard = () => {
 
@@ -345,7 +344,7 @@ const AdminDashboard = () => {
   }
 
   const handleScan = () => {
-    alert('Scan functionality will be implemented in the backend.');
+    navigate('/job/scan');
   };
 
   const fetchDevices = async () => {
@@ -430,12 +429,34 @@ const AdminDashboard = () => {
     navigate('/login');
   }
 
+  const getPaginationItems = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i);
+    }
+
+    const pages = new Set([0, totalPages - 1]);
+    for (let page = currentPage - 2; page <= currentPage + 2; page++) {
+      if (page > 0 && page < totalPages - 1) {
+        pages.add(page);
+      }
+    }
+
+    const sortedPages = Array.from(pages).sort((a, b) => a - b);
+    return sortedPages.reduce((items, page, index) => {
+      if (index > 0 && page - sortedPages[index - 1] > 1) {
+        items.push(`ellipsis-${page}`);
+      }
+      items.push(page);
+      return items;
+    }, []);
+  };
+
 
   return (
     <div style={styles.container}>
-      <header style={styles.header} className="dvc-header">
+      <header style={styles.header}>
         <div style={styles.logoSection}>
-          <div className="dvc-logo-badge">𝝯</div>
+          <div style={styles.logoBadge}>𝝯</div>
           <span style={styles.metaText}>
             {userData.username || 'User'} • 
             {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'} • 
@@ -444,10 +465,10 @@ const AdminDashboard = () => {
         </div>
 
         <div style={styles.navSection}>
-          <button className="dvc-nav-btn is-active">Devices</button>
-          <button className="dvc-nav-btn">Studio</button>
+          <button style={{ ...styles.navButton, ...styles.navButtonActive }}>Devices</button>
+          <button style={styles.navButton}>Studio</button>
           <button 
-            className="dvc-admin-chip"
+            style={styles.adminChip}
             onClick={() => navigate('/admin/detail', {
               state: {
                 userData,
@@ -455,16 +476,15 @@ const AdminDashboard = () => {
               }
             })}
           >
-            <span className="dvc-admin-avatar">
+            <span style={styles.adminAvatar}>
               {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}
             </span>
             Hi {userData.username || 'Admin'}!
           </button>
 
           <button
-            className="dvc-nav-btn"
-            onClick={handleLogout}
             style={styles.logoutButtonStyle}
+            onClick={handleLogout}
           >
             Logout
           </button>
@@ -487,18 +507,17 @@ const AdminDashboard = () => {
 
         <div style={styles.controlsSection}>
           <div style={styles.actionButtons}>
-            <div className="dvc-search-wrap" style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               <input
                 type="text"
                 placeholder="Search devices..."
-                className="dvc-search-input"
                 style={styles.searchInput}
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
               />
             </div>
 
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+            <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={searchField}
                 onChange={(e) => setSearchField(e.target.value)}
@@ -513,7 +532,7 @@ const AdminDashboard = () => {
             </label>
 
             {/* for the filtering stuff */}
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+            <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={selectedDevices.length > 0 ? '' : filterOperationalStatus}
                 onChange={(e) => {
@@ -547,7 +566,7 @@ const AdminDashboard = () => {
             </label>
 
             {/* Filter for the Enable status */}
-            <label className="dvc-sort-select" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+            <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
               <select
                 value={selectedDevices.length > 0 ? '' : filterEnabledStatus}
                 onChange={(e) => {
@@ -577,7 +596,6 @@ const AdminDashboard = () => {
             </label>
 
             <button
-              className="dvc-icon-btn"
               style={styles.iconButton}
               onClick={handleCreateDevice}
               title="Create Device"
@@ -585,11 +603,11 @@ const AdminDashboard = () => {
               +
             </button>
 
-            <button className="dvc-scan-btn" style={styles.actionButton} onClick={handleScan}>
+            <button style={styles.primaryActionButton} onClick={handleScan}>
               Scan
             </button>
 
-            <button className="dvc-action-btn" style={styles.actionButton} onClick={handleImport}>
+            <button style={styles.actionButton} onClick={handleImport}>
               Import
             </button>
 
@@ -597,7 +615,6 @@ const AdminDashboard = () => {
               <button
                 onClick={handleDeleteSelected}
                 style={styles.deleteSelectedBtn}
-                className="dvc-delete-btn"
               >
                 🗑 Delete ({selectedDevices.length})
               </button>
@@ -616,6 +633,9 @@ const AdminDashboard = () => {
             )}
           </div>
 
+        </div>
+
+        <div style={styles.assetPanel}>
           <div style={styles.paginationBar}>
             <div style={styles.selectALLButton}>
               <input
@@ -638,7 +658,7 @@ const AdminDashboard = () => {
                 <select
                   value={pageSize}
                   onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(0); }}
-                  style={styles.selectDropdown}
+                  style={styles.pageSizeSelect}
                 >
                   <option value={10}>10</option>
                   <option value={25}>25</option>
@@ -655,14 +675,18 @@ const AdminDashboard = () => {
                 ← Previous
               </button>
 
-              {Array.from({length: totalPages }, (_, i) => i).map(p => (
-                <button
-                  key={p}
-                  style={p === currentPage ? styles.pageNumberActive : styles.pageNumber}
-                  onClick={() => setCurrentPage(p)}
-                >
-                  {p + 1}
-                </button>
+              {getPaginationItems().map(item => (
+                typeof item === 'string' ? (
+                  <span key={item} style={styles.paginationEllipsis}>...</span>
+                ) : (
+                  <button
+                    key={item}
+                    style={item === currentPage ? styles.pageNumberActive : styles.pageNumber}
+                    onClick={() => setCurrentPage(item)}
+                  >
+                    {item + 1}
+                  </button>
+                )
               ))}
 
               <button
@@ -674,10 +698,11 @@ const AdminDashboard = () => {
               </button>
             </div>
           </div>
-        </div>
 
-        <div style={styles.deviceList}>
-          {devices.map((device, index) => (
+          <div style={styles.deviceList}>
+            {devices.length === 0 ? (
+              <div style={styles.emptyState}>No devices found.</div>
+            ) : devices.map((device, index) => (
             <div key={device.uuid} style={styles.deviceCard}>
               <div style={styles.deviceHeader}>
                 <div style={styles.deviceHeaderLeft}>
@@ -703,7 +728,6 @@ const AdminDashboard = () => {
                   </span>
 
                   <button
-                    className="dvc-icon-btn"
                     style={styles.actionButton}
                     onClick={(e) => { e.stopPropagation(); handleOpenPasswordModal(device); }}
                     title={device.password ? 'Edit Password' : 'Create Password'}
@@ -743,8 +767,8 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="dvc-section">
-                    <div className="dvc-section-title">
+                  <div style={styles.section}>
+                    <div style={styles.sectionTitle}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <rect x="3" y="5" width="18" height="14" rx="2" />
                         <circle cx="9" cy="10" r="2" />
@@ -754,7 +778,7 @@ const AdminDashboard = () => {
                       Identity
                     </div>
 
-                    <div className="dvc-section-grid">
+                    <div style={styles.sectionGrid}>
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>Device Name</label>
                         {editingDevice === device.id ? (
@@ -785,23 +809,23 @@ const AdminDashboard = () => {
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>UUID</label>
                         {editingDevice === device.id ? (
-                          <input type="text" value={editedData.uuid || ''} onChange={(e) => handleEditChange('uuid', e.target.value)} style={styles.editInput} className="dvc-mono" />
+                          <input type="text" value={editedData.uuid || ''} onChange={(e) => handleEditChange('uuid', e.target.value)} style={{ ...styles.editInput, ...styles.mono }} />
                         ) : (
-                          <span style={styles.detailValue} className="dvc-mono">{device.uuid}</span>
+                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.uuid}</span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="dvc-section">
-                    <div className="dvc-section-title">
+                  <div style={styles.section}>
+                    <div style={styles.sectionTitle}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z" />
                         <circle cx="12" cy="9" r="2.5" />
                       </svg>
                       Location
                     </div>
-                    <div className="dvc-section-grid">
+                    <div style={styles.sectionGrid}>
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>Site</label>
                         {editingDevice === device.id ? (
@@ -821,8 +845,8 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="dvc-section">
-                    <div className="dvc-section-title">
+                  <div style={styles.section}>
+                    <div style={styles.sectionTitle}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" />
                         <rect x="9" y="14" width="6" height="6" rx="1" />
@@ -830,28 +854,28 @@ const AdminDashboard = () => {
                       </svg>
                       Network
                     </div>
-                    <div className="dvc-section-grid">
+                    <div style={styles.sectionGrid}>
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>IP Address</label>
                         {editingDevice === device.id ? (
-                          <input type="text" value={editedData.ipAddress || ''} onChange={(e) => handleEditChange('ipAddress', e.target.value)} style={styles.editInput} className="dvc-mono" />
+                          <input type="text" value={editedData.ipAddress || ''} onChange={(e) => handleEditChange('ipAddress', e.target.value)} style={{ ...styles.editInput, ...styles.mono }} />
                         ) : (
-                          <span style={styles.detailValue} className="dvc-mono">{device.ipAddress}</span>
+                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.ipAddress}</span>
                         )}
                       </div>
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>Hostname</label>
                         {editingDevice === device.id ? (
-                          <input type="text" value={editedData.hostname || ''} onChange={(e) => handleEditChange('hostname', e.target.value)} style={styles.editInput} className="dvc-mono" />
+                          <input type="text" value={editedData.hostname || ''} onChange={(e) => handleEditChange('hostname', e.target.value)} style={{ ...styles.editInput, ...styles.mono }} />
                         ) : (
-                          <span style={styles.detailValue} className="dvc-mono">{device.hostname}</span>
+                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.hostname}</span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="dvc-section">
-                    <div className="dvc-section-title">
+                  <div style={styles.section}>
+                    <div style={styles.sectionTitle}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <rect x="6" y="6" width="12" height="12" rx="2" />
                         <line x1="9" y1="2" x2="9" y2="6" /><line x1="15" y1="2" x2="15" y2="6" />
@@ -861,13 +885,13 @@ const AdminDashboard = () => {
                       </svg>
                       Hardware
                     </div>
-                    <div className="dvc-section-grid">
+                    <div style={styles.sectionGrid}>
                       <div style={styles.detailItem}>
                         <label style={styles.detailLabel}>Serial Number</label>
                         {editingDevice === device.id ? (
-                          <input type="text" value={editedData.serialNumber || ''} onChange={(e) => handleEditChange('serialNumber', e.target.value)} style={styles.editInput} className="dvc-mono" />
+                          <input type="text" value={editedData.serialNumber || ''} onChange={(e) => handleEditChange('serialNumber', e.target.value)} style={{ ...styles.editInput, ...styles.mono }} />
                         ) : (
-                          <span style={styles.detailValue} className="dvc-mono">{device.serialNumber}</span>
+                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.serialNumber}</span>
                         )}
                       </div>
                       <div style={styles.detailItem}>
@@ -881,15 +905,15 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="dvc-section">
-                    <div className="dvc-section-title">
+                  <div style={styles.section}>
+                    <div style={styles.sectionTitle}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M3 12h4l3 8 4-16 3 8h4" />
                       </svg>
                       Status Control
                     </div>
-                    <div className="dvc-status-row">
-                      <div className="dvc-status-field">
+                    <div style={styles.statusRow}>
+                      <div style={styles.statusField}>
                         <label style={styles.detailLabel}>Enabled Status</label>
                         {editingDevice === device.id ? (
                           <select
@@ -912,7 +936,7 @@ const AdminDashboard = () => {
                         )}
                       </div>
 
-                      <div className="dvc-status-field">
+                      <div style={styles.statusField}>
                         <label style={styles.detailLabel}>Operational Status</label>
                         {editingDevice === device.id ? (
                           <select
@@ -941,22 +965,22 @@ const AdminDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="dvc-timestamp-bar">
-                    <span className="dvc-timestamp-chip">
+                  <div style={styles.timestampBar}>
+                    <span style={styles.timestampChip}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
                       </svg>
                       Last seen <strong>{device.lastSeen}</strong>
                     </span>
-                    <span className="dvc-timestamp-sep" />
-                    <span className="dvc-timestamp-chip">
+                    <span style={styles.timestampSep} />
+                    <span style={styles.timestampChip}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
                       </svg>
                       Created <strong>{device.createdTimestamp}</strong>
                     </span>
-                    <span className="dvc-timestamp-sep" />
-                    <span className="dvc-timestamp-chip">
+                    <span style={styles.timestampSep} />
+                    <span style={styles.timestampChip}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
                       </svg>
@@ -966,7 +990,8 @@ const AdminDashboard = () => {
                 </div>
               )}
             </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {showCreateModal && (
@@ -975,7 +1000,7 @@ const AdminDashboard = () => {
               <div style={styles.modalHeader}>
                 <h2 style={styles.modalTitle}>Create New Device</h2>
                 <button
-                  style={styles.modalBody}
+                  style={styles.modalClose}
                   onClick={() => setShowCreateModal(false)}
                 >
                   ✕
@@ -1153,7 +1178,7 @@ const AdminDashboard = () => {
                 <h2 style={styles.modalTitle}>
                   {passwordModalDevice.hasPassword ? 'Edit Password' : 'Create Password'} — {passwordModalDevice.deviceName}
                 </h2>
-                <button style={styles.modalBody} onClick={handleClosePasswordModal}>
+                <button style={styles.modalClose} onClick={handleClosePasswordModal}>
                   ✕
                 </button>
               </div>

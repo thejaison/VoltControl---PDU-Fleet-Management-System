@@ -22,7 +22,7 @@ Will check claude
 ✅ Pagination
 ✅ Select All
 ✅ BCrypt Password Hashing (User Passwords) -> Using spring security
-❌ PDU Password Encryption
+✅ PDU Password Encryption
 ❌ Scan Job Creation
 ❌ Scan Execution
 ❌ Scan Progress Monitoring

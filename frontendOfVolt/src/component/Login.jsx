@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { styles } from "../styles/SignupStyles";
+import { styles } from "../styles/files/LoginStyles";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -66,6 +66,10 @@ const Login = () => {
   return (
     <div style={styles.container}>
         <form onSubmit={handleLogin} style={styles.card}>
+            <div style={styles.header}>
+              <h1 style={styles.title}>Welcome Back</h1>
+              <p style={styles.subtitle}>Securely sign in to continue to your dashboard and enjoy warm, refined productivity.</p>
+            </div>
             <div style={styles.formGroup}>
                 <label style={styles.label}>Username:</label>
                 <input
@@ -104,9 +108,9 @@ const Login = () => {
 
             <button type="submit" style={styles.button}>LOGIN</button>
 
-            <div style={{ textAlign: "center", marginTop: "15px", fontSize: "14px", fontFamily: "sans-serif" }}>
+            <div style={styles.noteText}>
                 <span>Don't have an account? </span>
-                <Link to="/signup" style={{ color: "#000000", fontWeight: "bold", textDecoration: "none" }}>
+                <Link to="/signup" style={styles.link}>
                     Sign Up
                 </Link>
             </div>
