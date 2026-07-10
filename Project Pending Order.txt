@@ -1,5 +1,4 @@
-Will check claude
-
+UI Enhancement is done 👍
 
 🔥 Core Features ->
 ✅ Login / Authentication
@@ -23,7 +22,7 @@ Will check claude
 ✅ Select All
 ✅ BCrypt Password Hashing (User Passwords) -> Using spring security
 ✅ PDU Password Encryption
-❌ Scan Job Creation
+⏱️ Scan Job Creation
 ❌ Scan Execution
 ❌ Scan Progress Monitoring
 ❌ Scan Results Storage & Display
