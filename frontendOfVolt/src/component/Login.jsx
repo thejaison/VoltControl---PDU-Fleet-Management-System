@@ -36,23 +36,14 @@ const Login = () => {
 
             localStorage.setItem("loggedInEmpId", formData.empId);
 
-            if(data.role === "Admin") {
-                navigate("/admin/dashboard", {
-                    state: {
-                        username: data.id.username,
-                        joiningDate: data.joiningDate,
-                        officeEmail: data.officeMail
-                    }
-                });
-            } else {
-                navigate("/user/dashboard", {
-                    state: {
-                        username: data.id.username,
-                        joiningDate: data.joiningDate,
-                        officeEmail: data.officeMail
-                    }
-                });
-            }
+            navigate("/dashboard", {
+                state: {
+                    username: data.id.username,
+                    role: data.role,
+                    joiningDate: data.joiningDate,
+                    officeEmail: data.officeMail
+                }
+            });
         } else {
             const msg = await response.text();
             alert(msg);

@@ -159,14 +159,14 @@ const ScanningDashboard = () => {
                             </div>
 
                             <div style={styles.filtersGroup}>
-                                <input 
-                                    type="text" 
-                                    placeholder="🔍 Search scan jobs..." 
+                                <input
+                                    type="text"
+                                    placeholder="🔍 Search scan jobs..."
                                     style={styles.searchInput}
                                     value={searchQuery}
                                     onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(0); }}
                                 />
-                                <button 
+                                <button
                                     style={styles.primaryActionButton}
                                     onClick={() => navigate('/scan/create')}
                                 >

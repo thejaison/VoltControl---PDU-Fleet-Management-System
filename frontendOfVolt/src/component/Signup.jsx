@@ -51,23 +51,15 @@ const Signup = () => {
 
         localStorage.setItem("loggedInEmpId", formData.empId);
 
-        if(formData.role === 'Admin') {
-          navigate('/admin/dashboard', {
-            state: {
-              username: formData.username,
-              joiningDate: formData.joiningDate,
-              officeEmail: formData.officeEmail
-            }
-          });
-        } else {
-          navigate('/user/dashboard', {
-            state: { 
-              username: formData.username,
-              joiningDate: formData.joiningDate,
-              officeEmail: formData.officeEmail
-            }
-          });
-        }
+        navigate("/dashboard", {
+          state: {
+            username: data.id.username,
+            role: data.role,
+            joiningDate: data.joiningDate,
+            officeEmail: data.officeMail
+          }
+        });
+
       } else {
         const errorMsg = await response.text();
         alert(errorMsg);

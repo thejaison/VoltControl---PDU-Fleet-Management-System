@@ -1,15 +1,15 @@
 export const styles = {
-    container: {
+  container: {
     minHeight: '100vh',
-    width: '100vw', 
-    maxWidth: '100%', 
-    backgroundColor: '#Fdfaf7', 
+    width: '100vw',
+    maxWidth: '100%',
+    backgroundColor: '#Fdfaf7',
     fontFamily: "'Montserrat', sans-serif",
     color: '#1A1A1A',
     display: 'flex',
     flexDirection: 'column',
     boxSizing: 'border-box',
-    overflowX: 'hidden', 
+    overflowX: 'hidden',
   },
   header: {
     display: 'flex',
@@ -111,7 +111,7 @@ export const styles = {
   },
   actionCardsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '20px',
     width: '100%',
   },
@@ -158,14 +158,14 @@ export const styles = {
     boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
     width: '100%',
     boxSizing: 'border-box',
-    flexWrap: 'wrap', 
+    flexWrap: 'wrap',
     gap: '15px',
   },
   statBlock: {
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
-    flex: '1 1 min-content', 
+    flex: '1 1 min-content',
   },
   statLabel: {
     fontSize: '12px',
@@ -235,7 +235,7 @@ export const styles = {
     backgroundColor: '#FAFAFA',
   },
   primaryActionButton: {
-    backgroundColor: '#FFCA28', 
+    backgroundColor: '#FFCA28',
     color: '#1A1A1A',
     border: 'none',
     padding: '10px 20px',
@@ -269,12 +269,12 @@ export const styles = {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '4px',
-    backgroundColor: status === 'Running' ? '#E3F2FD' : 
-                     status === 'Completed' ? '#E8F5E9' : 
-                     status === 'Failed' ? '#FFEBEE' : '#F5F5F5',
-    color: status === 'Running' ? '#1976D2' : 
-           status === 'Completed' ? '#388E3C' : 
-           status === 'Failed' ? '#D32F2F' : '#757575',
+    backgroundColor: status === 'Running' ? '#E3F2FD' :
+      status === 'Completed' ? '#E8F5E9' :
+        status === 'Failed' ? '#FFEBEE' : '#F5F5F5',
+    color: status === 'Running' ? '#1976D2' :
+      status === 'Completed' ? '#388E3C' :
+        status === 'Failed' ? '#D32F2F' : '#757575',
   }),
   progressBarContainer: {
     width: '100%',
@@ -301,10 +301,10 @@ export const styles = {
     gap: '16px',
     width: '260px',
     flexShrink: 0,
-    },
+  },
 
-    contentColumn: {
-        flex: 1,
-        minWidth: 0,
-    },
+  contentColumn: {
+    flex: 1,
+    minWidth: 0,
+  },
 };

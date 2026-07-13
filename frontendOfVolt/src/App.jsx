@@ -7,6 +7,7 @@ import UserDashboard from "./component/UserDashboard";
 import ImportingCsvData from "./component/Csvimports/ImportingCsvData";
 import AdminDetailView from "./component/AccountView/AdminDetailView";
 import ScanningDashboard from "./component/ScanJobTasks/ScanningDashboard";
+import OverAllDashboard from "./component/OverAllDashboard";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/dashboard" element={<OverAllDashboard/>}/>
 
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/user/dashboard" element={<UserDashboard />} />
