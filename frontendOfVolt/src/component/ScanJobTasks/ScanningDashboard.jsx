@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styles } from "../../styles/ScanJobDashboard";
+import Sidebar from "../Sidebar";
 
 const ScanningDashboard = () => {
     const navigate = useNavigate();
@@ -55,6 +56,7 @@ const ScanningDashboard = () => {
 
     return (
         <div style={styles.container}>
+            <Sidebar/>
             <header style={styles.header}>
                 <div style={styles.logoSection}>
                     <div style={styles.logoBadge}>𝝯</div>

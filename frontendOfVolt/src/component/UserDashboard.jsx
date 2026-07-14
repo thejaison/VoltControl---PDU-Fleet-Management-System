@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { styles } from "../styles/DashboardStyles";
 import "../styles/DashboardStyles.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState({
@@ -96,6 +97,7 @@ const UserDashboard = () => {
 
   return (
     <div style={styles.container}>
+      <Sidebar/>
       <header style={styles.header} className="dvc-header">
         <div style={styles.logoSection}>
           <div className="dvc-logo-badge">𝝯</div>

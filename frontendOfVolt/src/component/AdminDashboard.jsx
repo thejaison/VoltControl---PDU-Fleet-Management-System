@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles } from "../styles/files/AdminDashboardStyles";
+import Sidebar from "./Sidebar";
 
 const AdminDashboard = () => {
 
@@ -454,6 +455,7 @@ const AdminDashboard = () => {
 
   return (
     <div style={styles.container}>
+      <Sidebar/>
       <header style={styles.header}>
         <div style={styles.logoSection}>
           <div style={styles.logoBadge}>𝝯</div>
