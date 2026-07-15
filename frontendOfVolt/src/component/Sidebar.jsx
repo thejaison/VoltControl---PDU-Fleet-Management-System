@@ -46,6 +46,10 @@ const Sidebar = () => {
             case "scan":
                 navigate("/job/scan", { state: location.state });
                 break;
+
+            case "user":
+                navigate("/manage/users", { state: location.state });
+                break;
         
             default:
                 break;

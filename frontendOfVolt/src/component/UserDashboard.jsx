@@ -97,7 +97,7 @@ const UserDashboard = () => {
 
   return (
     <div style={styles.container}>
-      <Sidebar/>
+      <Sidebar />
       <header style={styles.header} className="dvc-header">
         <div style={styles.logoSection}>
           <div className="dvc-logo-badge">𝝯</div>
