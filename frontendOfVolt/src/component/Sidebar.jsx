@@ -14,7 +14,7 @@ const NAV_ITEMS = [
   { key: "home", label: "Home", icon: homeIcon },
   { key: "device", label: "Device Management", icon: deviceIcon },
   { key: "scan", label: "Scan Management", icon: scanIcon },
-  { key: "user", label: "User Management", icon: userIcon },
+  { key: "user", label: "User Management", icon: userIcon, adminOnly: true },
   { key: "reports", label: "Reports", icon: reportIcon },
   { key: "settings", label: "Settings", icon: settingsIcon },
   { key: "monitoring", label: "System Monitoring", icon: monitorIcon },
@@ -27,7 +27,10 @@ const Sidebar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleNavClick = (key) => {
+    const handleNavClick = (key, locked) => {
+        if(locked) {
+            return;
+        }
         setIsOpen(false);
 
         switch (key) {
@@ -48,7 +51,11 @@ const Sidebar = () => {
                 break;
 
             case "user":
-                navigate("/manage/users", { state: location.state });
+                if (role === "Admin") {
+                    navigate("/manage/users", { state: location.state });
+                } else {
+                    alert("Access denied. Admins only.");
+                }
                 break;
         
             default:
@@ -77,21 +84,24 @@ const Sidebar = () => {
                 <ul style={styles.navList}>
                 {NAV_ITEMS.map((item) => {
                     const isActive = location.pathname.includes(item.key);
+                    const isLocked = item.adminOnly && role !== "Admin";
                     return (
-                    <li key={item.key}>
-                        <button
-                        type="button"
-                        style={styles.navItemButton(isActive)}
-                        onClick={() => handleNavClick(item.key)}
-                        >
-                        <img
-                            src={item.icon}
-                            alt={item.label}
-                            style={styles.navIcon(isActive)}
-                        />
-                        <span style={styles.navLabel(isActive)}>{item.label}</span>
-                        </button>
-                    </li>
+                        <li key={item.key}>
+                            <button
+                                type="button"
+                                style={styles.navItemButton(isActive, isLocked)}
+                                onClick={() => handleNavClick(item.key, isLocked)}
+                                disabled={isLocked}
+                                title={isLocked ? "Admins only" : undefined}
+                            >
+                                <img
+                                    src={item.icon}
+                                    alt={item.label}
+                                    style={styles.navIcon(isActive, isLocked)}
+                                />
+                                <span style={styles.navLabel(isActive, isLocked)}>{item.label}</span>
+                            </button>
+                        </li>
                     );
                 })}
                 </ul>
