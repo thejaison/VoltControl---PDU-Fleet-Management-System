@@ -1,6 +1,7 @@
 package com.voltcontrol.ibm.repository;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,8 @@ public interface UserRepository extends JpaRepository<User, UserId> {
     // JpaRepository gives us findById(UserId id) out of the box!
     @Query("SELECT u FROM User u WHERE u.id.empId = :empId")
     Optional<User> findByEmpId(@Param("empId") String empId);
+
+    List<User> findByRoleAndEnabled(String role, boolean enabled);
+
+    List<User> findByRoleIgnoreCase(String role);
 }

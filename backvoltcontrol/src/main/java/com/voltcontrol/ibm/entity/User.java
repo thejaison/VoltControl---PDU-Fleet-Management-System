@@ -17,6 +17,7 @@ public class User {
     private String phoneNumber;
     private LocalDate joiningDate;
     private String password;
+    private boolean enabled = true;
 
     public UserId getId() {
         return id;
@@ -34,11 +35,11 @@ public class User {
         this.role = role;
     }
 
-    public String getOfficeMail() {
+    public String getOfficeEmail() {
         return officeEmail;
     }
 
-    public void setOfficeMail(String officeEail) {
+    public void setOfficeEmail(String officeEail) {
         this.officeEmail = officeEail;
     }
 
@@ -64,5 +65,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

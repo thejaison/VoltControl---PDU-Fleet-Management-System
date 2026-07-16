@@ -1,6 +1,7 @@
 package com.voltcontrol.ibm.controller;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +38,44 @@ public class UserProfileController {
         UserDto dto = new UserDto();
         dto.setUsername(user.getId().getUsername());
         dto.setJoiningDate(user.getJoiningDate());
-        dto.setOfficeEmail(user.getOfficeMail());
+        dto.setOfficeEmail(user.getOfficeEmail());
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        List<UserDto> users = userRepository.findAll().stream().map(user -> {
+            UserDto dto = new UserDto();
+            dto.setUsername(user.getId().getUsername());
+            dto.setEmpId(user.getId().getEmpId());
+            dto.setPhoneNumber(user.getPhoneNumber());
+            dto.setOfficeEmail(user.getOfficeEmail());
+            dto.setJoiningDate(user.getJoiningDate());
+            dto.setRole(user.getRole());
+            dto.setEnabled(user.isEnabled());
+            return dto;
+        }).toList();
+
+        return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/{empId}/toggle-status")
+    public ResponseEntity<?> toggleUserStatus(@PathVariable String empId) {
+        Optional<User> userOpt = userRepository.findByEmpId(empId);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        User user = userOpt.get();
+        user.setEnabled(!user.isEnabled());
+        userRepository.save(user);
+
+        UserDto dto = new UserDto();
+        dto.setUsername(user.getId().getUsername());
+        dto.setEmpId(user.getId().getEmpId());
+        dto.setEnabled(user.isEnabled());
 
         return ResponseEntity.ok(dto);
     }

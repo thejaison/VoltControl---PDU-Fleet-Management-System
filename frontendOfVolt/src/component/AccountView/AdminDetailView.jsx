@@ -13,6 +13,10 @@ const AdminDetailView = () => {
     const [searchUsername, setSearchUsername] = useState('');
     const [messageText, setMessageText] = useState('');
 
+    const [users, setUsers] = useState([]);
+    const [usersLoading, setUsersLoading] = useState(true);
+    const [updatingKey, setUpdatingKey] = useState(null);
+
     useEffect(() => {
 
         if(!empId) return;
