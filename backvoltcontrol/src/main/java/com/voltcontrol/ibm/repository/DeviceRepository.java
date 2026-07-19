@@ -11,4 +11,6 @@ import com.voltcontrol.ibm.entity.Device;
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, Long>, JpaSpecificationExecutor<Device> {
     List<Device> findByCreatedByEmpId(String createdByEmpId);
+
+    List<Device> findByUuidIn(List<String> uuids);
 }
