@@ -75,4 +75,14 @@ public class UserDto {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    private String profileImage;
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }

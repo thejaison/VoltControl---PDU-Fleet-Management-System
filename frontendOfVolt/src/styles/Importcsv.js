@@ -52,7 +52,7 @@ export const styles = {
         backgroundColor: '#ffffff',
         borderRadius: '32px',
         padding: '28px',
-        boxShadow: '0 20px 60px rgba(15, 23, 42, 0.08)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
         border: '1px solid #e5e7eb',
         animation: 'fadeInScale 0.6s ease-out forwards',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
@@ -197,7 +197,8 @@ export const styles = {
         justifyContent: 'center',
         flexShrink: 0,
         border: '1px solid #e5e7eb',
-    },
+    
+  },
 
     importFileName: {
         fontWeight: '600',
@@ -228,7 +229,7 @@ export const styles = {
     },
 
     importRemoveFile: {
-        background: '#ffffff',
+        background: 'rgba(255, 255, 255, 0.02)',
         border: '1px solid #e5e7eb',
         color: '#111827',
         cursor: 'pointer',
@@ -398,7 +399,8 @@ export const styles = {
         position: 'relative',
         cursor: 'default',
         boxShadow: '0 10px 24px rgba(15, 23, 42, 0.04)',
-    },
+    
+  },
 
     importFieldCardRequired: {
         borderColor: '#d1d5db',

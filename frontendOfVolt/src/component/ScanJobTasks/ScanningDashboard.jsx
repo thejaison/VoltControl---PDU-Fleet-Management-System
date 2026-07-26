@@ -148,6 +148,9 @@ const ScanningDashboard = () => {
     const [userData, setUserData] = useState({ username: "" });
     const [scanJobs, setScanJobs] = useState([]);
     const [recentResults, setRecentResults] = useState([]);
+    const [resultsDatabase, setResultsDatabase] = useState([]);
+    const [selectedResult, setSelectedResult] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("Overview");
 
@@ -181,6 +184,18 @@ const ScanningDashboard = () => {
         }
     };
 
+    const fetchResultsDatabase = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/scan-jobs/results");
+            if (response.ok) {
+                const data = await response.json();
+                setResultsDatabase(data);
+            }
+        } catch (error) {
+            console.error("Error fetching results database:", error);
+        }
+    };
+
     useEffect(() => {
         if (location.state?.username) {
             setUserData({ username: location.state.username });
@@ -200,11 +215,70 @@ const ScanningDashboard = () => {
         }
         fetchScanJobs();
         fetchRecentResults();
+        fetchResultsDatabase();
     }, [location, empId]);
 
+    // SSE EventSource for real-time progress stream (FR-14)
+    useEffect(() => {
+        const activeJob = scanJobs.find(j =>
+            ['Running', 'Queued', 'In Progress', 'RUNNING', 'QUEUED'].includes(j.status)
+        );
+
+        if (!activeJob) return;
+
+        const url = `http://localhost:8080/api/scan-jobs/${activeJob.uuid}/progress`;
+        const eventSource = new EventSource(url);
+
+        eventSource.addEventListener("progress", (event) => {
+            try {
+                const progressData = JSON.parse(event.data);
+                setScanJobs(prev => prev.map(job =>
+                    job.uuid === progressData.uuid
+                        ? { ...job, status: progressData.status, completedDevices: progressData.completedDevices, totalDevices: progressData.totalDevices }
+                        : job
+                ));
+                fetchRecentResults();
+            } catch (e) {
+                console.error("Error parsing progress SSE event:", e);
+            }
+        });
+
+        eventSource.addEventListener("completed", (event) => {
+            try {
+                const progressData = JSON.parse(event.data);
+                setScanJobs(prev => prev.map(job =>
+                    job.uuid === progressData.uuid
+                        ? { ...job, status: progressData.status, completedDevices: progressData.completedDevices, totalDevices: progressData.totalDevices }
+                        : job
+                ));
+                fetchRecentResults();
+                fetchScanJobs();
+                fetchResultsDatabase();
+                eventSource.close();
+            } catch (e) {
+                console.error("Error parsing completed SSE event:", e);
+                eventSource.close();
+            }
+        });
+
+        eventSource.addEventListener("error", (event) => {
+            console.error("SSE connection error or closed:", event);
+            eventSource.close();
+        });
+
+        eventSource.addEventListener("heartbeat", (event) => {
+            console.log("SSE Heartbeat received:", event.data);
+        });
+
+        return () => {
+            eventSource.close();
+        };
+    }, [scanJobs]);
+
+    // Fallback interval in case SSE is blocked/not loaded
     useEffect(() => {
         const hasActiveJobs = scanJobs.some(j =>
-            j.status === 'RUNNING' || j.status === 'QUEUED' || j.status === 'In Progress'
+            ['Running', 'Queued', 'In Progress', 'RUNNING', 'QUEUED'].includes(j.status)
         );
 
         if (!hasActiveJobs) return;
@@ -212,10 +286,20 @@ const ScanningDashboard = () => {
         const interval = setInterval(() => {
             fetchScanJobs();
             fetchRecentResults();
-        }, 2000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [scanJobs]);
+
+    const openDetailsModal = (result) => {
+        setSelectedResult(result);
+        setIsModalOpen(true);
+    };
+
+    const closeDetailsModal = () => {
+        setSelectedResult(null);
+        setIsModalOpen(false);
+    };
 
     const getGreeting = () => {
         const hour = new Date().getHours();
@@ -316,6 +400,232 @@ const ScanningDashboard = () => {
         }
     };
 
+    const renderModal = () => {
+        if (!isModalOpen || !selectedResult) return null;
+
+        let resultData = null;
+        try {
+            if (selectedResult.scanResultData) {
+                resultData = JSON.parse(selectedResult.scanResultData);
+            }
+        } catch (e) {
+            console.error("Failed to parse scan result data JSON:", e);
+        }
+
+        return (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(23, 23, 23, 0.4)',
+                backdropFilter: 'blur(8px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1000,
+                padding: '20px'
+            }}>
+                <div style={{
+                    backgroundColor: colors.white,
+                    borderRadius: '24px',
+                    width: '100%',
+                    maxWidth: '800px',
+                    maxHeight: '90vh',
+                    overflowY: 'auto',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+                    border: `1px solid ${colors.border}`,
+                    boxSizing: 'border-box'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '24px 32px',
+                        borderBottom: `1px solid ${colors.border}`,
+                        backgroundColor: '#FCFCFD',
+                        borderTopLeftRadius: '24px',
+                        borderTopRightRadius: '24px'
+                    }}>
+                        <div>
+                            <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: colors.textPrimary }}>
+                                Scan Details: {selectedResult.deviceName}
+                            </h3>
+                            <span style={{ fontSize: '12px', color: colors.textSecondary, fontFamily: 'monospace' }}>
+                                Job UUID: {selectedResult.jobUuid}
+                            </span>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={closeDetailsModal}
+                            style={{
+                                border: 'none',
+                                background: 'none',
+                                cursor: 'pointer',
+                                padding: '8px',
+                                color: colors.textSecondary,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '50%',
+                                backgroundColor: colors.grayLight,
+                                width: '32px',
+                                height: '32px',
+                            }}
+                        >
+                            <XCircleIcon />
+                        </button>
+                    </div>
+
+                    <div style={{ padding: '32px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '32px' }}>
+                            <div style={{ backgroundColor: colors.bgPage, padding: '16px', borderRadius: '16px' }}>
+                                <div style={{ fontSize: '12px', color: colors.textSecondary }}>Connection Result</div>
+                                <div style={{ fontSize: '15px', fontWeight: 600, color: colors.textPrimary, marginTop: '4px' }}>
+                                    {resultData?.connectionResult || (selectedResult.status === "Succeeded" ? "Connected" : "Failed")}
+                                </div>
+                            </div>
+                            <div style={{ backgroundColor: colors.bgPage, padding: '16px', borderRadius: '16px' }}>
+                                <div style={{ fontSize: '12px', color: colors.textSecondary }}>Status</div>
+                                <span style={{ ...styles.statusPill(selectedResult.status), display: 'inline-block', marginTop: '6px' }}>
+                                    {selectedResult.status}
+                                </span>
+                            </div>
+                            <div style={{ backgroundColor: colors.bgPage, padding: '16px', borderRadius: '16px' }}>
+                                <div style={{ fontSize: '12px', color: colors.textSecondary }}>Scanned At</div>
+                                <div style={{ fontSize: '14px', fontWeight: 600, color: colors.textPrimary, marginTop: '4px' }}>
+                                    {formatTimestamp(selectedResult.timestamp)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ marginBottom: '32px' }}>
+                            <h4 style={{ fontSize: '14px', fontWeight: 700, color: colors.textPrimary, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+                                Device Identification
+                            </h4>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', color: colors.textSecondary }}>Asset ID</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{resultData?.deviceIdentification || "N/A"}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', color: colors.textSecondary }}>IP Address</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{selectedResult.ipAddress}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', color: colors.textSecondary }}>Model</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{resultData?.model || selectedResult.model || "N/A"}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', color: colors.textSecondary }}>Serial Number</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{resultData?.serialNumber || "N/A"}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px', gridColumn: 'span 2' }}>
+                                    <span style={{ fontSize: '13px', color: colors.textSecondary }}>Firmware Version</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{resultData?.firmwareVersion || "N/A"}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {selectedResult.errorMessage && (
+                            <div style={{ backgroundColor: colors.redLight, border: `1px solid ${colors.red}22`, borderRadius: '16px', padding: '16px', marginBottom: '32px' }}>
+                                <div style={{ fontSize: '13px', fontWeight: 600, color: colors.red }}>Error Message</div>
+                                <div style={{ fontSize: '13px', color: colors.red, marginTop: '4px', fontFamily: 'monospace' }}>
+                                    {selectedResult.errorMessage}
+                                </div>
+                            </div>
+                        )}
+
+                        {resultData?.outlets && (
+                            <div style={{ marginBottom: '32px' }}>
+                                <h4 style={{ fontSize: '14px', fontWeight: 700, color: colors.textPrimary, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+                                    Outlet Information
+                                </h4>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                                    {resultData.outlets.map((outlet) => (
+                                        <div key={outlet.id} style={{
+                                            border: `1px solid ${colors.border}`,
+                                            borderRadius: '12px',
+                                            padding: '12px 16px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            backgroundColor: colors.bgPage
+                                        }}>
+                                            <span style={{ fontSize: '13px', fontWeight: 600, color: colors.textPrimary }}>{outlet.name}</span>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <span style={{ fontSize: '12px', color: colors.textSecondary }}>Load: {outlet.load}</span>
+                                                <span style={{
+                                                    fontSize: '11px',
+                                                    fontWeight: 700,
+                                                    color: outlet.status === "ON" ? colors.green : colors.red,
+                                                    backgroundColor: outlet.status === "ON" ? colors.greenLight : colors.redLight,
+                                                    padding: '2px 8px',
+                                                    borderRadius: '999px'
+                                                }}>
+                                                    {outlet.status}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {resultData?.electrical && (
+                            <div style={{ marginBottom: '32px' }}>
+                                <h4 style={{ fontSize: '14px', fontWeight: 700, color: colors.textPrimary, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+                                    Electrical Information
+                                </h4>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+                                    <div style={{ border: `1px solid ${colors.border}`, borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '11px', color: colors.textSecondary }}>Voltage</div>
+                                        <div style={{ fontSize: '15px', fontWeight: 700, color: colors.textPrimary, marginTop: '4px' }}>{resultData.electrical.voltage}</div>
+                                    </div>
+                                    <div style={{ border: `1px solid ${colors.border}`, borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '11px', color: colors.textSecondary }}>Current</div>
+                                        <div style={{ fontSize: '15px', fontWeight: 700, color: colors.textPrimary, marginTop: '4px' }}>{resultData.electrical.current}</div>
+                                    </div>
+                                    <div style={{ border: `1px solid ${colors.border}`, borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '11px', color: colors.textSecondary }}>Active Power</div>
+                                        <div style={{ fontSize: '15px', fontWeight: 700, color: colors.textPrimary, marginTop: '4px' }}>{resultData.electrical.activePower}</div>
+                                    </div>
+                                    <div style={{ border: `1px solid ${colors.border}`, borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '11px', color: colors.textSecondary }}>Frequency</div>
+                                        <div style={{ fontSize: '15px', fontWeight: 700, color: colors.textPrimary, marginTop: '4px' }}>{resultData.electrical.frequency}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {resultData?.rawDeviceData && (
+                            <div>
+                                <h4 style={{ fontSize: '14px', fontWeight: 700, color: colors.textPrimary, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                                    Raw SNMP/Adapter Data
+                                </h4>
+                                <pre style={{
+                                    backgroundColor: colors.bgPage,
+                                    border: `1px solid ${colors.border}`,
+                                    borderRadius: '12px',
+                                    padding: '16px',
+                                    fontSize: '12px',
+                                    color: colors.textPrimary,
+                                    fontFamily: 'monospace',
+                                    whiteSpace: 'pre-wrap',
+                                    margin: 0,
+                                    overflowX: 'auto'
+                                }}>
+                                    {resultData.rawDeviceData}
+                                </pre>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div style={styles.page}>
             <Sidebar />
@@ -341,6 +651,9 @@ const ScanningDashboard = () => {
                                     navigate(role === "Admin" ? "/admin/dashboard" : "/user/dashboard", { state: location.state });
                                 } else {
                                     setActiveTab(item);
+                                    if (item === "Results") {
+                                        fetchResultsDatabase();
+                                    }
                                 }
                             }}
                         >
@@ -740,6 +1053,61 @@ const ScanningDashboard = () => {
                         )}
                     </div>
                 </div>
+            ) : activeTab === "Results" ? (
+                <div style={styles.panel}>
+                    <div style={styles.panelHeaderRow}>
+                        <h2 style={styles.panelTitle}>Scan Results Database ({resultsDatabase.length})</h2>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1fr 1fr 1fr 1fr 1.2fr 1fr', alignItems: 'center', gap: '8px' }}>
+                        <div style={styles.tableHeaderRow}>Job ID</div>
+                        <div style={styles.tableHeaderRow}>Device</div>
+                        <div style={styles.tableHeaderRow}>IP Address</div>
+                        <div style={styles.tableHeaderRow}>Model</div>
+                        <div style={styles.tableHeaderRow}>Status</div>
+                        <div style={styles.tableHeaderRow}>Scanned At</div>
+                        <div style={styles.tableHeaderRow}>Action</div>
+
+                        {resultsDatabase.map((result) => {
+                            const c = statusColors[result.status] || statusColors.Cancelled;
+                            return (
+                                <React.Fragment key={result.id}>
+                                    <div style={styles.tableRow}>
+                                        <span style={{ fontFamily: 'monospace', fontSize: '12px' }}>
+                                            {result.jobUuid ? result.jobUuid.slice(0, 8).toUpperCase() : "N/A"}
+                                        </span>
+                                    </div>
+                                    <div style={{ ...styles.tableRow, fontWeight: 600 }}>{result.deviceName}</div>
+                                    <div style={styles.tableRow}>{result.ipAddress}</div>
+                                    <div style={styles.tableRow}>{result.model || "N/A"}</div>
+                                    <div style={styles.tableRow}>
+                                        <span style={styles.statusPill(result.status)}>{result.status}</span>
+                                    </div>
+                                    <div style={styles.tableRow}>{formatTimestamp(result.timestamp)}</div>
+                                    <div style={styles.tableRow}>
+                                        <button
+                                            type="button"
+                                            onClick={() => openDetailsModal(result)}
+                                            style={{
+                                                ...styles.actionBtn("continue", false),
+                                                padding: '4px 10px',
+                                                fontSize: '11px'
+                                            }}
+                                        >
+                                            <EyeIcon /> View Details
+                                        </button>
+                                    </div>
+                                </React.Fragment>
+                            );
+                        })}
+                    </div>
+
+                    {resultsDatabase.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '40px 0', color: colors.textSecondary }}>
+                            No device scan results stored in the database.
+                        </div>
+                    )}
+                </div>
             ) : (
                 <div style={styles.panel}>
                     <div style={{ textAlign: 'center', padding: '40px 0', color: colors.textSecondary }}>
@@ -747,6 +1115,7 @@ const ScanningDashboard = () => {
                     </div>
                 </div>
             )}
+            {renderModal()}
         </div>
     );
 };

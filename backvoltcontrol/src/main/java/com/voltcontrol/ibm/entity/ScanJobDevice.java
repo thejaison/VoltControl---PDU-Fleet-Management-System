@@ -35,6 +35,9 @@ public class ScanJobDevice {
     @Column(length = 2000)
     private String errorMessage;
 
+    @Column(columnDefinition = "TEXT")
+    private String scanResultData;
+
     private LocalDateTime createdTimestamp;
     private LocalDateTime updatedTimestamp;
     private LocalDateTime startedTimestamp;
@@ -89,6 +92,14 @@ public class ScanJobDevice {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getScanResultData() {
+        return scanResultData;
+    }
+
+    public void setScanResultData(String scanResultData) {
+        this.scanResultData = scanResultData;
     }
 
     public LocalDateTime getCreatedTimestamp() {

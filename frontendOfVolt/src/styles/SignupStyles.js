@@ -11,7 +11,7 @@ export const styles = {
     backgroundColor: '#ffffff',
     padding: '42px 42px 38px',
     borderRadius: '32px',
-    boxShadow: '0 28px 80px rgba(15, 23, 42, 0.08)',
+    boxShadow: '0 28px 80px rgba(0, 0, 0, 0.4)',
     width: '100%',
     maxWidth: '680px',
     display: 'flex',

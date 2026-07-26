@@ -1,20 +1,20 @@
 export const styles = {
   container: {
     fontFamily: "'Montserrat', sans-serif",
-    background: 'radial-gradient(circle at 16% 8%, rgba(255, 112, 67, 0.12), transparent 30%), linear-gradient(135deg, #f7f7f5 0%, #eeeeec 100%)',
+    background: 'radial-gradient(circle at 16% 8%, rgba(168, 85, 247, 0.12), transparent 30%), linear-gradient(135deg, transparent 0%, transparent 100%)',
     minHeight: '100vh',
     padding: '24px 40px',
-    color: '#181816',
+    color: '#ffffff',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '18px 22px',
-    border: '1px solid rgba(24, 24, 22, 0.06)',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
     borderRadius: '24px',
-    background: 'rgba(255, 255, 255, 0.92)',
-    boxShadow: '0 24px 56px rgba(24, 24, 22, 0.08)',
+    background: 'rgba(255, 255, 255, 0.02)',
+    boxShadow: '0 24px 56px rgba(255, 255, 255, 0.05)',
     marginBottom: '30px',
   },
   logoSection: {
@@ -26,10 +26,11 @@ export const styles = {
     fontSize: '28px',
     fontWeight: '700',
     color: '#1a1a1a',
+  
   },
   metaText: {
     fontSize: '13px',
-    color: '#70737b',
+    color: '#94a3b8',
   },
   navSection: {
     display: 'flex',
@@ -40,7 +41,7 @@ export const styles = {
     padding: '8px 20px',
     backgroundColor: 'transparent',
     border: 'none',
-    color: '#181816',
+    color: '#ffffff',
     fontWeight: '600',
     fontSize: '14px',
     cursor: 'pointer',
@@ -52,7 +53,7 @@ export const styles = {
   },
   navButtonAction: {
     padding: '8px 20px',
-    backgroundColor: '#181816',
+    backgroundColor: '#ffffff',
     border: 'none',
     color: 'white',
     fontWeight: '600',
@@ -84,7 +85,7 @@ export const styles = {
   title: {
     fontSize: '28px',
     fontWeight: '700',
-    color: '#181816',
+    color: '#ffffff',
     marginBottom: '10px',
   },
   subTitleSection: {
@@ -94,11 +95,11 @@ export const styles = {
   },
   subTitle: {
     fontSize: '16px',
-    color: '#70737b',
+    color: '#94a3b8',
     fontWeight: '500',
   },
   countBadge: {
-    backgroundColor: '#181816',
+    backgroundColor: '#ffffff',
     color: 'white',
     padding: '2px 10px',
     borderRadius: '12px',
@@ -116,20 +117,20 @@ export const styles = {
   searchInput: {
     padding: '8px 16px',
     borderRadius: '999px',
-    border: '1px solid #e3e3df',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     fontSize: '14px',
     minWidth: '200px',
     width: '220px',
     outline: 'none',
     transition: 'border-color 0.2s',
     ':focus': {
-    borderColor: '#ff7043',
+    borderColor: '#6366f1',
       boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
     }
   },
   iconButton: {
     padding: '8px 12px',
-    backgroundColor: '#181816',
+    backgroundColor: '#ffffff',
     color: 'white',
     border: 'none',
     borderRadius: '16px',
@@ -151,7 +152,7 @@ export const styles = {
     padding: '8px 16px',
     backgroundColor: 'white',
     color: '#1a1a1a',
-    border: '1px solid #e3e3df',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '500',
@@ -159,7 +160,7 @@ export const styles = {
     transition: 'all 0.2s',
     ':hover': {
       backgroundColor: '#f0f0f0',
-      borderColor: '#ff7043',
+      borderColor: '#6366f1',
     }
   },
   deviceList: {
@@ -170,10 +171,11 @@ export const styles = {
   deviceCard: {
     backgroundColor: 'white',
     borderRadius: '20px',
-    boxShadow: '0 18px 44px rgba(24, 24, 22, 0.08)',
-    border: '1px solid rgba(24, 24, 22, 0.06)',
+    boxShadow: '0 18px 44px rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
     overflow: 'hidden',
     transition: 'all 0.3s ease',
+    backdropFilter: 'blur(20px)',
   },
   deviceHeader: {
     display: 'flex',
@@ -196,21 +198,21 @@ export const styles = {
   },
   deviceNumber: {
     fontWeight: '600',
-    color: '#70737b',
+    color: '#94a3b8',
     fontSize: '14px',
     minWidth: '30px',
   },
   deviceName: {
     fontWeight: '600',
     fontSize: '16px',
-    color: '#181816',
+    color: '#ffffff',
   },
   assetIdBadge: {
-    backgroundColor: 'rgba(255, 112, 67, 0.10)',
+    backgroundColor: 'rgba(168, 85, 247, 0.12)',
     padding: '4px 12px',
     borderRadius: '12px',
     fontSize: '12px',
-    color: '#f4511e',
+    color: '#a855f7',
     fontWeight: '500',
   },
   deviceHeaderRight: {
@@ -220,14 +222,14 @@ export const styles = {
   },
   expandIcon: {
     fontSize: '14px',
-    color: '#70737b',
+    color: '#94a3b8',
     fontWeight: '600',
     cursor: 'pointer',
     padding: '5px 10px',
     borderRadius: '14px',
     transition: 'background-color 0.2s',
     ':hover': {
-      backgroundColor: '#f2f2ef',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
     }
   },
   deviceDetails: {
@@ -246,7 +248,7 @@ export const styles = {
   detailsTitle: {
     fontSize: '16px',
     fontWeight: '600',
-    color: '#181816',
+    color: '#ffffff',
   },
   detailsActions: {
     display: 'flex',
@@ -254,7 +256,7 @@ export const styles = {
   },
   editButton: {
     padding: '6px 16px',
-    backgroundColor: '#181816',
+    backgroundColor: '#ffffff',
     color: 'white',
     border: 'none',
     borderRadius: '999px',
@@ -269,7 +271,7 @@ export const styles = {
   },
   saveButton: {
     padding: '6px 16px',
-    backgroundColor: '#ff7043',
+    backgroundColor: '#6366f1',
     color: 'white',
     border: 'none',
     borderRadius: '999px',
@@ -278,7 +280,7 @@ export const styles = {
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
-      backgroundColor: '#f4511e',
+      backgroundColor: '#a855f7',
       transform: 'scale(1.05)',
     }
   },
@@ -310,24 +312,24 @@ export const styles = {
   detailLabel: {
     fontSize: '11px',
     fontWeight: '600',
-    color: '#70737b',
+    color: '#94a3b8',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
   detailValue: {
     fontSize: '14px',
-    color: '#181816',
+    color: '#ffffff',
     wordBreak: 'break-word',
     fontWeight: '500',
   },
   editInput: {
     padding: '6px 8px',
     borderRadius: '14px',
-    border: '1px solid #e3e3df',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     fontSize: '14px',
     outline: 'none',
     backgroundColor: 'white',
-    color: '#181816',
+    color: '#ffffff',
     ':focus': {
       boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
     }
@@ -335,25 +337,25 @@ export const styles = {
   selectDropdown: {
     padding: '6px 10px',
     borderRadius: '14px',
-    border: '1px solid #e3e3df',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     backgroundColor: 'white',
     fontSize: '13px',
     cursor: 'pointer',
     width: '140px',       // fixed width — add this
     minWidth: '140px',    // keep this too
     maxWidth: '140px',    // add this
-    color: '#181816',
+    color: '#ffffff',
     fontWeight: '500',
     transition: 'border-color 0.2s',
   },
   badge: (status) => {
     const colors = {
-        Online:   { bg: 'rgba(255, 112, 67, 0.11)', color: '#f4511e' },
-        Warning:  { bg: '#fff0e9', color: '#f4511e' },
-        Error:    { bg: 'rgba(24, 24, 22, 0.08)', color: '#181816' },
-        Offline:  { bg: 'rgba(24, 24, 22, 0.08)', color: '#181816' },
-        Enabled:  { bg: 'rgba(255, 112, 67, 0.11)', color: '#f4511e' },
-        Disabled: { bg: '#f2f2ef', color: '#70737b' },
+        Online:   { bg: 'rgba(255, 112, 67, 0.11)', color: '#a855f7' },
+        Warning:  { bg: '#fff0e9', color: '#a855f7' },
+        Error:    { bg: 'rgba(255, 255, 255, 0.05)', color: '#ffffff' },
+        Offline:  { bg: 'rgba(255, 255, 255, 0.05)', color: '#ffffff' },
+        Enabled:  { bg: 'rgba(255, 112, 67, 0.11)', color: '#a855f7' },
+        Disabled: { bg: 'rgba(0, 0, 0, 0.2)', color: '#94a3b8' },
         Unknown:  { bg: '#f3f4f6', color: '#6b7280' },
     };
     const selected = colors[status] || { bg: '#f3f4f6', color: '#6b7280' }; // safe fallback, no more colors.Fine
@@ -371,15 +373,15 @@ export const styles = {
 
   statusSelectBorder: (status) => {
     const colors = {
-      Fine: '#ff7043',
-      Warning: '#f4511e',
-      Error: '#181816',
-      Maintainance: '#70737b',
+      Fine: '#6366f1',
+      Warning: '#a855f7',
+      Error: '#ffffff',
+      Maintainance: '#94a3b8',
     };
     return { borderColor: colors[status] || colors.Fine, borderWidth: '1.5px' };
   },
   enabledSelectBorder: (status) => ({
-    borderColor: status === 'Enabled' ? '#ff7043' : '#9e9e9e',
+    borderColor: status === 'Enabled' ? '#6366f1' : '#9e9e9e',
     borderWidth: '1.5px',
   }),
 
@@ -399,8 +401,8 @@ export const styles = {
       width: '0',
     },
     '& input:checked ~ span': {
-      backgroundColor: '#ff7043',
-      borderColor: '#ff7043',
+      backgroundColor: '#6366f1',
+      borderColor: '#6366f1',
     },
     '& input:checked ~ span:after': {
       display: 'block',
@@ -463,7 +465,7 @@ export const styles = {
   modalTitle: {
     fontSize: '24px',
     fontWeight: '700',
-    color: '#181816',
+    color: '#ffffff',
     margin: 0,
   },
   modalClose: {
@@ -474,7 +476,7 @@ export const styles = {
     color: '#999',
     padding: '5px',
     ':hover': {
-      color: '#181816',
+      color: '#ffffff',
     }
   },
   modalBody: {
@@ -505,7 +507,7 @@ export const styles = {
     outline: 'none',
     transition: 'border-color 0.2s',
     ':focus': {
-      borderColor: '#ff7043',
+      borderColor: '#6366f1',
     }
   },
   modalSelect: {
@@ -517,7 +519,7 @@ export const styles = {
     backgroundColor: 'white',
     cursor: 'pointer',
     ':focus': {
-      borderColor: '#ff7043',
+      borderColor: '#6366f1',
     }
   },
   modalFooter: {
@@ -543,7 +545,7 @@ export const styles = {
   },
   modalCreate: {
     padding: '10px 24px',
-    backgroundColor: '#ff7043',
+    backgroundColor: '#6366f1',
     color: 'white',
     border: 'none',
     borderRadius: '999px',
@@ -552,7 +554,7 @@ export const styles = {
     cursor: 'pointer',
     transition: 'all 0.2s',
     ':hover': {
-      backgroundColor: '#f4511e',
+      backgroundColor: '#a855f7',
     }
   },
 
@@ -595,7 +597,7 @@ export const styles = {
   },
   paginationInfo: {
     fontSize: '13px',
-    color: '#70737b',
+    color: '#94a3b8',
   },
   paginationControls: {
     display: 'flex',
@@ -626,7 +628,7 @@ export const styles = {
     height: '30px',
     borderRadius: '6px',
     border: '1px solid #6366f1',
-    background: '#ff7043',
+    background: '#6366f1',
     color: '#fff',
     cursor: 'pointer',
     fontSize: '13px',
@@ -635,7 +637,7 @@ export const styles = {
   logoutButtonStyle: {
     marginLeft: '10px', 
     cursor: 'pointer',
-    color: '#f4511e'
+    color: '#a855f7'
   },
   selectALLButton: {
     display: 'flex',

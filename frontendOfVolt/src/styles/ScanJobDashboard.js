@@ -16,16 +16,23 @@ const colors = {
 };
 
 const statusColors = {
+  Queued: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  QUEUED: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
   Running: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
   RUNNING: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  QUEUED: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  "In Progress": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
   Completed: { bg: colors.greenLight, text: colors.green, dot: colors.green },
   COMPLETED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
+  Succeeded: { bg: colors.greenLight, text: colors.green, dot: colors.green },
+  SUCCEEDED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
+  "Completed with errors": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  "COMPLETED WITH ERRORS": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
   Failed: { bg: colors.redLight, text: colors.red, dot: colors.red },
   FAILED: { bg: colors.redLight, text: colors.red, dot: colors.red },
+  "Timed out": { bg: colors.redLight, text: colors.red, dot: colors.red },
+  "TIMED OUT": { bg: colors.redLight, text: colors.red, dot: colors.red },
   Cancelled: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
   CANCELLED: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
-  "In Progress": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
 };
 
 export const styles = {
@@ -386,6 +393,7 @@ export const styles = {
     backgroundColor: colors.bgPage,
     borderRadius: "12px",
     padding: "14px 16px",
+  
   },
 
   currentDeviceLeft: {

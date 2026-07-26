@@ -75,6 +75,7 @@ export const styles = {
     borderRadius: '14px',
     padding: '24px',
     minHeight: '200px',
+  
   },
   devicesPanelTitle: {
     fontWeight: '700',
@@ -124,6 +125,7 @@ export const styles = {
     flexDirection: 'column',
     gap: '12px',
     minHeight: '400px',
+  
   },
   searchInput: {
     width: '100%',
@@ -140,6 +142,7 @@ export const styles = {
     background: '#000',
     borderRadius: '10px',
     minHeight: '260px',
+  
   },
   messageInput: {
     width: '100%',

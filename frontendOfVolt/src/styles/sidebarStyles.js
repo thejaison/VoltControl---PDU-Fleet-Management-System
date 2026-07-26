@@ -1,12 +1,12 @@
 const colors = {
   white: "#FFFFFF",
-  bgSidebar: "#FFFFFF",
-  bgActive: "#FF5A1F",
-  border: "#EFEFF0",
-  textPrimary: "#171717",
-  textSecondary: "#8B8B90",
+  bgSidebar: "rgba(10, 10, 15, 0.6)",
+  bgActive: "linear-gradient(135deg, #6366f1, #a855f7)",
+  border: "rgba(255, 255, 255, 0.06)",
+  textPrimary: "#ffffff",
+  textSecondary: "#94a3b8",
   textOnActive: "#FFFFFF",
-  overlay: "rgba(0, 0, 0, 0.15)",
+  overlay: "rgba(0, 0, 0, 0.5)",
 };
 
 export const styles = {
@@ -38,7 +38,8 @@ export const styles = {
     left: 0,
     height: "100vh",
     width: "260px",
-    backgroundColor: colors.bgSidebar,
+    background: colors.bgSidebar,
+    backdropFilter: "blur(20px)",
     borderRight: `1px solid ${colors.border}`,
     display: "flex",
     flexDirection: "column",
@@ -47,7 +48,7 @@ export const styles = {
     transform: isOpen ? "translateX(0)" : "translateX(-100%)",
     transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
     zIndex: 1000,
-    boxShadow: isOpen ? "4px 0 24px rgba(0,0,0,0.08)" : "none",
+    boxShadow: isOpen ? "4px 0 30px rgba(0,0,0,0.5)" : "none",
   }),
 
   sidebarLogoRow: {
@@ -62,7 +63,7 @@ export const styles = {
     width: "34px",
     height: "34px",
     borderRadius: "10px",
-    backgroundColor: colors.bgActive,
+    background: colors.bgActive,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -88,7 +89,7 @@ export const styles = {
     flex: 1,
   },
 
-  navItemButton: (isActive) => ({
+  navItemButton: (isActive, isLocked) => ({
     display: "flex",
     alignItems: "center",
     gap: "12px",
@@ -96,21 +97,22 @@ export const styles = {
     padding: "11px 14px",
     borderRadius: "10px",
     border: "none",
-    cursor: "pointer",
+    cursor: isLocked ? "not-allowed" : "pointer",
     textAlign: "left",
-    backgroundColor: isActive ? colors.bgActive : "transparent",
-    transition: "background-color 0.15s ease",
+    background: isActive ? colors.bgActive : "transparent",
+    transition: "all 0.2s ease-in-out",
+    opacity: isLocked ? 0.4 : 1,
   }),
 
-  navIcon: (isActive) => ({
+  navIcon: (isActive, isLocked) => ({
     width: "20px",
     height: "20px",
     objectFit: "contain",
-    filter: isActive ? "brightness(0) invert(1)" : "none",
-    opacity: isActive ? 1 : 0.75,
+    filter: (isActive || isLocked) ? "brightness(0) invert(1)" : "none",
+    opacity: isActive ? 1 : 0.6,
   }),
 
-  navLabel: (isActive) => ({
+  navLabel: (isActive, isLocked) => ({
     fontSize: "14px",
     fontWeight: isActive ? 600 : 500,
     color: isActive ? colors.textOnActive : colors.textPrimary,

@@ -1,22 +1,21 @@
 :root {
-  --volt-orange: #ff7043;
-  --volt-orange-deep: #f4511e;
-  --volt-ink: #181816;
-  --volt-muted: #70737b;
-  --volt-line: #e9eaee;
-  --volt-shell: #f4f4f3;
-  --volt-card: #ffffff;
+  --volt-orange: #a855f7;
+  --volt-orange-deep: #6366f1;
+  --volt-ink: #ffffff;
+  --volt-muted: #94a3b8;
+  --volt-line: rgba(255, 255, 255, 0.08);
+  --volt-shell: #09090b;
+  --volt-card: rgba(255, 255, 255, 0.02);
   --text: var(--volt-muted);
   --text-h: var(--volt-ink);
   --bg: var(--volt-shell);
   --border: var(--volt-line);
-  --code-bg: #f0f0ee;
+  --code-bg: rgba(255, 255, 255, 0.05);
   --accent: var(--volt-orange);
-  --accent-bg: rgba(255, 112, 67, 0.12);
-  --accent-border: rgba(255, 112, 67, 0.42);
-  --social-bg: rgba(255, 255, 255, 0.72);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --accent-bg: rgba(168, 85, 247, 0.12);
+  --accent-border: rgba(168, 85, 247, 0.42);
+  --social-bg: rgba(255, 255, 255, 0.02);
+  --shadow: rgba(0, 0, 0, 0.4) 0 20px 40px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -24,7 +23,7 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -40,9 +39,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 16% 10%, rgba(255, 112, 67, 0.13), transparent 28%),
-    linear-gradient(135deg, #f7f7f5 0%, #eeeeec 100%);
+  background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+              radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+              #07070c;
   color: var(--volt-ink);
   font-family: var(--sans);
 }
@@ -139,4 +138,39 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Custom premium hover and glow effects */
+button, input, select {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+/* Translucent cards and buttons should have custom hover border glow */
+div[style*="rgba(255, 255, 255, 0.02)"]:hover,
+div[style*="rgba(255, 255, 255, 0.03)"]:hover,
+button[style*="rgba(255, 255, 255, 0.03)"]:hover {
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.05), inset 0 0 0 1px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Custom Scrollbar for modern dark interfaces */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

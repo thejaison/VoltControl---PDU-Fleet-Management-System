@@ -14,4 +14,7 @@ public interface ScanJobDeviceRepository extends JpaRepository<ScanJobDevice, Lo
 
     @Query("SELECT sjd FROM ScanJobDevice sjd JOIN FETCH sjd.device ORDER BY sjd.updatedTimestamp DESC")
     List<ScanJobDevice> findRecentResults(org.springframework.data.domain.Pageable pageable);
+
+    @Query("SELECT sjd FROM ScanJobDevice sjd JOIN FETCH sjd.device JOIN FETCH sjd.scanJob ORDER BY sjd.updatedTimestamp DESC")
+    List<ScanJobDevice> findAllScanDeviceResults();
 }

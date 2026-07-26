@@ -20,7 +20,9 @@ import jakarta.validation.Valid;
 import com.voltcontrol.ibm.dto.CreateScanJobRequestDto;
 import com.voltcontrol.ibm.dto.ScanJobResponseDto;
 import com.voltcontrol.ibm.dto.ScanResultResponseDto;
+import com.voltcontrol.ibm.dto.ScanDeviceResultResponseDto;
 import com.voltcontrol.ibm.service.ScanJobService;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @RequestMapping("/api/scan-jobs")
@@ -50,6 +52,17 @@ public class ScanJobController {
     @GetMapping("/recent-results")
     public ResponseEntity<List<ScanResultResponseDto>> getRecentScanResults() {
         List<ScanResultResponseDto> response = scanJobService.getRecentScanResults();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{uuid}/progress", produces = org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter streamProgress(@PathVariable String uuid) {
+        return scanJobService.registerProgressEmitter(uuid);
+    }
+
+    @GetMapping("/results")
+    public ResponseEntity<List<ScanDeviceResultResponseDto>> getAllScanDeviceResults() {
+        List<ScanDeviceResultResponseDto> response = scanJobService.getAllScanDeviceResults();
         return ResponseEntity.ok(response);
     }
 

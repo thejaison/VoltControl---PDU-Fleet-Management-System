@@ -58,7 +58,8 @@ const AdminDashboard = () => {
           setUserData({
             username: databaseUser.username || '',
             joiningDate: databaseUser.joiningDate || '',
-            officeEmail: databaseUser.officeEmail || ''
+            officeEmail: databaseUser.officeEmail || '',
+            profileImage: databaseUser.profileImage || ''
           });
         }
       } catch (error) {
@@ -513,8 +514,12 @@ const AdminDashboard = () => {
               }
             })}
           >
-            <span style={styles.adminAvatar}>
-              {userData.username ? userData.username.charAt(0).toUpperCase() : 'A'}
+            <span style={{ ...styles.adminAvatar, overflow: 'hidden' }}>
+              {userData.profileImage ? (
+                <img src={userData.profileImage} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                userData.username ? userData.username.charAt(0).toUpperCase() : 'A'
+              )}
             </span>
             Hi {userData.username || 'Admin'}!
           </button>

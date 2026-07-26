@@ -20,4 +20,9 @@ public interface UserRepository extends JpaRepository<User, UserId> {
     List<User> findByRoleAndEnabled(String role, boolean enabled);
 
     List<User> findByRoleIgnoreCase(String role);
+
+    @org.springframework.data.jpa.repository.Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "UPDATE users SET username = :newUsername WHERE emp_id = :empId", nativeQuery = true)
+    int updateUsername(@Param("empId") String empId, @Param("newUsername") String newUsername);
 }
