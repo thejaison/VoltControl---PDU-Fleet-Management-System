@@ -50,13 +50,14 @@ const Signup = () => {
         setShowPasswordModal(false);
 
         localStorage.setItem("loggedInEmpId", formData.empId);
+        localStorage.setItem("loggedInRole", formData.role);
 
         navigate("/dashboard", {
           state: {
-            username: data.id.username,
-            role: data.role,
-            joiningDate: data.joiningDate,
-            officeEmail: data.officeMail
+            username: formData.username,
+            role: formData.role,
+            joiningDate: formData.joiningDate,
+            officeEmail: formData.officeEmail
           }
         });
 

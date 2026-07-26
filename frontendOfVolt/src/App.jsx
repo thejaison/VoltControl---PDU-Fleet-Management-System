@@ -7,6 +7,7 @@ import UserDashboard from "./component/UserDashboard";
 import ImportingCsvData from "./component/Csvimports/ImportingCsvData";
 import AdminDetailView from "./component/AccountView/AdminDetailView";
 import ScanningDashboard from "./component/ScanJobTasks/ScanningDashboard";
+import CreateScanJob from "./component/ScanJobTasks/CreateScanJob";
 import OverAllDashboard from "./component/OverAllDashboard";
 import ManageUsers from "./component/UsersManage/ManageUsers";
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/admin/detail" element={<AdminDetailView />} />
 
         <Route path="/job/scan" element={<ScanningDashboard/>}/>
+        <Route path="/scan/create" element={<CreateScanJob/>}/>
         <Route path="/manage/users" element={<ManageUsers/>}/>
 
         <Route path="*" element={<Navigate to="/signup" replace />} />

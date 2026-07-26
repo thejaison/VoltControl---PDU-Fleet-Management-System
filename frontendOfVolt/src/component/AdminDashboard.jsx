@@ -344,8 +344,43 @@ const AdminDashboard = () => {
     setSelectedDevices([]);
   }
 
-  const handleScan = () => {
-    navigate('/job/scan');
+  const handleScan = async () => {
+    const selectedUuids = devices
+      .filter(d => selectedDevices.includes(d.id))
+      .map(d => d.uuid);
+
+    if (selectedUuids.length === 0) {
+      alert("Please select at least one device to scan.");
+      return;
+    }
+
+    const empId = localStorage.getItem('loggedInEmpId');
+
+    try {
+      const response = await fetch("http://localhost:8080/api/scan-jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deviceUuids: selectedUuids,
+          createdByEmpId: empId
+        })
+      });
+
+      if (response.ok) {
+        navigate('/job/scan', { state: { ...location.state, selectedUuids } });
+      } else {
+        const text = await response.text();
+        try {
+          const parsed = JSON.parse(text);
+          alert("Failed to start scan: " + (parsed.message || "Unknown error"));
+        } catch (e) {
+          alert("Failed to start scan: " + text);
+        }
+      }
+    } catch (err) {
+      console.error("Error starting scan:", err);
+      alert("Backend server communication failed. Please check your network.");
+    }
   };
 
   const fetchDevices = async () => {

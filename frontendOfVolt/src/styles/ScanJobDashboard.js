@@ -17,9 +17,14 @@ const colors = {
 
 const statusColors = {
   Running: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  RUNNING: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  QUEUED: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
   Completed: { bg: colors.greenLight, text: colors.green, dot: colors.green },
+  COMPLETED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
   Failed: { bg: colors.redLight, text: colors.red, dot: colors.red },
+  FAILED: { bg: colors.redLight, text: colors.red, dot: colors.red },
   Cancelled: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
+  CANCELLED: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
   "In Progress": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
 };
 
@@ -507,7 +512,7 @@ export const styles = {
   // ---------- Tables ----------
   tableGrid: {
     display: "grid",
-    gridTemplateColumns: "1.1fr 0.7fr 1.3fr 0.9fr 1.1fr 0.7fr",
+    gridTemplateColumns: "1.1fr 0.6fr 1.1fr 0.8fr 1fr 0.7fr 1.3fr",
     alignItems: "center",
     gap: "8px",
   },
@@ -582,6 +587,43 @@ export const styles = {
     justifyContent: "center",
     color: colors.textSecondary,
     cursor: "pointer",
+  },
+
+  actionBtn: (type, isDisabled) => {
+    let bg = colors.grayLight;
+    let text = colors.gray;
+    let border = colors.border;
+    if (!isDisabled) {
+      if (type === "cancel") {
+        bg = colors.redLight;
+        text = colors.red;
+        border = `${colors.red}22`;
+      } else if (type === "continue") {
+        bg = colors.orangeLight;
+        text = colors.orange;
+        border = `${colors.orange}22`;
+      } else if (type === "again") {
+        bg = colors.greenLight;
+        text = colors.green;
+        border = `${colors.green}22`;
+      }
+    }
+    return {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "4px",
+      padding: "6px 10px",
+      borderRadius: "6px",
+      fontSize: "12px",
+      fontWeight: 600,
+      cursor: isDisabled ? "not-allowed" : "pointer",
+      backgroundColor: bg,
+      color: text,
+      border: `1px solid ${border}`,
+      transition: "all 0.15s ease",
+      opacity: isDisabled ? 0.6 : 1,
+    };
   },
 
   // ---------- Recent scan results ----------

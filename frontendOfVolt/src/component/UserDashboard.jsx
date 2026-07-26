@@ -91,8 +91,43 @@ const UserDashboard = () => {
     setExpandedDevice(expandedDevice === id ? null : id);
   };
 
-  const handleScan = () => {
-    alert('Scan functionality will be implemented in the backend.');
+  const handleScan = async () => {
+    const enabledUuids = devices
+      .filter(d => d.enabledStatus === "Enabled" || d.enabledStatus === "ENABLED")
+      .map(d => d.uuid);
+
+    if (enabledUuids.length === 0) {
+      alert("No enabled devices available to scan.");
+      return;
+    }
+
+    const empId = localStorage.getItem('loggedInEmpId');
+
+    try {
+      const response = await fetch("http://localhost:8080/api/scan-jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deviceUuids: enabledUuids,
+          createdByEmpId: empId
+        })
+      });
+
+      if (response.ok) {
+        navigate('/job/scan', { state: location.state });
+      } else {
+        const text = await response.text();
+        try {
+          const parsed = JSON.parse(text);
+          alert(parsed.message || "Failed to start scan.");
+        } catch (e) {
+          alert(text || "Failed to start scan.");
+        }
+      }
+    } catch (err) {
+      console.error("Error starting scan:", err);
+      alert("Backend server communication failed. Please check your network.");
+    }
   };
 
   return (

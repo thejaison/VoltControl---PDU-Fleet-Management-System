@@ -35,6 +35,7 @@ const Login = () => {
             const data = await response.json();
 
             localStorage.setItem("loggedInEmpId", formData.empId);
+            localStorage.setItem("loggedInRole", data.role);
 
             navigate("/dashboard", {
                 state: {

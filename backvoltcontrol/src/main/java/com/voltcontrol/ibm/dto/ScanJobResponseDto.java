@@ -9,14 +9,16 @@ public class ScanJobResponseDto {
     private int totalDevices;
     private int completedDevices;
     private LocalDateTime createdTimestamp;
+    private String createdByEmpId;
 
     public ScanJobResponseDto(String uuid, String status, int totalDevices, int completedDevices,
-            LocalDateTime createdTimestamp) {
+            LocalDateTime createdTimestamp, String createdByEmpId) {
         this.uuid = uuid;
         this.status = status;
         this.totalDevices = totalDevices;
         this.completedDevices = completedDevices;
         this.createdTimestamp = createdTimestamp;
+        this.createdByEmpId = createdByEmpId;
     }
 
     public String getUuid() {
@@ -37,5 +39,9 @@ public class ScanJobResponseDto {
 
     public LocalDateTime getCreatedTimestamp() {
         return createdTimestamp;
+    }
+
+    public String getCreatedByEmpId() {
+        return createdByEmpId;
     }
 }
