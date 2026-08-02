@@ -70,7 +70,7 @@ const ReportsDashboard = () => {
   const location = useLocation();
 
   const empId = localStorage.getItem("loggedInEmpId") || "EMP-USER";
-  
+
   const [userData, setUserData] = useState({
     username: localStorage.getItem("loggedInUsername") || "PDU Operator",
     role: localStorage.getItem("loggedInRole") || "User",
@@ -187,25 +187,25 @@ const ReportsDashboard = () => {
       showToast("Generating live Excel sheet...", "success");
       const res = await fetch("http://localhost:8080/api/reports/export/excel");
       if (!res.ok) throw new Error("Excel export failed");
-      
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       // Extract filename from Content-Disposition if present, else template
       const disposition = res.headers.get('content-disposition');
-      let filename = `PDU_Devices_Report_${new Date().toISOString().slice(0,10)}.xlsx`;
+      let filename = `PDU_Devices_Report_${new Date().toISOString().slice(0, 10)}.xlsx`;
       if (disposition && disposition.indexOf('attachment') !== -1) {
         const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const matches = filenameRegex.exec(disposition);
-        if (matches != null && matches[1]) { 
+        if (matches != null && matches[1]) {
           filename = matches[1].replace(/['"]/g, '');
         }
       }
       a.download = filename;
       a.click();
       window.URL.revokeObjectURL(url);
-      
+
       showToast("Excel spreadsheet downloaded & archived!", "success");
       fetchData(); // Refresh history
     } catch (e) {
@@ -219,18 +219,18 @@ const ReportsDashboard = () => {
       showToast("Compiling PDF fleet summary report...", "success");
       const res = await fetch("http://localhost:8080/api/reports/export/pdf");
       if (!res.ok) throw new Error("PDF export failed");
-      
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      
+
       const disposition = res.headers.get('content-disposition');
-      let filename = `PDU_System_Report_${new Date().toISOString().slice(0,10)}.pdf`;
+      let filename = `PDU_System_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
       if (disposition && disposition.indexOf('attachment') !== -1) {
         const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const matches = filenameRegex.exec(disposition);
-        if (matches != null && matches[1]) { 
+        if (matches != null && matches[1]) {
           filename = matches[1].replace(/['"]/g, '');
         }
       }
@@ -268,7 +268,7 @@ const ReportsDashboard = () => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       processSelectedFile(files[0]);
@@ -307,7 +307,7 @@ const ReportsDashboard = () => {
     if (!fileToUpload) return;
 
     const isExcel = fileToUpload.name.endsWith(".xlsx") || fileToUpload.name.endsWith(".xls");
-    
+
     if (isExcel) {
       // If it is Excel, trigger Excel preview parsing
       setUploadStatus("loading");
@@ -486,7 +486,7 @@ const ReportsDashboard = () => {
     return date.toLocaleString();
   };
 
-  const filteredReports = reports.filter(r => 
+  const filteredReports = reports.filter(r =>
     r.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -527,15 +527,15 @@ const ReportsDashboard = () => {
           <p style={styles.headerSubtitle}>Generate, export, and import live PDU databases, health summaries, and fleet mappings</p>
         </div>
         <div style={styles.headerRight}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             style={styles.browseButton}
-            onClick={fetchData} 
+            onClick={fetchData}
             title="Refresh logs history"
           >
             <RefreshIcon />
           </button>
-          <div 
+          <div
             style={{ ...styles.profilePill, cursor: 'pointer' }}
             onClick={() => navigate('/admin/detail', {
               state: {
@@ -607,7 +607,7 @@ const ReportsDashboard = () => {
 
           <div style={styles.exportsGrid}>
             {/* Excel card */}
-            <div 
+            <div
               style={styles.exportCard(colors.green, hoveredExport === "excel")}
               onMouseEnter={() => setHoveredExport("excel")}
               onMouseLeave={() => setHoveredExport(null)}
@@ -618,8 +618,8 @@ const ReportsDashboard = () => {
                 <h4 style={styles.exportTitle}>Live Excel Database</h4>
                 <p style={styles.exportDescription}>Full-detail spreadsheet containing all registered device records, IPs, serial keys, sites, and configuration parameters.</p>
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 style={styles.exportButton(colors.green, hoveredExport === "excel")}
               >
                 Generate Excel
@@ -627,7 +627,7 @@ const ReportsDashboard = () => {
             </div>
 
             {/* PDF card */}
-            <div 
+            <div
               style={styles.exportCard(colors.red, hoveredExport === "pdf")}
               onMouseEnter={() => setHoveredExport("pdf")}
               onMouseLeave={() => setHoveredExport(null)}
@@ -638,8 +638,8 @@ const ReportsDashboard = () => {
                 <h4 style={styles.exportTitle}>Live PDF Fleet Status</h4>
                 <p style={styles.exportDescription}>Beautiful executive summary showing site-based online/offline mappings, operational statuses, scan metrics, and health alerts.</p>
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 style={styles.exportButton(colors.red, hoveredExport === "pdf")}
               >
                 Generate PDF Report
@@ -681,9 +681,9 @@ const ReportsDashboard = () => {
                   <p style={styles.loadedFileSize}>{formatBytes(fileToUpload.size)}</p>
                 </div>
                 <div style={styles.loadedFileActions}>
-                  <button 
-                    type="button" 
-                    style={styles.removeFileBtn} 
+                  <button
+                    type="button"
+                    style={styles.removeFileBtn}
                     onClick={() => { setFileToUpload(null); setUploadStatus("idle"); setUploadDescription(""); }}
                   >
                     Remove
@@ -699,11 +699,11 @@ const ReportsDashboard = () => {
                 <p style={styles.dropSubtext}>Excel imports devices | PDF archives reports (Max 15MB)</p>
                 <label style={styles.browseButton}>
                   Browse Files
-                  <input 
-                    type="file" 
-                    accept=".pdf,.xlsx,.xls" 
-                    onChange={handleFileSelect} 
-                    style={styles.fileInput} 
+                  <input
+                    type="file"
+                    accept=".pdf,.xlsx,.xls"
+                    onChange={handleFileSelect}
+                    style={styles.fileInput}
                   />
                 </label>
               </>
@@ -714,12 +714,12 @@ const ReportsDashboard = () => {
             <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginTop: "4px" }}>
               <div style={styles.formGroup}>
                 <label style={styles.inputLabel}>File Description / Notes</label>
-                <input 
-                  type="text" 
-                  value={uploadDescription} 
-                  onChange={(e) => setUploadDescription(e.target.value)} 
-                  placeholder={fileToUpload.name.endsWith(".pdf") ? "E.g., Frankfurt Q3 Maintenance Audit PDF" : "E.g., Excel batch import source - August"} 
-                  style={styles.textInput} 
+                <input
+                  type="text"
+                  value={uploadDescription}
+                  onChange={(e) => setUploadDescription(e.target.value)}
+                  placeholder={fileToUpload.name.endsWith(".pdf") ? "E.g., Frankfurt Q3 Maintenance Audit PDF" : "E.g., Excel batch import source - August"}
+                  style={styles.textInput}
                 />
               </div>
 
@@ -776,11 +776,11 @@ const ReportsDashboard = () => {
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                 <span style={{ position: "absolute", left: "12px", color: colors.textSecondary, display: "flex" }}><SearchIcon /></span>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search logs..." 
+                  placeholder="Search logs..."
                   style={{
                     ...styles.textInput,
                     paddingLeft: "36px",
@@ -878,7 +878,7 @@ const ReportsDashboard = () => {
                   <p style={styles.panelSubtitle}>Excel sheet successfully parsed. Please review rows before database commit.</p>
                 </div>
               </div>
-              <button 
+              <button
                 type="button"
                 style={styles.removeFileBtn}
                 onClick={() => setShowPreviewModal(false)}

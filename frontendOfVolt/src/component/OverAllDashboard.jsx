@@ -99,7 +99,7 @@ const OverAllDashboard = () => {
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 15000);
-    
+
     // Sidebar collapse state observer
     const checkSidebar = () => {
       setIsCollapsed(document.body.classList.contains("sidebar-collapsed"));
@@ -174,7 +174,7 @@ const OverAllDashboard = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `PDU_Dashboard_Report_${new Date().toISOString().slice(0,10)}.pdf`;
+      a.download = `PDU_Dashboard_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
       a.click();
       window.URL.revokeObjectURL(url);
       showToast("PDF report successfully downloaded!", "success");
@@ -194,7 +194,7 @@ const OverAllDashboard = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `PDU_Devices_Log_${new Date().toISOString().slice(0,10)}.xlsx`;
+      a.download = `PDU_Devices_Log_${new Date().toISOString().slice(0, 10)}.xlsx`;
       a.click();
       window.URL.revokeObjectURL(url);
       showToast("Excel spreadsheet successfully downloaded!", "success");
@@ -298,32 +298,32 @@ const OverAllDashboard = () => {
       <svg width="130" height="130" viewBox="0 0 140 140" style={{ transform: "rotate(-90deg)" }}>
         <circle cx="70" cy="70" r={r} fill="transparent" stroke="#f8fafc" strokeWidth="14" />
         {val1 > 0 && (
-          <circle 
-            cx="70" cy="70" r={r} 
-            fill="transparent" 
-            stroke={colors.green} 
-            strokeWidth="14" 
-            strokeDasharray={`${stroke1} ${circ}`} 
+          <circle
+            cx="70" cy="70" r={r}
+            fill="transparent"
+            stroke={colors.green}
+            strokeWidth="14"
+            strokeDasharray={`${stroke1} ${circ}`}
             strokeDashoffset={0}
           />
         )}
         {val2 > 0 && (
-          <circle 
-            cx="70" cy="70" r={r} 
-            fill="transparent" 
-            stroke={colors.orange} 
-            strokeWidth="14" 
-            strokeDasharray={`${stroke2} ${circ}`} 
+          <circle
+            cx="70" cy="70" r={r}
+            fill="transparent"
+            stroke={colors.orange}
+            strokeWidth="14"
+            strokeDasharray={`${stroke2} ${circ}`}
             strokeDashoffset={-stroke1}
           />
         )}
         {val3 > 0 && (
-          <circle 
-            cx="70" cy="70" r={r} 
-            fill="transparent" 
-            stroke={colors.red} 
-            strokeWidth="14" 
-            strokeDasharray={`${stroke3} ${circ}`} 
+          <circle
+            cx="70" cy="70" r={r}
+            fill="transparent"
+            stroke={colors.red}
+            strokeWidth="14"
+            strokeDasharray={`${stroke3} ${circ}`}
             strokeDashoffset={-(stroke1 + stroke2)}
           />
         )}

@@ -24,6 +24,87 @@ const UserDashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
+  // Checkbox Selection & Details Popup States
+  const [selectedDevices, setSelectedDevices] = useState([]);
+  const [activeDetailsDevice, setActiveDetailsDevice] = useState(null);
+  const [verifyPasswordDevice, setVerifyPasswordDevice] = useState(null);
+  const [verifyPasswordInput, setVerifyPasswordInput] = useState('');
+  const [verifyPasswordError, setVerifyPasswordError] = useState(false);
+  const [showBulkDetailsModal, setShowBulkDetailsModal] = useState(false);
+  const [bulkUnlocked, setBulkUnlocked] = useState({});
+  const [bulkPasswordInputs, setBulkPasswordInputs] = useState({});
+  const [bulkPasswordErrors, setBulkPasswordErrors] = useState({});
+
+  const handleInitiateViewDetails = (device) => {
+    if (device.hasPassword) {
+      setVerifyPasswordDevice(device);
+      setVerifyPasswordInput('');
+      setVerifyPasswordError(false);
+    } else {
+      setActiveDetailsDevice(device);
+    }
+  };
+
+  const handleVerifyPasswordSubmit = async () => {
+    if (!verifyPasswordDevice) return;
+    try {
+      const res = await fetch(`http://localhost:8080/api/devices/${verifyPasswordDevice.dbId}/verify-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: verifyPasswordInput })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.matches) {
+          setActiveDetailsDevice(verifyPasswordDevice);
+          setVerifyPasswordDevice(null);
+          setVerifyPasswordInput('');
+          setVerifyPasswordError(false);
+        } else {
+          setVerifyPasswordError(true);
+        }
+      } else {
+        setVerifyPasswordError(true);
+      }
+    } catch (err) {
+      console.error("Verification error:", err);
+      setVerifyPasswordError(true);
+    }
+  };
+
+  const handleUnlockBulkDevice = async (device) => {
+    const inputPassword = bulkPasswordInputs[device.id] || '';
+    try {
+      const res = await fetch(`http://localhost:8080/api/devices/${device.dbId}/verify-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: inputPassword })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.matches) {
+          setBulkUnlocked(prev => ({ ...prev, [device.id]: true }));
+          setBulkPasswordErrors(prev => ({ ...prev, [device.id]: false }));
+        } else {
+          setBulkPasswordErrors(prev => ({ ...prev, [device.id]: true }));
+        }
+      } else {
+        setBulkPasswordErrors(prev => ({ ...prev, [device.id]: true }));
+      }
+    } catch (err) {
+      console.error("Bulk unlock error:", err);
+      setBulkPasswordErrors(prev => ({ ...prev, [device.id]: true }));
+    }
+  };
+
+  const toggleSelectDevice = (id) => {
+    setSelectedDevices(prev => 
+      prev.includes(id) 
+        ? prev.filter(deviceId => deviceId !== id)
+        : [...prev, id]
+    );
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,6 +133,38 @@ const UserDashboard = () => {
     };
 
     fetchProfileData();
+  }, []);
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes modalPopUp {
+        0% { transform: scale(0.95) translateY(20px); opacity: 0; }
+        100% { transform: scale(1) translateY(0); opacity: 1; }
+      }
+      .animate-modal-pop {
+        animation: modalPopUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+      @keyframes cardPopUp {
+        0% { transform: scale(0.96) translateY(15px); opacity: 0; }
+        100% { transform: scale(1) translateY(0); opacity: 1; }
+      }
+      .animate-card-pop {
+        animation: cardPopUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+      .shake-effect {
+        animation: shake 0.4s ease-in-out;
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        75% { transform: translateX(6px); }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   useEffect(() => {
@@ -324,6 +437,19 @@ const UserDashboard = () => {
               </select>
             </label>
 
+            {selectedDevices.length > 0 && (
+              <button
+                onClick={() => {
+                  setShowBulkDetailsModal(true);
+                  setBulkUnlocked({});
+                  setBulkPasswordInputs({});
+                  setBulkPasswordErrors({});
+                }}
+                style={{ ...styles.viewSelectedBtn, marginRight: '10px' }}
+              >
+                👁️ View ({selectedDevices.length})
+              </button>
+            )}
             <button style={styles.primaryActionButton} onClick={handleScan}>
               Scan
             </button>
@@ -332,7 +458,22 @@ const UserDashboard = () => {
 
         <div style={styles.assetPanel}>
           <div style={styles.paginationBar}>
-            <div style={styles.selectALLButton} />
+            <div style={styles.selectALLButton}>
+              <input
+                type="checkbox"
+                checked={paginatedDevices.length > 0 && paginatedDevices.every(d => selectedDevices.includes(d.id))}
+                onChange={() => {
+                  const isAllOnPageSelected = paginatedDevices.every(d => selectedDevices.includes(d.id));
+                  if (isAllOnPageSelected) {
+                    setSelectedDevices(prev => prev.filter(id => !paginatedDevices.map(pd => pd.id).includes(id)));
+                  } else {
+                    setSelectedDevices(prev => [...new Set([...prev, ...paginatedDevices.map(pd => pd.id)])]);
+                  }
+                }}
+                style={{ ...styles.checkbox, cursor: 'pointer' }}
+                title="Select all on this page"
+              />
+            </div>
 
             <div style={styles.paginationInfo}>
               Showing {paginatedDevices.length === 0 ? 0 : currentPage * pageSize + 1}–
@@ -391,8 +532,18 @@ const UserDashboard = () => {
               <div style={styles.emptyState}>No devices found.</div>
             ) : paginatedDevices.map((device, index) => (
               <div key={device.uuid} style={styles.deviceCard}>
-                <div style={styles.deviceHeader}>
+                <div 
+                  style={{ ...styles.deviceHeader, cursor: 'pointer' }}
+                  onClick={() => handleInitiateViewDetails(device)}
+                >
                   <div style={styles.deviceHeaderLeft}>
+                    <input 
+                      type="checkbox"
+                      checked={selectedDevices.includes(device.id)}
+                      onChange={() => toggleSelectDevice(device.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ ...styles.checkbox, marginRight: '10px' }}
+                    />
                     <span style={styles.deviceNumber}>{device.id}</span>
                     <span style={styles.deviceName}>{device.deviceName}</span>
                     <span style={styles.assetIdBadge}>{device.assetId}</span>
@@ -407,177 +558,372 @@ const UserDashboard = () => {
                       ● {device.enabledStatus}
                     </span>
 
-                    <span
-                      style={styles.expandIcon}
-                      onClick={() => toggleDevice(device.id)}  
+                    <button
+                      type="button"
+                      style={{
+                        ...styles.expandIcon,
+                        border: '1px solid rgba(16, 185, 129, 0.2)',
+                        color: '#10b981',
+                        background: 'rgba(16, 185, 129, 0.04)',
+                        cursor: 'pointer'
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleInitiateViewDetails(device);
+                      }}
+                      title="View Details"
                     >
-                      {expandedDevice === device.id ? '▼' : '▶'}
-                    </span>
+                      👁️
+                    </button>
                   </div>
                 </div>
-
-                {expandedDevice === device.id && (
-                  <div style={styles.deviceDetails}>
-                    <div style={styles.detailsHeader}>
-                      <span style={styles.detailsTitle}>Device Configuration</span>
-                    </div>
-
-                    {/* Identity Section */}
-                    <div style={styles.section}>
-                      <div style={styles.sectionTitle}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="3" y="5" width="18" height="14" rx="2" />
-                          <circle cx="9" cy="10" r="2" />
-                          <path d="M5 17c0-2 2-3 4-3s4 1 4 3" />
-                          <line x1="15" y1="9" x2="19" y2="9" /><line x1="15" y1="13" x2="19" y2="13" />
-                        </svg>
-                        Identity
-                      </div>
-
-                      <div style={styles.sectionGrid}>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Device Name</label>
-                          <span style={styles.detailValue}>{device.deviceName}</span>
-                        </div>
-
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Asset ID</label>
-                          <span style={styles.detailValue}>{device.assetId}</span>
-                        </div>
-
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Model</label>
-                          <span style={styles.detailValue}>{device.model}</span>
-                        </div>
-
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>UUID</label>
-                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.uuid}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Location Section */}
-                    <div style={styles.section}>
-                      <div style={styles.sectionTitle}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z" />
-                          <circle cx="12" cy="9" r="2.5" />
-                        </svg>
-                        Location
-                      </div>
-                      <div style={styles.sectionGrid}>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Site</label>
-                          <span style={styles.detailValue}>{device.site}</span>
-                        </div>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Location</label>
-                          <span style={styles.detailValue}>{device.location}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Network Section */}
-                    <div style={styles.section}>
-                      <div style={styles.sectionTitle}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" />
-                          <rect x="9" y="14" width="6" height="6" rx="1" />
-                          <path d="M7 10v2a2 2 0 0 0 2 2M17 10v2a2 2 0 0 1-2 2" />
-                        </svg>
-                        Network
-                      </div>
-                      <div style={styles.sectionGrid}>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>IP Address</label>
-                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.ipAddress}</span>
-                        </div>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Hostname</label>
-                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.hostname}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Hardware Section */}
-                    <div style={styles.section}>
-                      <div style={styles.sectionTitle}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="6" y="6" width="12" height="12" rx="2" />
-                          <line x1="9" y1="2" x2="9" y2="6" /><line x1="15" y1="2" x2="15" y2="6" />
-                          <line x1="9" y1="18" x2="9" y2="22" /><line x1="15" y1="18" x2="15" y2="22" />
-                          <line x1="2" y1="9" x2="6" y2="9" /><line x1="2" y1="15" x2="6" y2="15" />
-                          <line x1="18" y1="9" x2="22" y2="9" /><line x1="18" y1="15" x2="22" y2="15" />
-                        </svg>
-                        Hardware
-                      </div>
-                      <div style={styles.sectionGrid}>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Serial Number</label>
-                          <span style={{ ...styles.detailValue, ...styles.mono }}>{device.serialNumber}</span>
-                        </div>
-                        <div style={styles.detailItem}>
-                          <label style={styles.detailLabel}>Adapter Type</label>
-                          <span style={styles.detailValue}>{device.adapterType}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Status Details */}
-                    <div style={styles.section}>
-                      <div style={styles.sectionTitle}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M3 12h4l3 8 4-16 3 8h4" />
-                        </svg>
-                        Status Details
-                      </div>
-                      <div style={styles.statusRow}>
-                        <div style={styles.statusField}>
-                          <label style={styles.detailLabel}>Enabled Status</label>
-                          <span style={{ ...styles.badge(device.enabledStatus), marginTop: '8px', display: 'inline-block' }}>
-                            ● {device.enabledStatus}
-                          </span>
-                        </div>
-
-                        <div style={styles.statusField}>
-                          <label style={styles.detailLabel}>Operational Status</label>
-                          <span style={{ ...styles.badge(device.operationalStatus), marginTop: '8px', display: 'inline-block' }}>
-                            ● {device.operationalStatus}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Timestamps */}
-                    <div style={styles.timestampBar}>
-                      <span style={styles.timestampChip}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
-                        </svg>
-                        Last seen <strong>{device.lastSeen}</strong>
-                      </span>
-                      <span style={styles.timestampSep} />
-                      <span style={styles.timestampChip}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
-                        </svg>
-                        Created <strong>{device.createdTimestamp}</strong>
-                      </span>
-                      <span style={styles.timestampSep} />
-                      <span style={styles.timestampChip}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 16 14" />
-                        </svg>
-                        Updated <strong>{device.updatedTimestamp}</strong>
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
           </div>
         </div>
+        {/* NEW CODE: Password Verification Dialog */}
+        {verifyPasswordDevice && (
+          <div style={styles.detailsModalOverlay}>
+            <div 
+              style={styles.verifyModal} 
+              className={`animate-modal-pop ${verifyPasswordError ? 'shake-effect' : ''}`}
+            >
+              <div style={styles.modalHeader}>
+                <h2 style={styles.modalTitle}>🔒 Password Required</h2>
+                <button
+                  style={styles.modalClose}
+                  onClick={() => setVerifyPasswordDevice(null)}
+                >
+                  ✕
+                </button>
+              </div>
+              <div style={styles.modalBody}>
+                <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '14px', textAlign: 'left' }}>
+                  Please enter the password for device <strong>{verifyPasswordDevice.deviceName}</strong>.
+                </p>
+                <div style={styles.modalField}>
+                  <label style={styles.modalLabel}>Device Password</label>
+                  <input
+                    type="password"
+                    value={verifyPasswordInput}
+                    onChange={(e) => {
+                      setVerifyPasswordInput(e.target.value);
+                      setVerifyPasswordError(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleVerifyPasswordSubmit();
+                    }}
+                    style={styles.lockInput}
+                    placeholder="Enter password"
+                    autoFocus
+                  />
+                  {verifyPasswordError && (
+                    <span style={styles.lockError}>❌ Mismatch password. Please try again.</span>
+                  )}
+                </div>
+              </div>
+              <div style={{ ...styles.modalFooter, marginTop: '8px' }}>
+                <button style={styles.modalCancel} onClick={() => setVerifyPasswordDevice(null)}>Cancel</button>
+                <button
+                  style={styles.unlockButton}
+                  onClick={handleVerifyPasswordSubmit}
+                  disabled={!verifyPasswordInput.trim()}
+                >
+                  Verify & View
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* NEW CODE: Device Details Modal Popup */}
+        {activeDetailsDevice && (
+          <div style={styles.detailsModalOverlay}>
+            <div style={styles.detailsModal} className="animate-modal-pop">
+              <div style={styles.modalHeader}>
+                <h2 style={styles.modalTitle}>👁️ Device Details: {activeDetailsDevice.deviceName}</h2>
+                <button
+                  style={styles.modalClose}
+                  onClick={() => setActiveDetailsDevice(null)}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div style={styles.modalBody}>
+                {/* Identity Section */}
+                <div style={styles.section}>
+                  <div style={styles.sectionTitle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="5" width="18" height="14" rx="2" />
+                      <circle cx="9" cy="10" r="2" />
+                      <path d="M5 17c0-2 2-3 4-3s4 1 4 3" />
+                      <line x1="15" y1="9" x2="19" y2="9" /><line x1="15" y1="13" x2="19" y2="13" />
+                    </svg>
+                    Identity
+                  </div>
+
+                  <div style={styles.sectionGrid}>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Device Name</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.deviceName}</span>
+                    </div>
+
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Asset ID</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.assetId}</span>
+                    </div>
+
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Model</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.model}</span>
+                    </div>
+
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>UUID</label>
+                      <span style={{ ...styles.detailValue, ...styles.mono }}>{activeDetailsDevice.uuid}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location Section */}
+                <div style={styles.section}>
+                  <div style={styles.sectionTitle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z" />
+                      <circle cx="12" cy="9" r="2.5" />
+                    </svg>
+                    Location
+                  </div>
+                  <div style={styles.sectionGrid}>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Site</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.site}</span>
+                    </div>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Location</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.location}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Network Section */}
+                <div style={styles.section}>
+                  <div style={styles.sectionTitle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" />
+                      <rect x="9" y="14" width="6" height="6" rx="1" />
+                      <path d="M7 10v2a2 2 0 0 0 2 2M17 10v2a2 2 0 0 1-2 2" />
+                    </svg>
+                    Network
+                  </div>
+                  <div style={styles.sectionGrid}>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>IP Address</label>
+                      <span style={{ ...styles.detailValue, ...styles.mono }}>{activeDetailsDevice.ipAddress}</span>
+                    </div>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Hostname</label>
+                      <span style={{ ...styles.detailValue, ...styles.mono }}>{activeDetailsDevice.hostname}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hardware Section */}
+                <div style={styles.section}>
+                  <div style={styles.sectionTitle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="6" y="6" width="12" height="12" rx="2" />
+                      <line x1="9" y1="2" x2="9" y2="6" /><line x1="15" y1="2" x2="15" y2="6" />
+                      <line x1="9" y1="18" x2="9" y2="22" /><line x1="15" y1="18" x2="15" y2="22" />
+                      <line x1="2" y1="9" x2="6" y2="9" /><line x1="2" y1="15" x2="6" y2="15" />
+                      <line x1="18" y1="9" x2="22" y2="9" /><line x1="18" y1="15" x2="22" y2="15" />
+                    </svg>
+                    Hardware
+                  </div>
+                  <div style={styles.sectionGrid}>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Serial Number</label>
+                      <span style={{ ...styles.detailValue, ...styles.mono }}>{activeDetailsDevice.serialNumber}</span>
+                    </div>
+                    <div style={styles.detailItem}>
+                      <label style={styles.detailLabel}>Adapter Type</label>
+                      <span style={styles.detailValue}>{activeDetailsDevice.adapterType}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Details Section */}
+                <div style={styles.section}>
+                  <div style={styles.sectionTitle}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 12h4l3 8 4-16 3 8h4" />
+                    </svg>
+                    Status Details
+                  </div>
+                  <div style={styles.statusRow}>
+                    <div style={styles.statusField}>
+                      <label style={styles.detailLabel}>Enabled Status</label>
+                      <span style={{ ...styles.badge(activeDetailsDevice.enabledStatus), marginTop: '8px', display: 'inline-block' }}>
+                        ● {activeDetailsDevice.enabledStatus}
+                      </span>
+                    </div>
+
+                    <div style={styles.statusField}>
+                      <label style={styles.detailLabel}>Operational Status</label>
+                      <span style={{ ...styles.badge(activeDetailsDevice.operationalStatus), marginTop: '8px', display: 'inline-block' }}>
+                        ● {activeDetailsDevice.operationalStatus}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timestamps */}
+                <div style={styles.timestampBar}>
+                  <span style={styles.timestampChip}>Last seen <strong>{activeDetailsDevice.lastSeen}</strong></span>
+                  <span style={styles.timestampSep} />
+                  <span style={styles.timestampChip}>Created <strong>{activeDetailsDevice.createdTimestamp}</strong></span>
+                  <span style={styles.timestampSep} />
+                  <span style={styles.timestampChip}>Updated <strong>{activeDetailsDevice.updatedTimestamp}</strong></span>
+                </div>
+              </div>
+
+              <div style={{ ...styles.modalFooter, marginTop: '20px' }}>
+                <button
+                  style={styles.modalCancel}
+                  onClick={() => setActiveDetailsDevice(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* NEW CODE: Bulk Details Modal popup */}
+        {showBulkDetailsModal && (
+          <div style={styles.detailsModalOverlay}>
+            <div style={styles.bulkModal} className="animate-modal-pop">
+              <div style={styles.modalHeader}>
+                <h2 style={styles.modalTitle}>👁️ Bulk Selected Devices ({selectedDevices.length})</h2>
+                <button
+                  style={styles.modalClose}
+                  onClick={() => setShowBulkDetailsModal(false)}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div style={{ ...styles.modalBody, maxHeight: '72vh', overflowY: 'auto' }}>
+                <div style={styles.bulkGrid}>
+                  {devices
+                    .filter(device => selectedDevices.includes(device.id))
+                    .map((device, idx) => {
+                      const isLocked = device.hasPassword && !bulkUnlocked[device.id];
+                      return (
+                        <div
+                          key={device.uuid}
+                          style={styles.bulkCard}
+                          className={`animate-card-pop ${bulkPasswordErrors[device.id] ? 'shake-effect' : ''}`}
+                          style={{
+                            ...styles.bulkCard,
+                            animationDelay: `${idx * 0.05}s`
+                          }}
+                        >
+                          {isLocked && (
+                            <div style={styles.lockOverlay}>
+                              <div style={styles.lockIcon}>🔒</div>
+                              <h3 style={{ margin: 0, fontSize: '15px', color: '#111015' }}>Password Protected</h3>
+                              <p style={{ margin: 0, fontSize: '12px', color: '#64748b', textAlign: 'center' }}>
+                                Details for <strong>{device.deviceName}</strong> are encrypted.
+                              </p>
+                              <input
+                                type="password"
+                                value={bulkPasswordInputs[device.id] || ''}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setBulkPasswordInputs(prev => ({ ...prev, [device.id]: val }));
+                                  setBulkPasswordErrors(prev => ({ ...prev, [device.id]: false }));
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') handleUnlockBulkDevice(device);
+                                }}
+                                style={styles.lockInput}
+                                placeholder="Enter password"
+                              />
+                              {bulkPasswordErrors[device.id] && (
+                                <span style={styles.lockError}>❌ Mismatch password.</span>
+                              )}
+                              <button
+                                style={styles.unlockButton}
+                                onClick={() => handleUnlockBulkDevice(device)}
+                              >
+                                Decrypt & View
+                              </button>
+                            </div>
+                          )}
+
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontWeight: '700', color: '#10b981', fontSize: '12px' }}>{device.id}</span>
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                              <span style={styles.badge(device.operationalStatus)}>● {device.operationalStatus}</span>
+                              <span style={styles.badge(device.enabledStatus)}>● {device.enabledStatus}</span>
+                            </div>
+                          </div>
+
+                          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#111015', textAlign: 'left' }}>{device.deviceName}</h3>
+                          
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Asset ID</span>
+                              <span style={{ color: '#111015', fontWeight: '700' }}>{device.assetId}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Model</span>
+                              <span style={{ color: '#111015' }}>{device.model}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>IP Address</span>
+                              <span style={{ color: '#111015', fontFamily: 'monospace' }}>{device.ipAddress}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Hostname</span>
+                              <span style={{ color: '#111015', fontFamily: 'monospace' }}>{device.hostname}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Site</span>
+                              <span style={{ color: '#111015' }}>{device.site}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Location</span>
+                              <span style={{ color: '#111015' }}>{device.location}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Serial No</span>
+                              <span style={{ color: '#111015', fontFamily: 'monospace' }}>{device.serialNumber}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span style={{ color: '#64748b', fontWeight: '600' }}>Last Seen</span>
+                              <span style={{ color: '#64748b', fontSize: '11px' }}>{device.lastSeen}</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+
+              <div style={styles.modalFooter}>
+                <button
+                  style={styles.modalCancel}
+                  onClick={() => setShowBulkDetailsModal(false)}
+                >
+                  Close Grid
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
