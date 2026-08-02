@@ -15,16 +15,20 @@ const AdminDetailView = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { userData = {}, empId = '' } = location.state || {};
+    const { userData: stateUserData = {}, empId: stateEmpId = '' } = location.state || {};
+    const empId = stateEmpId || localStorage.getItem("loggedInEmpId") || '';
 
     const [devices, setDevices] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // Custom profile states
-    const [currentUsername, setCurrentUsername] = useState(userData.username || 'Admin');
+    const [currentUsername, setCurrentUsername] = useState(stateUserData.username || 'Admin');
     const [isEditingUsername, setIsEditingUsername] = useState(false);
-    const [newUsername, setNewUsername] = useState(userData.username || '');
+    const [newUsername, setNewUsername] = useState(stateUserData.username || '');
     const [profileImage, setProfileImage] = useState(null);
+    const [officeEmail, setOfficeEmail] = useState(stateUserData.officeEmail || '');
+    const [joiningDate, setJoiningDate] = useState(stateUserData.joiningDate || '');
+    const [userRole, setUserRole] = useState(stateUserData.role || 'User');
 
     // Search users states
     const [searchUsername, setSearchUsername] = useState('');
@@ -111,10 +115,22 @@ const AdminDetailView = () => {
             .then(data => {
                 if (data.profileImage) {
                     setProfileImage(data.profileImage);
+                    localStorage.setItem("loggedInProfileImage", data.profileImage);
                 }
                 if (data.username) {
                     setCurrentUsername(data.username);
                     setNewUsername(data.username);
+                    localStorage.setItem("loggedInUsername", data.username);
+                }
+                if (data.officeEmail) {
+                    setOfficeEmail(data.officeEmail);
+                }
+                if (data.joiningDate) {
+                    setJoiningDate(data.joiningDate);
+                }
+                if (data.role) {
+                    setUserRole(data.role);
+                    localStorage.setItem("loggedInRole", data.role);
                 }
             })
             .catch(err => console.error("Failed to fetch user details:", err));
@@ -213,7 +229,9 @@ const AdminDetailView = () => {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ profileImage: base64Data })
                     });
-                    if (!response.ok) {
+                    if (response.ok) {
+                        localStorage.setItem("loggedInProfileImage", base64Data);
+                    } else {
                         console.error("Failed to upload profile image to server");
                     }
                 } catch (err) {
@@ -237,6 +255,7 @@ const AdminDetailView = () => {
             if (response.ok) {
                 const data = await response.json();
                 setCurrentUsername(data.username);
+                localStorage.setItem("loggedInUsername", data.username);
                 setIsEditingUsername(false);
                 // Also refresh users list to update mappings
                 fetchUsers();
@@ -324,7 +343,7 @@ const AdminDetailView = () => {
                                 </>
                             )}
                         </div>
-                        <div style={styles.empId}>{userData.officeEmail || 'N/A'}</div>
+                        <div style={styles.empId}>{officeEmail || 'N/A'}</div>
                         <div>
                             <input
                                 type="file"
@@ -390,8 +409,8 @@ const AdminDetailView = () => {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
                     <div style={styles.joiningInfo}>
-                        <div>Joined: {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'}</div>
-                        <div style={{ fontSize: '12px', color: '#ff7043', fontWeight: 'bold' }}>Role: Admin</div>
+                        <div>Joined: {joiningDate ? new Date(joiningDate).toLocaleDateString() : 'N/A'}</div>
+                        <div style={{ fontSize: '12px', color: '#ff7043', fontWeight: 'bold' }}>Role: {userRole || 'User'}</div>
                     </div>
                     <button onClick={handleLogout} style={styles.logoutBtn}>
                         Logout

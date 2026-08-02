@@ -1,17 +1,17 @@
 const colors = {
-  white: "#FFFFFF",
-  bgPage: "#F7F7F8",
-  textPrimary: "#171717",
-  textSecondary: "#8B8B90",
-  textMuted: "#B0B0B5",
-  border: "#EFEFF0",
-  orange: "#FF5A1F",
-  green: "#1FAA59",
-  greenLight: "#E7F8EE",
-  red: "#E5484D",
-  redLight: "#FDEAEA",
-  gray: "#9CA3AF",
-  grayLight: "#F1F1F2",
+  white: "#ffffff",
+  bgPage: "transparent",
+  textPrimary: "#111015",
+  textSecondary: "#64748b",
+  textMuted: "#94a3b8",
+  border: "#edf0f5",
+  orange: "#10b981",
+  green: "#10b981",
+  greenLight: "rgba(16, 185, 129, 0.08)",
+  red: "#ef4444",
+  redLight: "rgba(239, 68, 68, 0.08)",
+  gray: "#64748b",
+  grayLight: "rgba(100, 116, 139, 0.08)",
 };
 
 export const styles = {
@@ -20,19 +20,21 @@ export const styles = {
     width: "100%",
     backgroundColor: colors.bgPage,
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    padding: "24px 32px 48px",
+    padding: "24px 32px 48px 300px", // Added 300px padding left for sidebar
     boxSizing: "border-box",
   },
 
   titleSection: {
     marginBottom: "20px",
+    textAlign: "left",
   },
 
   title: {
-    fontSize: "24px",
-    fontWeight: 700,
+    fontSize: "28px",
+    fontWeight: 800,
     color: colors.textPrimary,
     margin: 0,
+    letterSpacing: "-0.02em",
   },
 
   subtitle: {
@@ -43,9 +45,10 @@ export const styles = {
 
   panel: {
     backgroundColor: colors.white,
-    borderRadius: "16px",
+    borderRadius: "24px",
     padding: "8px 20px 20px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)", // Premium light shadow
+    border: `1px solid ${colors.border}`,
   },
 
   toolbarRow: {
@@ -56,19 +59,21 @@ export const styles = {
   },
 
   searchInput: {
-    width: "260px",
-    padding: "10px 14px",
-    borderRadius: "10px",
+    width: "280px",
+    padding: "12px 16px",
+    borderRadius: "999px", // Pill shape search box
     border: `1px solid ${colors.border}`,
     fontSize: "13px",
     outline: "none",
+    backgroundColor: "#ffffff",
     color: colors.textPrimary,
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.02)",
   },
 
   countBadge: {
     fontSize: "13px",
     color: colors.textSecondary,
-    fontWeight: 500,
+    fontWeight: 600,
   },
 
   table: {
@@ -95,6 +100,7 @@ export const styles = {
     color: colors.textPrimary,
     padding: "14px 12px",
     borderBottom: `1px solid ${colors.border}`,
+    textAlign: "left",
   },
 
   userNameCell: {
@@ -108,7 +114,7 @@ export const styles = {
     width: "32px",
     height: "32px",
     borderRadius: "50%",
-    backgroundColor: colors.grayLight,
+    backgroundColor: "#f1f5f9",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -116,6 +122,7 @@ export const styles = {
     fontWeight: 700,
     color: colors.textPrimary,
     flexShrink: 0,
+    border: `1px solid ${colors.border}`,
   },
 
   mutedCell: {
@@ -147,7 +154,7 @@ export const styles = {
     borderRadius: "999px",
     border: "none",
     cursor: "pointer",
-    backgroundColor: enabled ? colors.orange : colors.grayLight,
+    backgroundColor: enabled ? colors.orange : "rgba(255, 255, 255, 0.08)",
     position: "relative",
     transition: "background-color 0.15s ease",
     padding: 0,
@@ -160,9 +167,9 @@ export const styles = {
     width: "16px",
     height: "16px",
     borderRadius: "50%",
-    backgroundColor: colors.white,
+    backgroundColor: "#ffffff",
     transition: "left 0.15s ease",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
   }),
 
   actionsCell: {

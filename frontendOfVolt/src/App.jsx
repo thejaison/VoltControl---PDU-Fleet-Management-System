@@ -10,6 +10,8 @@ import ScanningDashboard from "./component/ScanJobTasks/ScanningDashboard";
 import CreateScanJob from "./component/ScanJobTasks/CreateScanJob";
 import OverAllDashboard from "./component/OverAllDashboard";
 import ManageUsers from "./component/UsersManage/ManageUsers";
+import SystemMonitoring from "./component/SystemMonitoring";
+import ReportsDashboard from "./component/ReportsDashboard";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route path="/job/scan" element={<ScanningDashboard/>}/>
         <Route path="/scan/create" element={<CreateScanJob/>}/>
         <Route path="/manage/users" element={<ManageUsers/>}/>
+        <Route path="/monitoring" element={<SystemMonitoring/>}/>
+        <Route path="/reports" element={<ReportsDashboard/>}/>
 
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>

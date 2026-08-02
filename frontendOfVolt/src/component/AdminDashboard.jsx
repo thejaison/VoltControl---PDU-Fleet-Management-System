@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles } from "../styles/files/AdminDashboardStyles";
 import Sidebar from "./Sidebar";
+import voltlogo from "../assets/voltlog1.png";
 
 const AdminDashboard = () => {
 
@@ -490,11 +491,13 @@ const AdminDashboard = () => {
 
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="main-content-shift">
       <Sidebar/>
       <header style={styles.header}>
         <div style={styles.logoSection}>
-          <div style={styles.logoBadge}>𝝯</div>
+          <div style={styles.logoBadge}>
+            <img src={voltlogo} alt="VoltControl" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+          </div>
           <span style={styles.metaText}>
             {userData.username || 'User'} • 
             {userData.joiningDate ? new Date(userData.joiningDate).toLocaleDateString() : 'N/A'} • 

@@ -38,8 +38,12 @@ public class UserProfileController {
         User user = userOpt.get();
         UserDto dto = new UserDto();
         dto.setUsername(user.getId().getUsername());
-        dto.setJoiningDate(user.getJoiningDate());
+        dto.setEmpId(user.getId().getEmpId());
+        dto.setRole(user.getRole());
         dto.setOfficeEmail(user.getOfficeEmail());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setJoiningDate(user.getJoiningDate());
+        dto.setEnabled(user.isEnabled());
         dto.setProfileImage(user.getProfileImage());
 
         return ResponseEntity.ok(dto);

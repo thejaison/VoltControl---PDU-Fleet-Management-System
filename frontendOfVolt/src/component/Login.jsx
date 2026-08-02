@@ -36,13 +36,15 @@ const Login = () => {
 
             localStorage.setItem("loggedInEmpId", formData.empId);
             localStorage.setItem("loggedInRole", data.role);
+            localStorage.setItem("loggedInUsername", data.id.username);
+            localStorage.setItem("loggedInEmail", data.officeEmail);
 
             navigate("/dashboard", {
                 state: {
                     username: data.id.username,
                     role: data.role,
                     joiningDate: data.joiningDate,
-                    officeEmail: data.officeMail
+                    officeEmail: data.officeEmail
                 }
             });
         } else {

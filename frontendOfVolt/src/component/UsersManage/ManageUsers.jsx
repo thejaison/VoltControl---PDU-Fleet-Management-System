@@ -77,7 +77,7 @@ const ManageUsers = () => {
     });
 
     return (
-        <div style={styles.page}>
+        <div style={styles.page} className="main-content-shift">
             <Sidebar/>
 
             <div style={styles.titleSection}>

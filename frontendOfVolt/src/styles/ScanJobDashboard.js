@@ -1,18 +1,18 @@
 const colors = {
-  white: "#FFFFFF",
-  bgPage: "#F7F7F8",
-  textPrimary: "#171717",
-  textSecondary: "#8B8B90",
-  textMuted: "#B0B0B5",
-  border: "#EFEFF0",
-  orange: "#FF5A1F",
-  orangeLight: "#FFEDE3",
-  green: "#1FAA59",
-  greenLight: "#E7F8EE",
-  red: "#E5484D",
-  redLight: "#FDEAEA",
-  gray: "#9CA3AF",
-  grayLight: "#F1F1F2",
+  white: "#ffffff",
+  bgPage: "transparent",
+  textPrimary: "#111015",
+  textSecondary: "#64748b",
+  textMuted: "#94a3b8",
+  border: "#edf0f5",
+  orange: "#10b981", // Replaced purple with pastel green
+  orangeLight: "rgba(16, 185, 129, 0.08)", // Replaced purple with pastel green
+  green: "#10b981",
+  greenLight: "rgba(16, 185, 129, 0.08)",
+  red: "#ef4444",
+  redLight: "rgba(239, 68, 68, 0.08)",
+  gray: "#64748b",
+  grayLight: "rgba(100, 116, 139, 0.08)",
 };
 
 const statusColors = {
@@ -41,7 +41,7 @@ export const styles = {
     width: "100%",
     backgroundColor: colors.bgPage,
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    padding: "24px 32px 48px",
+    padding: "24px 32px 48px 300px", // Added 300px padding left for sidebar
     boxSizing: "border-box",
   },
 
@@ -51,10 +51,11 @@ export const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: colors.white,
-    borderRadius: "16px",
+    borderRadius: "24px",
     padding: "14px 20px",
     marginBottom: "20px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)", // Premium soft shadow
+    border: `1px solid ${colors.border}`,
   },
 
   logoSection: {
@@ -67,11 +68,12 @@ export const styles = {
     width: "38px",
     height: "38px",
     borderRadius: "12px",
-    backgroundColor: colors.orange,
+    background: "linear-gradient(135deg, #34d399, #10b981)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: colors.white,
+    color: "#ffffff",
+    boxShadow: "0 8px 16px rgba(16, 185, 129, 0.2)",
   },
 
   logoText: {
@@ -84,9 +86,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "4px",
-    backgroundColor: colors.bgPage,
+    backgroundColor: "#f1f5f9", // Soft light pill background
     borderRadius: "999px",
     padding: "4px",
+    border: "1px solid #e2e8f0",
   },
 
   navPill: (isActive) => ({
@@ -96,8 +99,8 @@ export const styles = {
     borderRadius: "999px",
     fontSize: "14px",
     fontWeight: isActive ? 600 : 500,
-    backgroundColor: isActive ? colors.textPrimary : "transparent",
-    color: isActive ? colors.white : colors.textSecondary,
+    background: isActive ? "linear-gradient(135deg, #34d399, #10b981)" : "transparent",
+    color: isActive ? "#ffffff" : colors.textSecondary,
     transition: "all 0.15s ease",
   }),
 
@@ -146,7 +149,7 @@ export const styles = {
     width: "28px",
     height: "28px",
     borderRadius: "50%",
-    backgroundColor: colors.grayLight,
+    backgroundColor: "#f1f5f9",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -208,13 +211,13 @@ export const styles = {
     gap: "8px",
     border: "none",
     cursor: "pointer",
-    backgroundColor: colors.orange,
-    color: colors.white,
+    background: "linear-gradient(135deg, #34d399, #10b981)",
+    color: "#ffffff",
     fontSize: "14px",
     fontWeight: 600,
     padding: "13px 20px",
     borderRadius: "12px",
-    boxShadow: "0 6px 16px rgba(255,90,31,0.28)",
+    boxShadow: "0 6px 16px rgba(16, 185, 129, 0.2)",
   },
 
   // ---------- Stat cards ----------
@@ -229,10 +232,11 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "14px",
-    backgroundColor: isHighlighted ? colors.orange : colors.white,
+    background: isHighlighted ? "linear-gradient(135deg, #34d399, #10b981)" : colors.white,
     borderRadius: "16px",
     padding: "18px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+    boxShadow: isHighlighted ? "0 12px 28px rgba(16, 185, 129, 0.2)" : "0 8px 30px rgba(0, 0, 0, 0.03)",
+    border: `1px solid ${colors.border}`,
   }),
 
   statIconWrap: (isHighlighted, tint) => ({
@@ -244,20 +248,22 @@ export const styles = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: isHighlighted ? "rgba(255,255,255,0.2)" : tint,
-    color: isHighlighted ? colors.white : colors.orange,
+    color: isHighlighted ? "#ffffff" : colors.orange,
   }),
 
   statLabel: (isHighlighted) => ({
     fontSize: "13px",
     fontWeight: 500,
     color: isHighlighted ? "rgba(255,255,255,0.85)" : colors.textSecondary,
+    textAlign: "left",
   }),
 
   statValue: (isHighlighted) => ({
     fontSize: "22px",
     fontWeight: 700,
-    color: isHighlighted ? colors.white : colors.textPrimary,
+    color: isHighlighted ? "#ffffff" : colors.textPrimary,
     marginTop: "2px",
+    textAlign: "left",
   }),
 
   statTrend: (isHighlighted, isPositive) => ({
@@ -280,9 +286,10 @@ export const styles = {
   // ---------- Panel shell (shared by all card-like sections) ----------
   panel: {
     backgroundColor: colors.white,
-    borderRadius: "16px",
+    borderRadius: "24px",
     padding: "20px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)",
+    border: `1px solid ${colors.border}`,
   },
 
   panelHeaderRow: {
@@ -466,7 +473,7 @@ export const styles = {
     width: "96px",
     height: "96px",
     borderRadius: "50%",
-    backgroundColor: colors.white,
+    backgroundColor: "#ffffff",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -589,7 +596,7 @@ export const styles = {
     height: "28px",
     borderRadius: "8px",
     border: `1px solid ${colors.border}`,
-    backgroundColor: colors.white,
+    backgroundColor: "#f1f5f9",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

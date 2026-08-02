@@ -1,20 +1,20 @@
 export const styles = {
   container: {
     fontFamily: "'Montserrat', sans-serif",
-    background: 'radial-gradient(circle at 16% 8%, rgba(168, 85, 247, 0.12), transparent 30%), linear-gradient(135deg, transparent 0%, transparent 100%)',
+    background: 'transparent',
     minHeight: '100vh',
-    padding: '24px 40px',
-    color: '#ffffff',
+    padding: '24px 40px 24px 300px', // Added 300px padding left for the sidebar
+    color: '#111015',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '18px 22px',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    border: '1px solid #eef0f5',
     borderRadius: '24px',
-    background: 'rgba(255, 255, 255, 0.02)',
-    boxShadow: '0 24px 56px rgba(255, 255, 255, 0.05)',
+    background: '#ffffff',
+    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
     marginBottom: '30px',
   },
   logoSection: {
@@ -25,12 +25,11 @@ export const styles = {
   logoBox: {
     fontSize: '28px',
     fontWeight: '700',
-    color: '#1a1a1a',
-  
+    color: '#111015',
   },
   metaText: {
     fontSize: '13px',
-    color: '#94a3b8',
+    color: '#64748b',
   },
   navSection: {
     display: 'flex',
@@ -39,31 +38,26 @@ export const styles = {
   },
   navButtonActive: {
     padding: '8px 20px',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+    border: '1px solid rgba(16, 185, 129, 0.25)',
+    color: '#10b981',
+    fontWeight: '600',
+    fontSize: '14px',
+    cursor: 'pointer',
+    borderRadius: '999px',
+    transition: 'all 0.2s',
+  },
+  navButtonAction: {
+    padding: '8px 20px',
+    background: 'linear-gradient(135deg, #34d399, #10b981)',
     border: 'none',
     color: '#ffffff',
     fontWeight: '600',
     fontSize: '14px',
     cursor: 'pointer',
-    borderRadius: '6px',
+    borderRadius: '999px',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#f0f0f0',
-    }
-  },
-  navButtonAction: {
-    padding: '8px 20px',
-    backgroundColor: '#ffffff',
-    border: 'none',
-    color: 'white',
-    fontWeight: '600',
-    fontSize: '14px',
-    cursor: 'pointer',
-    borderRadius: '6px',
-    transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#333',
-    }
+    boxShadow: '0 8px 16px rgba(16, 185, 129, 0.2)',
   },
   mainContent: {
     maxWidth: '1320px',
@@ -85,7 +79,7 @@ export const styles = {
   title: {
     fontSize: '28px',
     fontWeight: '700',
-    color: '#ffffff',
+    color: '#111015',
     marginBottom: '10px',
   },
   subTitleSection: {
@@ -95,16 +89,17 @@ export const styles = {
   },
   subTitle: {
     fontSize: '16px',
-    color: '#94a3b8',
+    color: '#64748b',
     fontWeight: '500',
   },
   countBadge: {
-    backgroundColor: '#ffffff',
-    color: 'white',
-    padding: '2px 10px',
-    borderRadius: '12px',
+    background: 'rgba(16, 185, 129, 0.08)',
+    color: '#10b981',
+    padding: '4px 12px',
+    borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '600',
+    border: '1px solid rgba(16, 185, 129, 0.25)',
   },
   actionButtons: {
     display: 'flex',
@@ -117,22 +112,20 @@ export const styles = {
   searchInput: {
     padding: '8px 16px',
     borderRadius: '999px',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    border: '1px solid #e2e8f0',
+    backgroundColor: '#ffffff',
+    color: '#111015',
     fontSize: '14px',
     minWidth: '200px',
     width: '220px',
     outline: 'none',
     transition: 'border-color 0.2s',
-    ':focus': {
-    borderColor: '#6366f1',
-      boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
-    }
   },
   iconButton: {
     padding: '8px 12px',
     backgroundColor: '#ffffff',
-    color: 'white',
-    border: 'none',
+    color: '#111015',
+    border: '1px solid #e2e8f0',
     borderRadius: '16px',
     fontSize: '20px',
     fontWeight: '600',
@@ -143,25 +136,17 @@ export const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    ':hover': {
-      backgroundColor: '#2a2a27',
-      transform: 'scale(1.05)',
-    }
   },
   actionButton: {
     padding: '8px 16px',
-    backgroundColor: 'white',
-    color: '#1a1a1a',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    backgroundColor: '#ffffff',
+    color: '#111015',
+    border: '1px solid #e2e8f0',
     borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#f0f0f0',
-      borderColor: '#6366f1',
-    }
   },
   deviceList: {
     display: 'flex',
@@ -169,13 +154,12 @@ export const styles = {
     gap: '10px',
   },
   deviceCard: {
-    backgroundColor: 'white',
-    borderRadius: '20px',
-    boxShadow: '0 18px 44px rgba(255, 255, 255, 0.05)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    backgroundColor: '#ffffff',
+    borderRadius: '24px',
+    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
+    border: '1px solid #eef0f5',
     overflow: 'hidden',
     transition: 'all 0.3s ease',
-    backdropFilter: 'blur(20px)',
   },
   deviceHeader: {
     display: 'flex',
@@ -194,7 +178,7 @@ export const styles = {
     width: '18px',
     height: '18px',
     cursor: 'pointer',
-    accentColor: '#1a1a1a',
+    accentColor: '#6366f1',
   },
   deviceNumber: {
     fontWeight: '600',
@@ -205,14 +189,14 @@ export const styles = {
   deviceName: {
     fontWeight: '600',
     fontSize: '16px',
-    color: '#ffffff',
+    color: '#111015',
   },
   assetIdBadge: {
-    backgroundColor: 'rgba(168, 85, 247, 0.12)',
+    backgroundColor: 'rgba(99, 102, 241, 0.08)',
     padding: '4px 12px',
     borderRadius: '12px',
     fontSize: '12px',
-    color: '#a855f7',
+    color: '#6366f1',
     fontWeight: '500',
   },
   deviceHeaderRight: {
@@ -229,13 +213,13 @@ export const styles = {
     borderRadius: '14px',
     transition: 'background-color 0.2s',
     ':hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
     }
   },
   deviceDetails: {
     padding: '20px',
-    borderTop: '1px solid #e8e8e8',
-    backgroundColor: '#fbfbfa',
+    borderTop: '1px solid #eef0f5',
+    backgroundColor: '#f8fafc',
   },
   detailsHeader: {
     display: 'flex',
@@ -243,12 +227,12 @@ export const styles = {
     alignItems: 'center',
     marginBottom: '20px',
     paddingBottom: '12px',
-    borderBottom: '1px solid #e9e9e5',
+    borderBottom: '1px solid #eef0f5',
   },
   detailsTitle: {
     fontSize: '16px',
     fontWeight: '600',
-    color: '#ffffff',
+    color: '#111015',
   },
   detailsActions: {
     display: 'flex',
@@ -257,47 +241,36 @@ export const styles = {
   editButton: {
     padding: '6px 16px',
     backgroundColor: '#ffffff',
-    color: 'white',
-    border: 'none',
+    color: '#111015',
+    border: '1px solid #cbd5e1',
     borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#2a2a27',
-      transform: 'scale(1.05)',
-    }
   },
   saveButton: {
     padding: '6px 16px',
-    backgroundColor: '#6366f1',
-    color: 'white',
+    background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+    color: '#ffffff',
     border: 'none',
     borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#a855f7',
-      transform: 'scale(1.05)',
-    }
+    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.25)',
   },
   cancelButton: {
     padding: '6px 16px',
-    backgroundColor: '#c62828',
-    color: 'white',
-    border: 'none',
+    backgroundColor: 'rgba(239, 68, 68, 0.08)',
+    color: '#ef4444',
+    border: '1px solid rgba(239, 68, 68, 0.25)',
     borderRadius: '999px',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#b71c1c',
-      transform: 'scale(1.05)',
-    }
   },
   detailsGrid: {
     display: 'grid',
@@ -312,51 +285,48 @@ export const styles = {
   detailLabel: {
     fontSize: '11px',
     fontWeight: '600',
-    color: '#94a3b8',
+    color: '#64748b',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
   detailValue: {
     fontSize: '14px',
-    color: '#ffffff',
+    color: '#111015',
     wordBreak: 'break-word',
     fontWeight: '500',
   },
   editInput: {
     padding: '6px 8px',
     borderRadius: '14px',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    border: '1px solid #cbd5e1',
     fontSize: '14px',
     outline: 'none',
-    backgroundColor: 'white',
-    color: '#ffffff',
-    ':focus': {
-      boxShadow: '0 0 0 3px rgba(255,112,67,0.14)',
-    }
+    backgroundColor: '#ffffff',
+    color: '#111015',
   },
   selectDropdown: {
     padding: '6px 10px',
     borderRadius: '14px',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    backgroundColor: 'white',
+    border: '1px solid #cbd5e1',
+    backgroundColor: '#ffffff',
     fontSize: '13px',
     cursor: 'pointer',
     width: '140px',       // fixed width — add this
     minWidth: '140px',    // keep this too
     maxWidth: '140px',    // add this
-    color: '#ffffff',
+    color: '#111015',
     fontWeight: '500',
     transition: 'border-color 0.2s',
   },
   badge: (status) => {
     const colors = {
-        Online:   { bg: 'rgba(255, 112, 67, 0.11)', color: '#a855f7' },
-        Warning:  { bg: '#fff0e9', color: '#a855f7' },
-        Error:    { bg: 'rgba(255, 255, 255, 0.05)', color: '#ffffff' },
-        Offline:  { bg: 'rgba(255, 255, 255, 0.05)', color: '#ffffff' },
-        Enabled:  { bg: 'rgba(255, 112, 67, 0.11)', color: '#a855f7' },
-        Disabled: { bg: 'rgba(0, 0, 0, 0.2)', color: '#94a3b8' },
-        Unknown:  { bg: '#f3f4f6', color: '#6b7280' },
+        Online:   { bg: 'rgba(34, 197, 94, 0.12)', color: '#22c55e' },
+        Warning:  { bg: 'rgba(245, 158, 11, 0.12)', color: '#d97706' },
+        Error:    { bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444' },
+        Offline:  { bg: 'rgba(100, 116, 139, 0.12)', color: '#64748b' },
+        Enabled:  { bg: 'rgba(34, 197, 94, 0.12)', color: '#22c55e' },
+        Disabled: { bg: 'rgba(100, 116, 139, 0.12)', color: '#64748b' },
+        Unknown:  { bg: 'rgba(100, 116, 139, 0.12)', color: '#64748b' },
     };
     const selected = colors[status] || { bg: '#f3f4f6', color: '#6b7280' }; // safe fallback, no more colors.Fine
     return {
@@ -431,28 +401,29 @@ export const styles = {
       transform: 'rotate(45deg)',
     },
   },
-
   modalOverlay: {
     position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(4, 4, 8, 0.65)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
+    backdropFilter: 'blur(10px)',
   },
   modal: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(15, 15, 25, 0.85)',
     borderRadius: '24px',
     padding: '30px',
     maxWidth: '800px',
     width: '90%',
     maxHeight: '90vh',
     overflowY: 'auto',
-    boxShadow: '0 28px 70px rgba(24,24,22,0.18)',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
+    boxShadow: '0 28px 70px rgba(0, 0, 0, 0.6)',
   },
   modalHeader: {
     display: 'flex',
@@ -460,7 +431,7 @@ export const styles = {
     alignItems: 'center',
     marginBottom: '20px',
     paddingBottom: '15px',
-    borderBottom: '2px solid #f0f0f0',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
   },
   modalTitle: {
     fontSize: '24px',
@@ -473,11 +444,8 @@ export const styles = {
     border: 'none',
     fontSize: '24px',
     cursor: 'pointer',
-    color: '#999',
+    color: '#a855f7',
     padding: '5px',
-    ':hover': {
-      color: '#ffffff',
-    }
   },
   modalBody: {
     marginBottom: '20px',
@@ -495,57 +463,50 @@ export const styles = {
   modalLabel: {
     fontSize: '12px',
     fontWeight: '600',
-    color: '#555',
+    color: '#94a3b8',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
   modalInput: {
     padding: '8px 12px',
     borderRadius: '14px',
-    border: '1px solid #d0d0d0',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     fontSize: '14px',
     outline: 'none',
-    transition: 'border-color 0.2s',
-    ':focus': {
-      borderColor: '#6366f1',
-    }
+    backgroundColor: 'rgba(255, 255, 255, 0.02)',
+    color: '#ffffff',
   },
   modalSelect: {
     padding: '8px 12px',
     borderRadius: '14px',
-    border: '1px solid #d0d0d0',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     fontSize: '14px',
     outline: 'none',
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(15, 15, 25, 0.95)',
+    color: '#ffffff',
     cursor: 'pointer',
-    ':focus': {
-      borderColor: '#6366f1',
-    }
   },
   modalFooter: {
     display: 'flex',
     justifyContent: 'flex-end',
     gap: '12px',
     paddingTop: '20px',
-    borderTop: '2px solid #f0f0f0',
+    borderTop: '1px solid rgba(255, 255, 255, 0.05)',
   },
   modalCancel: {
     padding: '10px 24px',
-    backgroundColor: 'transparent',
-    color: '#555',
-    border: '1px solid #d0d0d0',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    color: '#ffffff',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     borderRadius: '999px',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#f5f5f5',
-    }
   },
   modalCreate: {
     padding: '10px 24px',
-    backgroundColor: '#6366f1',
+    background: 'linear-gradient(135deg, #6366f1, #a855f7)',
     color: 'white',
     border: 'none',
     borderRadius: '999px',
@@ -553,30 +514,23 @@ export const styles = {
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    ':hover': {
-      backgroundColor: '#a855f7',
-    }
+    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.25)',
   },
-
   deleteButton: {
     background: 'none',
     border: 'none',
-    color: '#c62828',
+    color: '#ef4444',
     fontSize: '16px',
     cursor: 'pointer',
     padding: '4px 8px',
     borderRadius: '4px',
     transition: 'all 0.2s',
     fontWeight: '600',
-    ':hover': {
-      backgroundColor: '#ffebee',
-    }
   },
-
   deleteSelectedBtn: {
-    background: '#ef4444',
-    color: '#fff',
-    border: 'none',
+    background: 'rgba(239, 68, 68, 0.15)',
+    color: '#ef4444',
+    border: '1px solid rgba(239, 68, 68, 0.3)',
     cursor: 'pointer',
     fontWeight: '600',
     borderRadius: '999px',

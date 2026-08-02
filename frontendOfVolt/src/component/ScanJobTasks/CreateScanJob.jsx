@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import { styles, colors, statusColors } from "../../styles/ScanJobDashboard";
+import voltlogo from "../../assets/voltlog1.png";
 
 const ArrowLeftIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -136,15 +137,13 @@ const CreateScanJob = () => {
     const isAdmin = role === "Admin";
 
     return (
-        <div style={styles.page}>
+        <div style={styles.page} className="main-content-shift">
             <Sidebar />
 
             <header style={styles.header}>
                 <div style={styles.logoSection}>
                     <div style={styles.logoBadge}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z" />
-                        </svg>
+                        <img src={voltlogo} alt="VoltControl" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
                     </div>
                     <span style={styles.logoText}>VoltControl</span>
                 </div>

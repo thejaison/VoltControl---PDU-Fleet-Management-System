@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles, colors, statusColors } from "../../styles/ScanJobDashboard";
 import Sidebar from "../Sidebar";
+import voltlogo from "../../assets/voltlog1.png";
 
 const SunIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -145,7 +146,7 @@ const ScanningDashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [userData, setUserData] = useState({ username: "" });
+    const [userData, setUserData] = useState({ username: "", profileImage: "", officeEmail: "", joiningDate: "", role: "" });
     const [scanJobs, setScanJobs] = useState([]);
     const [recentResults, setRecentResults] = useState([]);
     const [resultsDatabase, setResultsDatabase] = useState([]);
@@ -198,14 +199,26 @@ const ScanningDashboard = () => {
 
     useEffect(() => {
         if (location.state?.username) {
-            setUserData({ username: location.state.username });
+            setUserData({
+                username: location.state.username || "",
+                profileImage: location.state.profileImage || "",
+                officeEmail: location.state.officeEmail || "",
+                joiningDate: location.state.joiningDate || "",
+                role: location.state.role || ""
+            });
         } else if (empId) {
             const fetchProfileData = async () => {
                 try {
                     const response = await fetch(`http://localhost:8080/api/users/${empId}`);
                     if (response.ok) {
                         const databaseUser = await response.json();
-                        setUserData({ username: databaseUser.username || "" });
+                        setUserData({
+                            username: databaseUser.username || "",
+                            profileImage: databaseUser.profileImage || "",
+                            officeEmail: databaseUser.officeEmail || "",
+                            joiningDate: databaseUser.joiningDate || "",
+                            role: databaseUser.role || ""
+                        });
                     }
                 } catch (error) {
                     console.error("Network communication error with backend user controller:", error);
@@ -627,15 +640,13 @@ const ScanningDashboard = () => {
     };
 
     return (
-        <div style={styles.page}>
+        <div style={styles.page} className="main-content-shift">
             <Sidebar />
 
             <header style={styles.header}>
                 <div style={styles.logoSection}>
                     <div style={styles.logoBadge}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z" />
-                        </svg>
+                        <img src={voltlogo} alt="VoltControl" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
                     </div>
                     <span style={styles.logoText}>PDU Scan</span>
                 </div>
@@ -669,8 +680,22 @@ const ScanningDashboard = () => {
                         <span style={styles.notificationDot} />
                     </div>
                     <div style={styles.iconCircle}><HelpIcon /></div>
-                    <div style={styles.profilePill}>
-                        <span style={styles.avatarCircle}>{firstName.charAt(0).toUpperCase()}</span>
+                    <div 
+                        style={{ ...styles.profilePill, cursor: 'pointer' }}
+                        onClick={() => navigate('/admin/detail', {
+                            state: {
+                                userData,
+                                empId: localStorage.getItem('loggedInEmpId')
+                            }
+                        })}
+                    >
+                        <span style={{ ...styles.avatarCircle, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {userData.profileImage ? (
+                                <img src={userData.profileImage} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                                firstName.charAt(0).toUpperCase()
+                            )}
+                        </span>
                         <span style={styles.profileName}>{firstName}</span>
                         <ChevronDownIcon />
                     </div>

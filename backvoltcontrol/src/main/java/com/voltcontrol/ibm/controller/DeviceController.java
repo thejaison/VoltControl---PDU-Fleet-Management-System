@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.voltcontrol.ibm.dto.DeviceDto;
 import com.voltcontrol.ibm.entity.Device;
+import com.voltcontrol.ibm.exception.ResourceNotFoundException;
 import com.voltcontrol.ibm.repository.DeviceRepository;
 import com.voltcontrol.ibm.repository.DeviceSpecifications;
 import com.voltcontrol.ibm.util.PasswordEncryptionUtil;
@@ -50,11 +51,15 @@ public class DeviceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDevice(@PathVariable Long id, @RequestBody DeviceDto dto) {
-        Optional<Device> opt = deviceRepository.findById(id);
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
-        }
-        Device device = opt.get();
+        // This is the normal approach of the normal exception handler ->
+        // Optional<Device> opt = deviceRepository.findById(id);
+        /*
+         * if (opt.isEmpty()) {
+         * return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+         * }
+         */
+        Device device = deviceRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Device not found."));
         mapDtoToDevice(dto, device);
         return ResponseEntity.ok(deviceRepository.save(device));
     }
@@ -62,7 +67,7 @@ public class DeviceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDevice(@PathVariable Long id) {
         if (!deviceRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+            throw new ResourceNotFoundException("Device not found.");
         }
         deviceRepository.deleteById(id);
         return ResponseEntity.ok("Device deleted.");
@@ -70,12 +75,16 @@ public class DeviceController {
 
     @PostMapping("/{id}/verify-password")
     public ResponseEntity<?> verifyPassword(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        Optional<Device> opt = deviceRepository.findById(id);
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
-        }
+        // Optional<Device> opt = deviceRepository.findById(id);
+        /*
+         * if (opt.isEmpty()) {
+         * return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+         * }
+         */
 
-        Device device = opt.get();
+        Device device = deviceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Device not found."));
+
         String submitted = body.get("password");
 
         boolean matches = false;
@@ -89,12 +98,16 @@ public class DeviceController {
 
     @GetMapping("/{id}/reveal-password")
     public ResponseEntity<?> revealPassword(@PathVariable Long id) {
-        Optional<Device> opt = deviceRepository.findById(id);
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
-        }
+        // Optional<Device> opt = deviceRepository.findById(id);
+        /*
+         * if (opt.isEmpty()) {
+         * return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Device not found.");
+         * }
+         */
 
-        Device device = opt.get();
+        Device device = deviceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Device not found."));
+
         if (device.getPassword() == null) {
             return ResponseEntity.ok(Map.of("password", ""));
         }

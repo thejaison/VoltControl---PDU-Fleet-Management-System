@@ -51,6 +51,8 @@ const Signup = () => {
 
         localStorage.setItem("loggedInEmpId", formData.empId);
         localStorage.setItem("loggedInRole", formData.role);
+        localStorage.setItem("loggedInUsername", formData.username);
+        localStorage.setItem("loggedInEmail", formData.officeEmail);
 
         navigate("/dashboard", {
           state: {

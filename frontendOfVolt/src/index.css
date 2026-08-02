@@ -1,47 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  --volt-orange: #a855f7;
-  --volt-orange-deep: #6366f1;
-  --volt-ink: #ffffff;
-  --volt-muted: #94a3b8;
-  --volt-line: rgba(255, 255, 255, 0.08);
-  --volt-shell: #09090b;
-  --volt-card: rgba(255, 255, 255, 0.02);
+  --volt-orange: #6366f1;
+  --volt-orange-deep: #4f46e5;
+  --volt-ink: #111015;
+  --volt-muted: #64748b;
+  --volt-line: #e2e8f0;
+  --volt-shell: #f4f6fa;
+  --volt-card: #ffffff;
   --text: var(--volt-muted);
   --text-h: var(--volt-ink);
   --bg: var(--volt-shell);
   --border: var(--volt-line);
-  --code-bg: rgba(255, 255, 255, 0.05);
+  --code-bg: rgba(0, 0, 0, 0.05);
   --accent: var(--volt-orange);
-  --accent-bg: rgba(168, 85, 247, 0.12);
-  --accent-border: rgba(168, 85, 247, 0.42);
-  --social-bg: rgba(255, 255, 255, 0.02);
-  --shadow: rgba(0, 0, 0, 0.4) 0 20px 40px;
+  --accent-bg: rgba(99, 102, 241, 0.08);
+  --accent-border: rgba(99, 102, 241, 0.25);
+  --social-bg: rgba(0, 0, 0, 0.02);
+  --shadow: rgba(0, 0, 0, 0.04) 0 10px 30px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: dark;
+  font: 16px/145% var(--sans);
+  letter-spacing: 0.1px;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
-              radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
-              #07070c;
+  background: #f3f4f8;
   color: var(--volt-ink);
   font-family: var(--sans);
 }
@@ -50,7 +46,6 @@ body {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  text-align: center;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -80,8 +75,8 @@ select {
 
 .minimal-import-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
-  border-color: #d1d5db;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
 }
 
 .minimal-import-card button,
@@ -93,32 +88,32 @@ select {
 .minimal-import-card .import-browse-button:hover,
 .minimal-import-card a:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
 }
 
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-h);
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: 0;
+  font-size: 42px;
+  letter-spacing: -0.02em;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: 32px;
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
+  font-size: 22px;
+  line-height: 120%;
+  letter-spacing: -0.01em;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 p {
@@ -134,43 +129,183 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
 }
 
 /* Custom premium hover and glow effects */
-button, input, select {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.sidebar-nav-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.15);
+.sidebar-nav-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  transform: translateX(4px) !important;
+  color: #ffffff !important;
 }
 
-/* Translucent cards and buttons should have custom hover border glow */
-div[style*="rgba(255, 255, 255, 0.02)"]:hover,
-div[style*="rgba(255, 255, 255, 0.03)"]:hover,
-button[style*="rgba(255, 255, 255, 0.03)"]:hover {
-  border-color: rgba(99, 102, 241, 0.3) !important;
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.05), inset 0 0 0 1px rgba(99, 102, 241, 0.1) !important;
+.sidebar-nav-btn:hover:not(:disabled) img {
+  opacity: 0.9 !important;
 }
 
-/* Custom Scrollbar for modern dark interfaces */
+.sidebar-nav-btn-active:hover {
+  background-color: #ffffff !important;
+  transform: scale(1.02) !important;
+  color: #18171c !important;
+}
+
+button, input, select, textarea, a {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button:hover:not(:disabled), a:hover {
+  transform: translateY(-1.5px);
+  filter: brightness(1.05);
+}
+
+button:active {
+  transform: translateY(0.5px);
+}
+
+/* Card hover glow and lift for white cards */
+div[style*="border-radius"][style*="rgb(255, 255, 255)"]:hover,
+div[style*="borderRadius"][style*="rgb(255, 255, 255)"]:hover,
+div[style*="border-radius"][style*="#ffffff"]:hover,
+div[style*="borderRadius"][style*="#ffffff"]:hover,
+div[style*="border-radius"][style*="white"]:hover,
+div[style*="borderRadius"][style*="white"]:hover,
+.minimal-import-card:hover {
+  border-color: rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(99, 102, 241, 0.05) !important;
+  transform: translateY(-2px);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08) !important;
+}
+
+/* Custom Scrollbar for modern interfaces */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: #f1f5f9;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(99, 102, 241, 0.4);
 }
+
+/* Sidebar toggle responsive shift rules */
+body.sidebar-collapsed .main-content-shift {
+  padding-left: 32px !important;
+  margin-left: 0 !important;
+}
+
+body.sidebar-collapsed .dvc-header {
+  left: 24px !important;
+  width: calc(100% - 48px) !important;
+}
+
+/* Premium Dashboard Animations & Hover Effects */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes pulseRed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes floatCard {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-pulse-green {
+  animation: pulseGreen 2s infinite;
+}
+
+.animate-pulse-red {
+  animation: pulseRed 2s infinite;
+}
+
+.animate-float {
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+/* Interactive Card hover effects */
+.premium-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.premium-card:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+.premium-metric-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.premium-metric-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.01) !important;
+}
+
+/* Smooth Table Row hover */
+.premium-table tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.premium-table tbody tr:hover {
+  background-color: rgba(16, 185, 129, 0.02) !important;
+  cursor: pointer;
+}
+
