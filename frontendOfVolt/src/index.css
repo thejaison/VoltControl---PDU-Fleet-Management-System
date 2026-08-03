@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --volt-orange: #6366f1;
-  --volt-orange-deep: #4f46e5;
-  --volt-ink: #111015;
-  --volt-muted: #64748b;
-  --volt-line: #e2e8f0;
-  --volt-shell: #f4f6fa;
-  --volt-card: #ffffff;
+  --volt-orange: #10b981;
+  --volt-orange-deep: #059669;
+  --volt-ink: #ffffff;
+  --volt-muted: #a1a1aa;
+  --volt-line: #1f1f24;
+  --volt-shell: #09090b;
+  --volt-card: #121215;
   --text: var(--volt-muted);
   --text-h: var(--volt-ink);
   --bg: var(--volt-shell);
   --border: var(--volt-line);
-  --code-bg: rgba(0, 0, 0, 0.05);
+  --code-bg: rgba(255, 255, 255, 0.05);
   --accent: var(--volt-orange);
-  --accent-bg: rgba(99, 102, 241, 0.08);
-  --accent-border: rgba(99, 102, 241, 0.25);
-  --social-bg: rgba(0, 0, 0, 0.02);
-  --shadow: rgba(0, 0, 0, 0.04) 0 10px 30px;
+  --accent-bg: rgba(16, 185, 129, 0.08);
+  --accent-border: rgba(16, 185, 129, 0.25);
+  --social-bg: rgba(255, 255, 255, 0.02);
+  --shadow: rgba(0, 0, 0, 0.4) 0 10px 30px;
 
   --sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
@@ -25,7 +25,7 @@
 
   font: 16px/145% var(--sans);
   letter-spacing: 0.1px;
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -37,8 +37,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f3f4f8;
-  color: var(--volt-ink);
+  background: #09090b;
+  color: #ffffff;
   font-family: var(--sans);
 }
 
@@ -193,11 +193,11 @@ input:focus, select:focus, textarea:focus {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #09090b;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #27272a;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -206,7 +206,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Sidebar toggle responsive shift rules */
 body.sidebar-collapsed .main-content-shift {
-  padding-left: 32px !important;
+  padding-left: 112px !important;
   margin-left: 0 !important;
 }
 

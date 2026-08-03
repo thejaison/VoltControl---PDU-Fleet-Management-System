@@ -804,7 +804,7 @@ const ReportsDashboard = () => {
                   <th style={styles.th}>File Size</th>
                   <th style={styles.th}>Date Stamped</th>
                   <th style={styles.th}>Origin</th>
-                  <th style={styles.th} style={{ textAlign: "right" }}>Actions</th>
+                  <th style={{ ...styles.th, textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>

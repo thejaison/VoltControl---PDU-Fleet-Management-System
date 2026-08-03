@@ -185,9 +185,18 @@ const Sidebar = () => {
                     {/* Sidebar Collapse Toggle Button */}
                     <button
                         type="button"
-                        style={styles.collapseBtn}
+                        style={{
+                            ...styles.collapseBtn,
+                            position: "absolute",
+                            right: isCollapsed ? "-14px" : "16px",
+                            top: "28px",
+                            zIndex: 1010,
+                            borderRadius: "50%",
+                            alignSelf: "auto",
+                            margin: 0,
+                        }}
                         onClick={toggleSidebar}
-                        title="Hide Sidebar"
+                        title={isCollapsed ? "Show Sidebar" : "Hide Sidebar"}
                     >
                         <svg
                             width="16"
@@ -199,7 +208,11 @@ const Sidebar = () => {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         >
-                            <polyline points="15 18 9 12 15 6" />
+                            {isCollapsed ? (
+                                <polyline points="9 18 15 12 9 6" />
+                            ) : (
+                                <polyline points="15 18 9 12 15 6" />
+                            )}
                         </svg>
                     </button>
                 </div>
@@ -231,9 +244,9 @@ const Sidebar = () => {
                 </div>
         
                 {/* Dynamic Navigation Sections */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "20px", flex: 1, overflowY: "auto", paddingRight: "4px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "20px", flex: 1, overflowY: "auto", paddingRight: "4px", width: "100%", boxSizing: "border-box" }}>
                     {Object.keys(groupedItems).map((sectionName) => (
-                        <div key={sectionName} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        <div key={sectionName} style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%" }}>
                             {!isCollapsed && <h4 style={styles.sectionHeader}>{sectionName}</h4>}
                             <ul style={styles.navList}>
                                 {groupedItems[sectionName].map((item) => {
@@ -247,7 +260,7 @@ const Sidebar = () => {
                                             <button
                                                 type="button"
                                                 className={`sidebar-nav-btn ${isActive ? "sidebar-nav-btn-active" : ""}`}
-                                                style={styles.navItemButton(isActive, isLocked)}
+                                                style={styles.navItemButton(isActive, isLocked, isCollapsed)}
                                                 onClick={() => handleNavClick(item.key, isLocked)}
                                                 title={isLocked ? "Admins only" : (isCollapsed ? item.label : undefined)}
                                             >
@@ -323,7 +336,7 @@ const Sidebar = () => {
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "12px", borderTop: "1px solid rgba(255, 255, 255, 0.05)", paddingTop: "14px", marginBottom: "8px" }}>
                     <button
                         type="button"
-                        style={{ ...styles.navItemButton(false, false), padding: isCollapsed ? "12px 0" : "12px 16px", justifyContent: isCollapsed ? "center" : "flex-start" }}
+                        style={{ ...styles.navItemButton(false, false, isCollapsed), padding: isCollapsed ? "12px 0" : "12px 16px", justifyContent: isCollapsed ? "center" : "flex-start" }}
                         onClick={() => alert("Support channels: support@voltcontrol.com")}
                         className="sidebar-nav-btn"
                         title={isCollapsed ? "Support" : undefined}
@@ -334,7 +347,7 @@ const Sidebar = () => {
                     <button
                         type="button"
                         style={{ 
-                            ...styles.navItemButton(false, false), 
+                            ...styles.navItemButton(false, false, isCollapsed), 
                             padding: isCollapsed ? "12px 0" : "12px 16px", 
                             justifyContent: isCollapsed ? "center" : "flex-start",
                             color: "#f87171" 

@@ -1,26 +1,26 @@
 const colors = {
-  white: "#ffffff",
+  white: "#121215",
   bgPage: "transparent",
-  textPrimary: "#111015",
-  textSecondary: "#64748b",
-  textMuted: "#94a3b8",
-  border: "#edf0f5",
+  textPrimary: "#ffffff",
+  textSecondary: "#a1a1aa",
+  textMuted: "#71717a",
+  border: "#1f1f24",
   orange: "#10b981",
   green: "#10b981",
   greenLight: "rgba(16, 185, 129, 0.08)",
-  red: "#ef4444",
-  redLight: "rgba(239, 68, 68, 0.08)",
-  gray: "#64748b",
-  grayLight: "rgba(100, 116, 139, 0.08)",
+  red: "#71717a",
+  redLight: "rgba(255, 255, 255, 0.08)",
+  gray: "#71717a",
+  grayLight: "rgba(255, 255, 255, 0.08)",
 };
 
 export const styles = {
   page: {
     minHeight: "100vh",
     width: "100%",
-    backgroundColor: colors.bgPage,
+    backgroundColor: "transparent",
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    padding: "24px 32px 48px 300px", // Added 300px padding left for sidebar
+    padding: "24px 32px 48px 300px", 
     boxSizing: "border-box",
   },
 
@@ -47,7 +47,7 @@ export const styles = {
     backgroundColor: colors.white,
     borderRadius: "24px",
     padding: "8px 20px 20px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)", // Premium light shadow
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)", 
     border: `1px solid ${colors.border}`,
   },
 
@@ -61,13 +61,13 @@ export const styles = {
   searchInput: {
     width: "280px",
     padding: "12px 16px",
-    borderRadius: "999px", // Pill shape search box
-    border: `1px solid ${colors.border}`,
+    borderRadius: "999px", 
+    border: `1px solid #27272a`,
     fontSize: "13px",
     outline: "none",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#18181c",
     color: colors.textPrimary,
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.02)",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
   },
 
   countBadge: {
@@ -114,7 +114,7 @@ export const styles = {
     width: "32px",
     height: "32px",
     borderRadius: "50%",
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#18181c",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -137,6 +137,7 @@ export const styles = {
     fontWeight: 600,
     color: enabled ? colors.green : colors.red,
     backgroundColor: enabled ? colors.greenLight : colors.redLight,
+    border: `1px solid ${enabled ? colors.green : colors.red}`,
     padding: "5px 12px",
     borderRadius: "999px",
   }),
@@ -154,7 +155,7 @@ export const styles = {
     borderRadius: "999px",
     border: "none",
     cursor: "pointer",
-    backgroundColor: enabled ? colors.orange : "rgba(255, 255, 255, 0.08)",
+    backgroundColor: enabled ? colors.orange : "#27272a",
     position: "relative",
     transition: "background-color 0.15s ease",
     padding: 0,

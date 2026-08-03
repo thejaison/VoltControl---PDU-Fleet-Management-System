@@ -1,29 +1,29 @@
 export const colors = {
-  white: "#ffffff",
+  white: "#121215",
   bgPage: "transparent",
-  textPrimary: "#111015",
-  textSecondary: "#64748b",
-  textMuted: "#94a3b8",
-  border: "#edf0f5",
-  teal: "#0d9488",
-  tealLight: "rgba(13, 152, 136, 0.08)",
+  textPrimary: "#ffffff",
+  textSecondary: "#a1a1aa",
+  textMuted: "#71717a",
+  border: "#1f1f24",
+  teal: "#10b981",
+  tealLight: "rgba(16, 185, 129, 0.08)",
   green: "#10b981",
   greenLight: "rgba(16, 185, 129, 0.08)",
-  indigo: "#6366f1",
-  indigoLight: "rgba(99, 102, 241, 0.08)",
-  amber: "#f59e0b",
-  amberLight: "rgba(245, 158, 11, 0.08)",
-  red: "#ef4444",
-  redLight: "rgba(239, 68, 68, 0.08)",
-  slate50: "#f8fafc",
-  slate100: "#f1f5f9",
+  indigo: "#71717a",
+  indigoLight: "rgba(255, 255, 255, 0.08)",
+  amber: "#71717a",
+  amberLight: "rgba(255, 255, 255, 0.08)",
+  red: "#71717a",
+  redLight: "rgba(255, 255, 255, 0.08)",
+  slate50: "#09090b",
+  slate100: "#18181c",
 };
 
 export const styles = {
   page: (isCollapsed) => ({
     minHeight: "100vh",
     width: "100%",
-    backgroundColor: "#fcfdfe",
+    backgroundColor: "#09090b",
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     padding: `32px 32px 48px ${isCollapsed ? "100px" : "320px"}`,
     boxSizing: "border-box",
@@ -38,7 +38,7 @@ export const styles = {
     borderRadius: "24px",
     padding: "16px 28px",
     marginBottom: "24px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.02)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)",
     border: `1px solid ${colors.border}`,
   },
 
@@ -76,7 +76,7 @@ export const styles = {
     borderRadius: "999px",
     border: `1px solid ${colors.border}`,
     backgroundColor: colors.white,
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.02)",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
   },
 
   avatarCircle: {
@@ -98,7 +98,6 @@ export const styles = {
     color: colors.textPrimary,
   },
 
-  // ---------- Metrics Grid ----------
   metricsGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -111,7 +110,7 @@ export const styles = {
     borderRadius: "20px",
     padding: "20px 24px",
     border: `1px solid ${colors.border}`,
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.01)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
     display: "flex",
     alignItems: "center",
     gap: "18px",
@@ -121,13 +120,13 @@ export const styles = {
     width: "48px",
     height: "48px",
     borderRadius: "14px",
-    backgroundColor: bgColor,
-    color: textColor,
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
+    color: "#ffffff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: `0 8px 16px ${bgColor.replace("0.08", "0.04")}`,
     flexShrink: 0,
+    border: `1px solid ${colors.border}`,
   }),
 
   metricMeta: {
@@ -150,7 +149,6 @@ export const styles = {
     letterSpacing: "-0.01em",
   },
 
-  // ---------- Layout Panels ----------
   dashboardGrid: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
@@ -163,7 +161,7 @@ export const styles = {
     borderRadius: "24px",
     padding: "26px",
     border: `1px solid ${colors.border}`,
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.02)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)",
     display: "flex",
     flexDirection: "column",
     gap: "20px",
@@ -207,7 +205,6 @@ export const styles = {
     marginBottom: 0,
   },
 
-  // ---------- Live Exports Grid ----------
   exportsGrid: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
@@ -215,8 +212,8 @@ export const styles = {
   },
 
   exportCard: (accentColor, isHovered) => ({
-    backgroundColor: colors.slate50,
-    border: `1px solid ${isHovered ? accentColor : colors.border}`,
+    backgroundColor: colors.slate100,
+    border: `1px solid ${isHovered ? colors.teal : colors.border}`,
     borderRadius: "20px",
     padding: "24px",
     display: "flex",
@@ -226,20 +223,20 @@ export const styles = {
     cursor: "pointer",
     transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
     transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-    boxShadow: isHovered ? `0 12px 24px ${accentColor.replace(")", ", 0.08)")}` : "none",
+    boxShadow: isHovered ? `0 12px 24px rgba(0,0,0,0.3)` : "none",
   }),
 
   exportIconCircle: (bgColor, textColor) => ({
     width: "50px",
     height: "50px",
     borderRadius: "16px",
-    backgroundColor: bgColor,
-    color: textColor,
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
+    color: "#ffffff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: "20px",
-    border: `1px solid ${bgColor.replace("0.08", "0.18")}`,
+    border: `1px solid ${colors.border}`,
   }),
 
   exportMeta: {
@@ -271,22 +268,21 @@ export const styles = {
     fontWeight: "700",
     color: "#ffffff",
     background: isHovered 
-      ? `linear-gradient(135deg, ${accentColor}, ${accentColor}dd)` 
-      : `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`,
+      ? `linear-gradient(135deg, ${colors.teal}, ${colors.teal}dd)` 
+      : `linear-gradient(135deg, ${colors.teal}, ${colors.teal}cc)`,
     cursor: "pointer",
-    boxShadow: `0 4px 12px ${accentColor.replace(")", ", 0.15)")}`,
+    boxShadow: `0 4px 12px rgba(0, 0, 0, 0.25)`,
     width: "100%",
     textAlign: "center",
     transition: "all 0.2s ease",
   }),
 
-  // ---------- Dropzone ----------
   dropZone: (isDragging, hasFile) => ({
     border: `2px dashed ${isDragging ? colors.teal : colors.border}`,
     borderRadius: "20px",
     padding: "36px 20px",
     textAlign: "center",
-    backgroundColor: isDragging ? colors.tealLight : colors.slate50,
+    backgroundColor: isDragging ? colors.tealLight : colors.slate100,
     cursor: "pointer",
     transition: "all 0.2s ease",
     display: "flex",
@@ -327,14 +323,14 @@ export const styles = {
     justifyContent: "center",
     padding: "8px 20px",
     borderRadius: "999px",
-    backgroundColor: colors.white,
+    backgroundColor: colors.slate50,
     color: colors.textSecondary,
     border: `1px solid ${colors.border}`,
     cursor: "pointer",
     fontSize: "12px",
     fontWeight: "700",
     marginTop: "12px",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.01)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   },
 
   fileInput: {
@@ -346,7 +342,7 @@ export const styles = {
     alignItems: "center",
     gap: "12px",
     padding: "14px 16px",
-    backgroundColor: colors.slate50,
+    backgroundColor: colors.slate100,
     borderRadius: "16px",
     width: "100%",
     border: `1px solid ${colors.border}`,
@@ -357,14 +353,14 @@ export const styles = {
     width: "40px",
     height: "40px",
     borderRadius: "12px",
-    backgroundColor: typeColorBg,
-    color: typeColorText,
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
+    color: "#ffffff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: "13px",
     fontWeight: "700",
-    border: `1px solid ${typeColorBg.replace("0.08", "0.18")}`,
+    border: `1px solid ${colors.border}`,
   }),
 
   loadedFileMeta: {
@@ -396,7 +392,7 @@ export const styles = {
   },
 
   removeFileBtn: {
-    background: colors.white,
+    background: colors.slate50,
     border: `1px solid ${colors.border}`,
     color: colors.textSecondary,
     cursor: "pointer",
@@ -406,7 +402,6 @@ export const styles = {
     transition: "all 0.15s ease",
   },
 
-  // ---------- Logs / Archives Table ----------
   tableWrapper: {
     overflowX: "auto",
     borderRadius: "20px",
@@ -422,7 +417,7 @@ export const styles = {
   },
 
   th: {
-    backgroundColor: colors.slate50,
+    backgroundColor: colors.slate100,
     padding: "14px 18px",
     fontWeight: "700",
     color: colors.textSecondary,
@@ -436,13 +431,13 @@ export const styles = {
     padding: "14px 18px",
     borderBottom: `1px solid ${colors.border}`,
     color: colors.textPrimary,
-    verticalAlignment: "middle",
+    verticalAlign: "middle",
   },
 
   trHover: {
     transition: "background-color 0.15s ease",
     ":hover": {
-      backgroundColor: colors.slate50,
+      backgroundColor: colors.slate100,
     },
   },
 
@@ -453,9 +448,9 @@ export const styles = {
     borderRadius: "999px",
     fontSize: "11px",
     fontWeight: "700",
-    backgroundColor: type === "PDF" ? colors.redLight : colors.greenLight,
-    color: type === "PDF" ? colors.red : colors.green,
-    border: `1px solid ${type === "PDF" ? "rgba(239,68,68,0.18)" : "rgba(16,185,129,0.18)"}`,
+    backgroundColor: type === "PDF" ? "rgba(255, 255, 255, 0.08)" : colors.greenLight,
+    color: type === "PDF" ? colors.textSecondary : colors.green,
+    border: `1px solid ${type === "PDF" ? colors.border : colors.green}`,
   }),
 
   actionBtnGroup: {
@@ -478,14 +473,13 @@ export const styles = {
     transition: "all 0.15s ease",
   }),
 
-  // ---------- Dialog / Modals ----------
   modalBackdrop: {
     position: "fixed",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(15, 23, 42, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.75)",
     backdropFilter: "blur(4px)",
     display: "flex",
     alignItems: "center",
@@ -493,7 +487,7 @@ export const styles = {
     zIndex: 1000,
     padding: "20px",
     boxSizing: "border-box",
-  },
+    },
 
   modalContent: {
     backgroundColor: colors.white,
@@ -501,7 +495,7 @@ export const styles = {
     width: "100%",
     maxWidth: "880px",
     maxHeight: "85vh",
-    boxShadow: "0 20px 50px rgba(0, 0, 0, 0.15)",
+    boxShadow: "0 20px 50px rgba(0, 0, 0, 0.5)",
     border: `1px solid ${colors.border}`,
     display: "flex",
     flexDirection: "column",
@@ -528,10 +522,9 @@ export const styles = {
     display: "flex",
     justifyContent: "flex-end",
     gap: "12px",
-    backgroundColor: colors.slate50,
+    backgroundColor: colors.slate100,
   },
 
-  // ---------- Form Elements ----------
   formGroup: {
     display: "flex",
     flexDirection: "column",
@@ -550,6 +543,7 @@ export const styles = {
     padding: "10px 14px",
     borderRadius: "10px",
     border: `1px solid ${colors.border}`,
+    backgroundColor: colors.slate100,
     fontSize: "14px",
     color: colors.textPrimary,
     outline: "none",

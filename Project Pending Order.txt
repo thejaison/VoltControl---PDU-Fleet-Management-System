@@ -33,7 +33,7 @@ UI Enhancement is done 👍
 ✅ Responsive Design
 ✅ Global Exception Handler (@ControllerAdvice)
 ❌ Swagger / OpenAPI Documentation
-✅ Health Check APIs (/health, /ready)
+✅ Health Check APIs (/health, /ready) 
 
 📈 Production Quality -> 
 ✅ Notifications (Toasts, Confirmation Dialogs)

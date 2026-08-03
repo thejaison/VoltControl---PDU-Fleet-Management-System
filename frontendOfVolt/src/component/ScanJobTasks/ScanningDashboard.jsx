@@ -432,7 +432,7 @@ const ScanningDashboard = () => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(23, 23, 23, 0.4)',
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 backdropFilter: 'blur(8px)',
                 display: 'flex',
                 alignItems: 'center',
@@ -447,7 +447,7 @@ const ScanningDashboard = () => {
                     maxWidth: '800px',
                     maxHeight: '90vh',
                     overflowY: 'auto',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
                     border: `1px solid ${colors.border}`,
                     boxSizing: 'border-box'
                 }}>
@@ -457,7 +457,7 @@ const ScanningDashboard = () => {
                         justifyContent: 'space-between',
                         padding: '24px 32px',
                         borderBottom: `1px solid ${colors.border}`,
-                        backgroundColor: '#FCFCFD',
+                        backgroundColor: '#18181c',
                         borderTopLeftRadius: '24px',
                         borderTopRightRadius: '24px'
                     }}>
@@ -727,7 +727,7 @@ const ScanningDashboard = () => {
                     const Icon = card.icon;
                     return (
                         <div key={card.key} style={styles.statCard(card.highlighted)}>
-                            <div style={styles.statIconWrap(card.highlighted, "#FFEDE3")}>
+                            <div style={styles.statIconWrap(card.highlighted, "rgba(16, 185, 129, 0.08)")}>
                                 <Icon />
                             </div>
                             <div>

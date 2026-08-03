@@ -1,38 +1,38 @@
 const colors = {
-  white: "#ffffff",
+  white: "#121215",
   bgPage: "transparent",
-  textPrimary: "#111015",
-  textSecondary: "#64748b",
-  textMuted: "#94a3b8",
-  border: "#edf0f5",
-  orange: "#10b981", // Replaced purple with pastel green
-  orangeLight: "rgba(16, 185, 129, 0.08)", // Replaced purple with pastel green
+  textPrimary: "#ffffff",
+  textSecondary: "#a1a1aa",
+  textMuted: "#71717a",
+  border: "#1f1f24",
+  orange: "#ffffff", 
+  orangeLight: "rgba(255, 255, 255, 0.08)",
   green: "#10b981",
   greenLight: "rgba(16, 185, 129, 0.08)",
-  red: "#ef4444",
-  redLight: "rgba(239, 68, 68, 0.08)",
-  gray: "#64748b",
-  grayLight: "rgba(100, 116, 139, 0.08)",
+  red: "#71717a",
+  redLight: "rgba(255, 255, 255, 0.08)",
+  gray: "#71717a",
+  grayLight: "rgba(255, 255, 255, 0.08)",
 };
 
 const statusColors = {
-  Queued: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  QUEUED: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  Running: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  RUNNING: { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  "In Progress": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
+  Queued: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  QUEUED: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  Running: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  RUNNING: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  "In Progress": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
   Completed: { bg: colors.greenLight, text: colors.green, dot: colors.green },
   COMPLETED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
   Succeeded: { bg: colors.greenLight, text: colors.green, dot: colors.green },
   SUCCEEDED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
-  "Completed with errors": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  "COMPLETED WITH ERRORS": { bg: colors.orangeLight, text: colors.orange, dot: colors.orange },
-  Failed: { bg: colors.redLight, text: colors.red, dot: colors.red },
-  FAILED: { bg: colors.redLight, text: colors.red, dot: colors.red },
-  "Timed out": { bg: colors.redLight, text: colors.red, dot: colors.red },
-  "TIMED OUT": { bg: colors.redLight, text: colors.red, dot: colors.red },
-  Cancelled: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
-  CANCELLED: { bg: colors.grayLight, text: colors.gray, dot: colors.gray },
+  "Completed with errors": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  "COMPLETED WITH ERRORS": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
+  Failed: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  FAILED: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  "Timed out": { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  "TIMED OUT": { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  Cancelled: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  CANCELLED: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
 };
 
 export const styles = {
@@ -41,11 +41,10 @@ export const styles = {
     width: "100%",
     backgroundColor: colors.bgPage,
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    padding: "24px 32px 48px 300px", // Added 300px padding left for sidebar
+    padding: "24px 32px 48px 300px", 
     boxSizing: "border-box",
   },
 
-  // ---------- Header ----------
   header: {
     display: "flex",
     alignItems: "center",
@@ -54,7 +53,7 @@ export const styles = {
     borderRadius: "24px",
     padding: "14px 20px",
     marginBottom: "20px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)", // Premium soft shadow
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)", 
     border: `1px solid ${colors.border}`,
   },
 
@@ -68,12 +67,12 @@ export const styles = {
     width: "38px",
     height: "38px",
     borderRadius: "12px",
-    background: "linear-gradient(135deg, #34d399, #10b981)",
+    background: "linear-gradient(135deg, #10b981, #059669)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: "#ffffff",
-    boxShadow: "0 8px 16px rgba(16, 185, 129, 0.2)",
+    boxShadow: "0 8px 16px rgba(16, 185, 129, 0.25)",
   },
 
   logoText: {
@@ -86,10 +85,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "4px",
-    backgroundColor: "#f1f5f9", // Soft light pill background
+    backgroundColor: "#18181c",
     borderRadius: "999px",
     padding: "4px",
-    border: "1px solid #e2e8f0",
+    border: "1px solid #27272a",
   },
 
   navPill: (isActive) => ({
@@ -99,7 +98,7 @@ export const styles = {
     borderRadius: "999px",
     fontSize: "14px",
     fontWeight: isActive ? 600 : 500,
-    background: isActive ? "linear-gradient(135deg, #34d399, #10b981)" : "transparent",
+    background: isActive ? "linear-gradient(135deg, #10b981, #059669)" : "transparent",
     color: isActive ? "#ffffff" : colors.textSecondary,
     transition: "all 0.15s ease",
   }),
@@ -121,7 +120,7 @@ export const styles = {
     color: colors.textPrimary,
     cursor: "pointer",
     position: "relative",
-    backgroundColor: colors.white,
+    backgroundColor: "#18181c",
   },
 
   notificationDot: {
@@ -131,7 +130,7 @@ export const styles = {
     width: "7px",
     height: "7px",
     borderRadius: "50%",
-    backgroundColor: colors.orange,
+    backgroundColor: "#10b981",
   },
 
   profilePill: {
@@ -149,7 +148,7 @@ export const styles = {
     width: "28px",
     height: "28px",
     borderRadius: "50%",
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#18181c",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -164,7 +163,6 @@ export const styles = {
     color: colors.textPrimary,
   },
 
-  // ---------- Greeting row ----------
   greetingRow: {
     display: "flex",
     alignItems: "center",
@@ -184,11 +182,11 @@ export const styles = {
     width: "52px",
     height: "52px",
     borderRadius: "16px",
-    backgroundColor: colors.orangeLight,
+    backgroundColor: "rgba(255,255,255,0.08)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: colors.orange,
+    color: "#ffffff",
     flexShrink: 0,
   },
 
@@ -211,16 +209,15 @@ export const styles = {
     gap: "8px",
     border: "none",
     cursor: "pointer",
-    background: "linear-gradient(135deg, #34d399, #10b981)",
+    background: "linear-gradient(135deg, #10b981, #059669)",
     color: "#ffffff",
     fontSize: "14px",
     fontWeight: 600,
     padding: "13px 20px",
     borderRadius: "12px",
-    boxShadow: "0 6px 16px rgba(16, 185, 129, 0.2)",
+    boxShadow: "0 6px 16px rgba(16, 185, 129, 0.25)",
   },
 
-  // ---------- Stat cards ----------
   statRow: {
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
@@ -232,10 +229,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "14px",
-    background: isHighlighted ? "linear-gradient(135deg, #34d399, #10b981)" : colors.white,
+    background: isHighlighted ? "linear-gradient(135deg, #10b981, #059669)" : colors.white,
     borderRadius: "16px",
     padding: "18px",
-    boxShadow: isHighlighted ? "0 12px 28px rgba(16, 185, 129, 0.2)" : "0 8px 30px rgba(0, 0, 0, 0.03)",
+    boxShadow: isHighlighted ? "0 12px 28px rgba(16, 185, 129, 0.25)" : "0 8px 30px rgba(0, 0, 0, 0.3)",
     border: `1px solid ${colors.border}`,
   }),
 
@@ -248,7 +245,7 @@ export const styles = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: isHighlighted ? "rgba(255,255,255,0.2)" : tint,
-    color: isHighlighted ? "#ffffff" : colors.orange,
+    color: "#ffffff",
   }),
 
   statLabel: (isHighlighted) => ({
@@ -274,7 +271,7 @@ export const styles = {
       ? "rgba(255,255,255,0.9)"
       : isPositive
       ? colors.green
-      : colors.red,
+      : colors.textSecondary,
   }),
 
   statTrendLabel: (isHighlighted) => ({
@@ -283,12 +280,11 @@ export const styles = {
     color: isHighlighted ? "rgba(255,255,255,0.75)" : colors.textMuted,
   }),
 
-  // ---------- Panel shell (shared by all card-like sections) ----------
   panel: {
     backgroundColor: colors.white,
     borderRadius: "24px",
     padding: "20px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.03)",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)",
     border: `1px solid ${colors.border}`,
   },
 
@@ -331,13 +327,12 @@ export const styles = {
     gap: "4px",
     fontSize: "13px",
     fontWeight: 600,
-    color: colors.textPrimary,
+    color: colors.green,
     background: "none",
     border: "none",
     cursor: "pointer",
   },
 
-  // ---------- Two-column grid rows ----------
   gridTwoUneven: {
     display: "grid",
     gridTemplateColumns: "1.4fr 1fr",
@@ -345,7 +340,6 @@ export const styles = {
     marginBottom: "16px",
   },
 
-  // ---------- Current Scan Progress ----------
   progressJobRow: {
     display: "flex",
     alignItems: "center",
@@ -380,7 +374,7 @@ export const styles = {
     width: "100%",
     height: "10px",
     borderRadius: "999px",
-    backgroundColor: colors.grayLight,
+    backgroundColor: "#18181c",
     overflow: "hidden",
     marginBottom: "16px",
   },
@@ -389,7 +383,7 @@ export const styles = {
     width: `${percent}%`,
     height: "100%",
     borderRadius: "999px",
-    background: `linear-gradient(90deg, ${colors.orange}, #FF7A47)`,
+    background: `linear-gradient(90deg, #71717a, #059669)`,
     transition: "width 0.4s ease",
   }),
 
@@ -397,10 +391,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.bgPage,
+    backgroundColor: "#18181c",
     borderRadius: "12px",
     padding: "14px 16px",
-  
+    border: `1px solid ${colors.border}`,
   },
 
   currentDeviceLeft: {
@@ -413,7 +407,7 @@ export const styles = {
     width: "36px",
     height: "36px",
     borderRadius: "10px",
-    backgroundColor: colors.white,
+    backgroundColor: "#121215",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -446,12 +440,12 @@ export const styles = {
       fontWeight: 600,
       color: c.text,
       backgroundColor: c.bg,
+      border: `1px solid ${c.text}`,
       padding: "5px 12px",
       borderRadius: "999px",
     };
   },
 
-  // ---------- Donut chart ----------
   donutWrap: {
     display: "flex",
     alignItems: "center",
@@ -473,7 +467,7 @@ export const styles = {
     width: "96px",
     height: "96px",
     borderRadius: "50%",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.white,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -524,7 +518,6 @@ export const styles = {
     fontWeight: 600,
   },
 
-  // ---------- Tables ----------
   tableGrid: {
     display: "grid",
     gridTemplateColumns: "1.1fr 0.6fr 1.1fr 0.8fr 1fr 0.7fr 1.3fr",
@@ -545,7 +538,7 @@ export const styles = {
   tableRow: {
     fontSize: "13px",
     color: colors.textPrimary,
-    padding: "12px 0",
+    padding: "16px 0",
     borderBottom: `1px solid ${colors.border}`,
   },
 
@@ -568,7 +561,7 @@ export const styles = {
     width: "100%",
     height: "6px",
     borderRadius: "999px",
-    backgroundColor: colors.grayLight,
+    backgroundColor: "#18181c",
     overflow: "hidden",
   },
 
@@ -596,7 +589,7 @@ export const styles = {
     height: "28px",
     borderRadius: "8px",
     border: `1px solid ${colors.border}`,
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#18181c",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -605,22 +598,22 @@ export const styles = {
   },
 
   actionBtn: (type, isDisabled) => {
-    let bg = colors.grayLight;
-    let text = colors.gray;
+    let bg = "rgba(255, 255, 255, 0.08)";
+    let text = colors.textSecondary;
     let border = colors.border;
     if (!isDisabled) {
       if (type === "cancel") {
-        bg = colors.redLight;
-        text = colors.red;
-        border = `${colors.red}22`;
+        bg = "rgba(255, 255, 255, 0.08)";
+        text = colors.textSecondary;
+        border = colors.border;
       } else if (type === "continue") {
-        bg = colors.orangeLight;
-        text = colors.orange;
-        border = `${colors.orange}22`;
+        bg = "rgba(255, 255, 255, 0.08)";
+        text = colors.textSecondary;
+        border = colors.border;
       } else if (type === "again") {
         bg = colors.greenLight;
         text = colors.green;
-        border = `${colors.green}22`;
+        border = colors.green;
       }
     }
     return {
@@ -641,7 +634,6 @@ export const styles = {
     };
   },
 
-  // ---------- Recent scan results ----------
   resultRow: {
     display: "flex",
     alignItems: "center",

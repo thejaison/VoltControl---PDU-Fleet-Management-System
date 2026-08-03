@@ -1,71 +1,63 @@
-// ../styles/Overalldashboardstyles.js
 export const colors = {
-  // Primary palette - White & Pale Green theme
   primary: '#ffffff',
-  secondary: '#f0fdf4', // pale green
-  tertiary: '#dcfce7', // light green
-  quaternary: '#bbf7d0', // soft green
+  secondary: '#121215',
+  tertiary: '#1f1f24',
+  quaternary: '#27272a',
 
-  // Green variants
-  green: '#22c55e',
-  greenLight: '#86efac',
-  greenDark: '#15803d',
-  greenPale: '#f0fdf4',
-  greenText: '#166534',
+  green: '#10b981',
+  greenLight: 'rgba(16, 185, 129, 0.15)',
+  greenDark: '#059669',
+  greenPale: 'rgba(16, 185, 129, 0.05)',
+  greenText: '#10b981',
 
-  // Accent colors (muted)
-  blue: '#60a5fa',
-  blueLight: '#dbeafe',
-  blueText: '#1e40af',
+  blue: '#ffffff',
+  blueLight: 'rgba(255, 255, 255, 0.08)',
+  blueText: '#a1a1aa',
 
-  orange: '#fb923c',
-  orangeLight: '#ffedd5',
-  orangeText: '#9a3412',
+  orange: '#ffffff',
+  orangeLight: 'rgba(255, 255, 255, 0.08)',
+  orangeText: '#a1a1aa',
 
-  red: '#f87171',
-  redLight: '#fee2e2',
-  redText: '#991b1b',
+  red: '#ffffff',
+  redLight: 'rgba(255, 255, 255, 0.08)',
+  redText: '#a1a1aa',
 
-  purple: '#a78bfa',
-  purpleLight: '#ede9fe',
-  purpleText: '#5b21b6',
+  purple: '#ffffff',
+  purpleLight: 'rgba(255, 255, 255, 0.08)',
+  purpleText: '#a1a1aa',
 
-  yellow: '#fbbf24',
-  yellowLight: '#fef3c7',
-  yellowText: '#92400e',
+  yellow: '#ffffff',
+  yellowLight: 'rgba(255, 255, 255, 0.08)',
+  yellowText: '#a1a1aa',
 
-  // Neutrals
-  textPrimary: '#1e293b',
-  textSecondary: '#64748b',
-  textMuted: '#94a3b8',
-  borderLight: '#f1f5f9',
-  borderMedium: '#e2e8f0',
-  background: '#f8fafc',
-  cardBg: '#ffffff',
-  shadow: 'rgba(34, 197, 94, 0.08)',
-  shadowStrong: 'rgba(34, 197, 94, 0.15)',
+  textPrimary: '#ffffff',
+  textSecondary: '#a1a1aa',
+  textMuted: '#71717a',
+  borderLight: '#1f1f24',
+  borderMedium: '#27272a',
+  background: '#09090b',
+  cardBg: '#121215',
+  shadow: 'rgba(0, 0, 0, 0.4)',
+  shadowStrong: 'rgba(0, 0, 0, 0.6)',
 };
 
 export const styles = {
-  // App Shell
   appShell: {
     display: 'flex',
     minHeight: '100vh',
-    background: '#f8fafc',
+    background: '#09090b',
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
   },
 
-  // Main Content
   mainContent: (isCollapsed) => ({
     flex: 1,
     marginLeft: isCollapsed ? '80px' : '260px',
     padding: '28px 32px',
     transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     minHeight: '100vh',
-    background: '#f8fafc',
+    background: '#09090b',
   }),
 
-  // Header
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -88,23 +80,22 @@ export const styles = {
     flexWrap: 'wrap',
   },
 
-  // Search Bar
   searchBarContainer: {
     display: 'flex',
     alignItems: 'center',
-    background: '#ffffff',
+    background: '#18181c',
     borderRadius: '12px',
     padding: '8px 14px',
-    border: '1px solid #e2e8f0',
+    border: '1px solid #27272a',
     transition: 'all 0.2s',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
   },
 
   searchIcon: {
     marginRight: '8px',
     display: 'flex',
     alignItems: 'center',
-    color: '#94a3b8',
+    color: '#71717a',
   },
 
   searchBar: {
@@ -112,28 +103,26 @@ export const styles = {
     outline: 'none',
     background: 'transparent',
     fontSize: '14px',
-    color: '#1e293b',
+    color: '#ffffff',
     width: '180px',
     fontFamily: 'Inter, sans-serif',
     fontWeight: '500',
   },
 
-  // Time Display
   timeDisplay: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
     padding: '8px 16px',
-    background: '#ffffff',
+    background: '#18181c',
     borderRadius: '12px',
-    border: '1px solid #e2e8f0',
+    border: '1px solid #27272a',
     fontSize: '13px',
     fontWeight: '600',
-    color: '#64748b',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+    color: '#ffffff',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
   },
 
-  // Report Dropdown
   dropdownContainer: {
     position: 'relative',
   },
@@ -143,15 +132,15 @@ export const styles = {
     alignItems: 'center',
     gap: '8px',
     padding: '8px 18px',
-    background: 'linear-gradient(135deg, #22c55e, #16a34a)',
+    background: '#121215',
     color: '#ffffff',
-    border: 'none',
+    border: '1px solid #27272a',
     borderRadius: '12px',
     fontSize: '13px',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 4px 12px rgba(34, 197, 94, 0.3)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
     fontFamily: 'Inter, sans-serif',
   },
 
@@ -159,10 +148,10 @@ export const styles = {
     position: 'absolute',
     top: 'calc(100% + 8px)',
     right: 0,
-    background: '#ffffff',
+    background: '#121215',
     borderRadius: '12px',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
-    border: '1px solid #f1f5f9',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+    border: '1px solid #27272a',
     minWidth: '220px',
     padding: '6px',
     zIndex: 100,
@@ -179,14 +168,14 @@ export const styles = {
     borderRadius: '8px',
     fontSize: '13px',
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#ffffff',
     cursor: 'pointer',
     transition: 'all 0.15s',
     width: '100%',
     fontFamily: 'Inter, sans-serif',
+    textAlign: 'left',
   },
 
-  // Refresh Button
   refreshBtn: {
     display: 'flex',
     alignItems: 'center',
@@ -194,15 +183,14 @@ export const styles = {
     width: '40px',
     height: '40px',
     borderRadius: '12px',
-    border: '1px solid #e2e8f0',
-    background: '#ffffff',
+    border: '1px solid #27272a',
+    background: '#18181c',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-    color: '#64748b',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    color: '#ffffff',
   },
 
-  // Dashboard Grid
   dashboardGrid: {
     display: 'grid',
     gridTemplateColumns: '60% 40%',
@@ -222,15 +210,15 @@ export const styles = {
     gap: '24px',
   },
 
-  // Premium Fleet Card
   fleetCard: {
-    background: 'linear-gradient(135deg, #1e293b, #0f172a)',
+    background: '#121215',
     borderRadius: '20px',
     padding: '28px 32px',
     color: '#ffffff',
     position: 'relative',
     overflow: 'hidden',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+    border: '1px solid #1f1f24',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
   },
 
   fleetCardHeader: {
@@ -250,7 +238,7 @@ export const styles = {
   fleetCardChip: {
     width: '40px',
     height: '30px',
-    background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+    background: 'linear-gradient(135deg, #10b981, #059669)',
     borderRadius: '6px',
     opacity: 0.8,
   },
@@ -268,7 +256,7 @@ export const styles = {
     display: 'flex',
     gap: '32px',
     paddingTop: '20px',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
+    borderTop: '1px solid #1f1f24',
   },
 
   fleetCardMeta: {
@@ -282,7 +270,7 @@ export const styles = {
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-    opacity: 0.5,
+    color: '#71717a',
   },
 
   fleetCardVal: {
@@ -290,13 +278,12 @@ export const styles = {
     fontWeight: '600',
   },
 
-  // Balance Section
   balanceSection: {
-    background: '#ffffff',
+    background: '#121215',
     borderRadius: '20px',
     padding: '24px 28px',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
-    border: '1px solid #f1f5f9',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
+    border: '1px solid #1f1f24',
   },
 
   balanceHeader: {
@@ -315,7 +302,7 @@ export const styles = {
   balanceLabel: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#64748b',
+    color: '#71717a',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -323,7 +310,7 @@ export const styles = {
   balanceValue: {
     fontSize: '28px',
     fontWeight: '800',
-    color: '#1e293b',
+    color: '#ffffff',
     margin: 0,
   },
 
@@ -341,27 +328,30 @@ export const styles = {
   },
 
   addScanBtn: {
-    background: 'linear-gradient(135deg, #22c55e, #16a34a)',
+    background: 'transparent',
     color: '#ffffff',
-    border: 'none',
-    padding: '12px 24px',
+    border: '1px solid #1f1f24',
+    padding: '14px 24px',
     borderRadius: '12px',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 4px 12px rgba(34, 197, 94, 0.25)',
+    boxShadow: 'none',
     fontFamily: 'Inter, sans-serif',
     width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
   },
 
-  // Panel
   panel: {
-    background: '#ffffff',
+    background: '#121215',
     borderRadius: '20px',
     padding: '24px 28px',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
-    border: '1px solid #f1f5f9',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
+    border: '1px solid #1f1f24',
   },
 
   panelHeader: {
@@ -384,20 +374,19 @@ export const styles = {
   panelTitle: {
     fontSize: '16px',
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#ffffff',
     margin: 0,
   },
 
   viewAllLink: (color) => ({
     fontSize: '13px',
     fontWeight: '600',
-    color: '#64748b',
+    color: '#10b981',
     cursor: 'pointer',
     transition: 'color 0.2s',
     textDecoration: 'none',
   }),
 
-  // Table
   tableWrapper: {
     overflowX: 'auto',
   },
@@ -414,24 +403,24 @@ export const styles = {
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-    color: '#94a3b8',
-    borderBottom: '2px solid #f1f5f9',
+    color: '#71717a',
+    borderBottom: '1px solid #1f1f24',
   },
 
   td: {
-    padding: '12px 12px',
-    fontSize: '13px',
-    color: '#1e293b',
-    borderBottom: '1px solid #f8fafc',
+    padding: '16px 12px',
+    fontSize: '13.5px',
+    color: '#ffffff',
+    borderBottom: '1px solid #1f1f24',
   },
 
   statusBadge: (status) => {
     const statusMap = {
-      'completed': { bg: '#dcfce7', color: '#166534' },
-      'running': { bg: '#dbeafe', color: '#1e40af' },
-      'pending': { bg: '#fef3c7', color: '#92400e' },
-      'failed': { bg: '#fee2e2', color: '#991b1b' },
-      'cancelled': { bg: '#f1f5f9', color: '#64748b' },
+      'completed': { bg: 'rgba(16, 185, 129, 0.08)', color: '#10b981', border: '#10b981' },
+      'running': { bg: 'rgba(255, 255, 255, 0.08)', color: '#ffffff', border: '#27272a' },
+      'pending': { bg: 'rgba(255, 255, 255, 0.08)', color: '#a1a1aa', border: '#27272a' },
+      'failed': { bg: 'rgba(255, 255, 255, 0.08)', color: '#a1a1aa', border: '#27272a' },
+      'cancelled': { bg: 'rgba(255, 255, 255, 0.08)', color: '#71717a', border: '#1f1f24' },
     };
     const lowerStatus = status?.toLowerCase() || 'pending';
     const style = statusMap[lowerStatus] || statusMap.pending;
@@ -443,12 +432,12 @@ export const styles = {
       fontWeight: '700',
       backgroundColor: style.bg,
       color: style.color,
+      border: `1px solid ${style.border}`,
       textTransform: 'uppercase',
       letterSpacing: '0.3px',
     };
   },
 
-  // Right Column Metrics Grid
   rightMetricsGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -457,18 +446,18 @@ export const styles = {
 
   metricCard: (type) => {
     const borderColors = {
-      online: '#22c55e',
-      offline: '#fb923c',
-      disabled: '#f87171',
-      active: '#a78bfa',
+      online: '#10b981',
+      offline: '#71717a',
+      disabled: '#27272a',
+      active: '#52525b',
     };
     return {
-      background: '#ffffff',
+      background: '#121215',
       borderRadius: '16px',
       padding: '18px 20px',
-      border: '1px solid #f1f5f9',
-      borderTop: `3px solid ${borderColors[type] || '#e2e8f0'}`,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+      border: '1px solid #1f1f24',
+      borderLeft: `4px solid ${borderColors[type] || '#27272a'}`,
+      boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
     };
   },
 
@@ -476,13 +465,14 @@ export const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginRight: 0,
     marginBottom: '8px',
   },
 
   metricCardLabel: {
     fontSize: '12px',
     fontWeight: '600',
-    color: '#94a3b8',
+    color: '#71717a',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
@@ -501,7 +491,7 @@ export const styles = {
   metricCardValue: {
     fontSize: '26px',
     fontWeight: '800',
-    color: '#1e293b',
+    color: '#ffffff',
     margin: '4px 0',
   },
 
@@ -511,7 +501,6 @@ export const styles = {
     color: color,
   }),
 
-  // Donut Chart
   donutContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -531,7 +520,7 @@ export const styles = {
     display: 'block',
     fontSize: '22px',
     fontWeight: '800',
-    color: '#1e293b',
+    color: '#ffffff',
     lineHeight: 1.2,
   },
 
@@ -539,7 +528,7 @@ export const styles = {
     display: 'block',
     fontSize: '10px',
     fontWeight: '600',
-    color: '#94a3b8',
+    color: '#71717a',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -564,7 +553,7 @@ export const styles = {
     gap: '8px',
     fontSize: '13px',
     fontWeight: '500',
-    color: '#64748b',
+    color: '#a1a1aa',
   },
 
   legendDot: (color) => ({
@@ -578,10 +567,9 @@ export const styles = {
   legendValue: {
     fontSize: '13px',
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#ffffff',
   },
 
-  // Alerts Stack
   alertsStack: {
     display: 'flex',
     flexDirection: 'column',
@@ -593,9 +581,9 @@ export const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '12px 14px',
-    background: '#fafafa',
+    background: '#18181c',
     borderRadius: '12px',
-    borderLeft: '4px solid #e2e8f0',
+    border: '1px solid #1f1f24',
     transition: 'all 0.2s',
   }),
 
@@ -613,8 +601,8 @@ export const styles = {
     width: '28px',
     height: '28px',
     borderRadius: '8px',
-    background: color + '20',
-    color: color,
+    background: 'rgba(255, 255, 255, 0.08)',
+    color: '#ffffff',
     fontSize: '12px',
     fontWeight: '800',
   }),
@@ -628,12 +616,12 @@ export const styles = {
   alertDeviceName: {
     fontSize: '13px',
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#ffffff',
   },
 
   alertMsg: {
     fontSize: '12px',
-    color: '#64748b',
+    color: '#a1a1aa',
     fontWeight: '500',
   },
 
@@ -646,14 +634,14 @@ export const styles = {
   alertTime: {
     fontSize: '11px',
     fontWeight: '500',
-    color: '#94a3b8',
+    color: '#71717a',
   },
 
   alertBadge: (tag) => {
     const styles = {
-      critical: { bg: '#fee2e2', color: '#991b1b' },
-      warning: { bg: '#ffedd5', color: '#9a3412' },
-      info: { bg: '#dbeafe', color: '#1e40af' },
+      critical: { bg: 'rgba(255, 255, 255, 0.08)', color: '#ffffff' },
+      warning: { bg: 'rgba(255, 255, 255, 0.08)', color: '#a1a1aa' },
+      info: { bg: 'rgba(255, 255, 255, 0.08)', color: '#71717a' },
     };
     const style = styles[tag] || styles.info;
     return {
@@ -665,10 +653,10 @@ export const styles = {
       letterSpacing: '0.3px',
       backgroundColor: style.bg,
       color: style.color,
+      border: `1px solid ${style.color}`,
     };
   },
 
-  // Bottom Metrics Grid
   bottomMetricsGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
@@ -678,14 +666,14 @@ export const styles = {
   },
 
   bottomMiniCard: (type) => ({
-    background: '#ffffff',
+    background: '#121215',
     borderRadius: '16px',
     padding: '20px 24px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    border: '1px solid #f1f5f9',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    border: '1px solid #1f1f24',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
   }),
 
   bottomMiniMeta: {
@@ -697,7 +685,7 @@ export const styles = {
   bottomMiniLabel: {
     fontSize: '12px',
     fontWeight: '600',
-    color: '#94a3b8',
+    color: '#71717a',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
@@ -705,7 +693,7 @@ export const styles = {
   bottomMiniVal: {
     fontSize: '24px',
     fontWeight: '800',
-    color: '#1e293b',
+    color: '#ffffff',
     margin: 0,
   },
 
@@ -727,20 +715,18 @@ export const styles = {
     fontSize: '20px',
   }),
 
-  // Footer
   footerNote: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '16px 0',
     fontSize: '12px',
-    color: '#94a3b8',
+    color: '#71717a',
     fontWeight: '500',
-    borderTop: '1px solid #f1f5f9',
+    borderTop: '1px solid #1f1f24',
     marginTop: '8px',
   },
 };
 
-// Add CSS animations as a string to be injected
 export const animations = `
   @keyframes spin {
     from { transform: rotate(0deg); }
@@ -806,7 +792,8 @@ export const animations = `
 
   .premium-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(34, 197, 94, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    border-color: #10b981;
   }
 
   .premium-metric-card {
@@ -815,7 +802,7 @@ export const animations = `
 
   .premium-metric-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
   }
 
   .premium-table tbody tr {
@@ -823,10 +810,9 @@ export const animations = `
   }
 
   .premium-table tbody tr:hover {
-    background: #f8fafc;
+    background: rgba(16, 185, 129, 0.02) !important;
   }
 
-  /* Hover states */
   button:hover {
     transform: translateY(-1px);
   }
