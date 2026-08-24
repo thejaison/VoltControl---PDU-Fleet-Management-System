@@ -27,6 +27,7 @@ public class ScanJob {
     private LocalDateTime updatedTimestamp;
     private LocalDateTime startedTimestamp;
     private LocalDateTime completedTimestamp;
+    private LocalDateTime scheduledTime;
 
     @PrePersist
     protected void onCreate() {
@@ -117,5 +118,13 @@ public class ScanJob {
 
     public void setCompletedTimestamp(LocalDateTime completedTimestamp) {
         this.completedTimestamp = completedTimestamp;
+    }
+
+    public LocalDateTime getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(LocalDateTime scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 }

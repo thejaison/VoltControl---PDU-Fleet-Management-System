@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +38,11 @@ public class ScanJobController {
     public ResponseEntity<ScanJobResponseDto> createScanJob(
             @Valid @RequestBody CreateScanJobRequestDto request) {
         ScanJobResponseDto response = scanJobService.createScanJob(request);
-        jobScheduler.enqueue(() -> scanJobService.executeScanJob(response.getUuid()));
+        if (request.getScheduledTime() != null) {
+            jobScheduler.schedule(request.getScheduledTime(), () -> scanJobService.executeScanJob(response.getUuid()));
+        } else {
+            jobScheduler.enqueue(() -> scanJobService.executeScanJob(response.getUuid()));
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -16,6 +16,8 @@ const colors = {
 };
 
 const statusColors = {
+  Scheduled: { bg: "rgba(59, 130, 246, 0.08)", text: "#3b82f6", dot: "#3b82f6" },
+  SCHEDULED: { bg: "rgba(59, 130, 246, 0.08)", text: "#3b82f6", dot: "#3b82f6" },
   Queued: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
   QUEUED: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
   Running: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },

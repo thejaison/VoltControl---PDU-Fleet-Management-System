@@ -12,6 +12,8 @@ public class CreateScanJobRequestDto {
     @NotEmpty(message = "Creator employee ID is required")
     private String createdByEmpId;
 
+    private java.time.LocalDateTime scheduledTime;
+
     public List<String> getDeviceUuids() {
         return deviceUuids;
     }
@@ -26,5 +28,13 @@ public class CreateScanJobRequestDto {
 
     public void setCreatedByEmpId(String createdByEmpId) {
         this.createdByEmpId = createdByEmpId;
+    }
+
+    public java.time.LocalDateTime getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(java.time.LocalDateTime scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 }

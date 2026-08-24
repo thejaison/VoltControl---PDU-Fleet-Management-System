@@ -30,6 +30,8 @@ const CreateScanJob = () => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [executionType, setExecutionType] = useState("immediate"); // "immediate" | "scheduled"
+    const [scheduledTime, setScheduledTime] = useState("");
 
     useEffect(() => {
         const fetchAllDevices = async () => {
@@ -103,16 +105,34 @@ const CreateScanJob = () => {
             return;
         }
 
+        if (executionType === "scheduled") {
+            if (!scheduledTime) {
+                setError("Please specify a date and time for the scheduled scan.");
+                return;
+            }
+            const selectedDateTime = new Date(scheduledTime);
+            if (selectedDateTime <= new Date()) {
+                setError("Scheduled time must be in the future.");
+                return;
+            }
+        }
+
         try {
             setSubmitting(true);
             setError("");
+            
+            const payload = {
+                deviceUuids: finalUuids,
+                createdByEmpId: empId
+            };
+            if (executionType === "scheduled" && scheduledTime) {
+                payload.scheduledTime = scheduledTime + ":00";
+            }
+
             const response = await fetch("http://localhost:8080/api/scan-jobs", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    deviceUuids: finalUuids,
-                    createdByEmpId: empId
-                })
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
@@ -382,6 +402,81 @@ const CreateScanJob = () => {
                             />
                         </div>
 
+                        <div style={{ marginTop: '20px' }}>
+                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: colors.textSecondary, marginBottom: '8px' }}>
+                                Execution Mode:
+                            </label>
+                            <div style={{
+                                display: 'flex',
+                                backgroundColor: '#18181c',
+                                borderRadius: '10px',
+                                padding: '3px',
+                                border: `1px solid ${colors.border}`
+                            }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setExecutionType("immediate")}
+                                    style={{
+                                        flex: 1,
+                                        border: 'none',
+                                        padding: '8px',
+                                        borderRadius: '8px',
+                                        fontSize: '12px',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        backgroundColor: executionType === "immediate" ? '#27272a' : 'transparent',
+                                        color: executionType === "immediate" ? '#ffffff' : colors.textSecondary,
+                                        transition: 'all 0.15s ease'
+                                    }}
+                                >
+                                    Immediate Scan
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setExecutionType("scheduled")}
+                                    style={{
+                                        flex: 1,
+                                        border: 'none',
+                                        padding: '8px',
+                                        borderRadius: '8px',
+                                        fontSize: '12px',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        backgroundColor: executionType === "scheduled" ? '#27272a' : 'transparent',
+                                        color: executionType === "scheduled" ? '#ffffff' : colors.textSecondary,
+                                        transition: 'all 0.15s ease'
+                                    }}
+                                >
+                                    Schedule Scan
+                                </button>
+                            </div>
+                        </div>
+
+                        {executionType === "scheduled" && (
+                            <div style={{ marginTop: '16px' }}>
+                                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: colors.textSecondary, marginBottom: '6px' }}>
+                                    Scheduled Date & Time:
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    value={scheduledTime}
+                                    onChange={(e) => setScheduledTime(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        borderRadius: '10px',
+                                        border: `1px solid ${colors.border}`,
+                                        padding: '10px 12px',
+                                        boxSizing: 'border-box',
+                                        fontSize: '13px',
+                                        outline: 'none',
+                                        backgroundColor: colors.bgPage,
+                                        color: colors.textPrimary,
+                                        fontFamily: 'inherit'
+                                    }}
+                                />
+                            </div>
+                        )}
+
                         <button
                             type="button"
                             style={{
@@ -406,7 +501,7 @@ const CreateScanJob = () => {
                             onClick={handleStartScanJob}
                             disabled={submitting || !isAdmin}
                         >
-                            {submitting ? "Dispatching..." : "Start Connection Scan"}
+                            {submitting ? "Dispatching..." : executionType === "scheduled" ? "Schedule Diagnostic Scan" : "Start Connection Scan"}
                         </button>
                     </div>
                 </div>

@@ -126,7 +126,12 @@ public class ScanJobService {
 
         ScanJob scanJob = new ScanJob();
         scanJob.setUuid(UUID.randomUUID().toString());
-        scanJob.setStatus("Queued");
+        if (request.getScheduledTime() != null) {
+            scanJob.setStatus("Scheduled");
+            scanJob.setScheduledTime(request.getScheduledTime());
+        } else {
+            scanJob.setStatus("Queued");
+        }
         scanJob.setTotalDevices(foundDevices.size());
         scanJob.setCompletedDevices(0);
         scanJob.setCreatedByEmpId(user.getId().getEmpId());
@@ -136,7 +141,11 @@ public class ScanJobService {
             ScanJobDevice sjd = new ScanJobDevice();
             sjd.setScanJob(scanJob);
             sjd.setDevice(device);
-            sjd.setStatus("Queued");
+            if (request.getScheduledTime() != null) {
+                sjd.setStatus("Scheduled");
+            } else {
+                sjd.setStatus("Queued");
+            }
             scanJobDeviceRepository.save(sjd);
         }
 
@@ -146,13 +155,17 @@ public class ScanJobService {
                 scanJob.getTotalDevices(),
                 scanJob.getCompletedDevices(),
                 scanJob.getCreatedTimestamp(),
-                scanJob.getCreatedByEmpId());
+                scanJob.getCreatedByEmpId(),
+                scanJob.getScheduledTime());
     }
 
     public void executeScanJob(String uuid) {
         try {
             ScanJob scanJob = scanJobRepository.findByUuid(uuid);
             if (scanJob == null) return;
+            if ("Cancelled".equalsIgnoreCase(scanJob.getStatus())) {
+                return;
+            }
 
             self.startScanJob(scanJob.getId());
             sendProgressUpdate(uuid);
@@ -270,14 +283,14 @@ public class ScanJobService {
         }
 
         String status = scanJob.getStatus();
-        if ("Running".equalsIgnoreCase(status) || "Queued".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status)) {
+        if ("Running".equalsIgnoreCase(status) || "Queued".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Scheduled".equalsIgnoreCase(status)) {
             scanJob.setStatus("Cancelled");
             scanJob.setCompletedTimestamp(LocalDateTime.now());
             scanJobRepository.save(scanJob);
 
             List<ScanJobDevice> scanJobDevices = scanJobDeviceRepository.findByScanJob_Id(scanJob.getId());
             for (ScanJobDevice sjd : scanJobDevices) {
-                if ("Queued".equalsIgnoreCase(sjd.getStatus()) || "Running".equalsIgnoreCase(sjd.getStatus())) {
+                if ("Queued".equalsIgnoreCase(sjd.getStatus()) || "Running".equalsIgnoreCase(sjd.getStatus()) || "Scheduled".equalsIgnoreCase(sjd.getStatus())) {
                     sjd.setStatus("Cancelled");
                     sjd.setCompletedTimestamp(LocalDateTime.now());
                     scanJobDeviceRepository.save(sjd);
@@ -292,7 +305,8 @@ public class ScanJobService {
                 scanJob.getTotalDevices(),
                 scanJob.getCompletedDevices(),
                 scanJob.getCreatedTimestamp(),
-                scanJob.getCreatedByEmpId());
+                scanJob.getCreatedByEmpId(),
+                scanJob.getScheduledTime());
     }
 
     @Transactional
@@ -329,7 +343,8 @@ public class ScanJobService {
                 scanJob.getTotalDevices(),
                 scanJob.getCompletedDevices(),
                 scanJob.getCreatedTimestamp(),
-                scanJob.getCreatedByEmpId());
+                scanJob.getCreatedByEmpId(),
+                scanJob.getScheduledTime());
     }
 
     @Transactional
@@ -364,7 +379,8 @@ public class ScanJobService {
                 scanJob.getTotalDevices(),
                 scanJob.getCompletedDevices(),
                 scanJob.getCreatedTimestamp(),
-                scanJob.getCreatedByEmpId());
+                scanJob.getCreatedByEmpId(),
+                scanJob.getScheduledTime());
     }
 
     @Transactional
@@ -459,7 +475,8 @@ public class ScanJobService {
                         scanJob.getTotalDevices(),
                         scanJob.getCompletedDevices(),
                         scanJob.getCreatedTimestamp(),
-                        scanJob.getCreatedByEmpId()))
+                        scanJob.getCreatedByEmpId(),
+                        scanJob.getScheduledTime()))
                 .collect(Collectors.toList());
     }
 

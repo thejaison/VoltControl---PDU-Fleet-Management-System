@@ -329,6 +329,7 @@ const ScanningDashboard = () => {
     const runningJobs = scanJobs.filter(j => j.status === 'RUNNING' || j.status === 'QUEUED' || j.status === 'In Progress').length;
     const completedJobs = scanJobs.filter(j => j.status === 'COMPLETED' || j.status === 'Completed').length;
     const failedJobs = scanJobs.filter(j => j.status === 'FAILED' || j.status === 'Failed').length;
+    const scheduledJobs = scanJobs.filter(j => j.status === 'Scheduled' || j.status === 'SCHEDULED').length;
     const successRate = totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 0;
 
     const dynamicStatCards = [
@@ -341,11 +342,13 @@ const ScanningDashboard = () => {
 
     const completedPercent = totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 0;
     const runningPercent = totalJobs > 0 ? Math.round((runningJobs / totalJobs) * 100) : 0;
-    const failedPercent = totalJobs > 0 ? (100 - completedPercent - runningPercent) : 0;
+    const scheduledPercent = totalJobs > 0 ? Math.round((scheduledJobs / totalJobs) * 100) : 0;
+    const failedPercent = totalJobs > 0 ? (100 - completedPercent - runningPercent - scheduledPercent) : 0;
 
     const donutSegments = totalJobs > 0 ? [
         { label: "Completed", value: completedJobs, percent: completedPercent, color: statusColors.Completed.dot },
         { label: "Running/Queued", value: runningJobs, percent: runningPercent, color: statusColors.Running.dot },
+        { label: "Scheduled", value: scheduledJobs, percent: scheduledPercent, color: statusColors.Scheduled?.dot || '#3b82f6' },
         { label: "Failed", value: failedJobs, percent: failedPercent, color: statusColors.Failed.dot },
     ] : [
         { label: "No Jobs", value: 0, percent: 100, color: colors.gray },
@@ -680,7 +683,7 @@ const ScanningDashboard = () => {
                         <span style={styles.notificationDot} />
                     </div>
                     <div style={styles.iconCircle}><HelpIcon /></div>
-                    <div 
+                    <div
                         style={{ ...styles.profilePill, cursor: 'pointer' }}
                         onClick={() => navigate('/admin/detail', {
                             state: {
@@ -865,10 +868,18 @@ const ScanningDashboard = () => {
                                             </div>
                                             <div style={styles.tableRow}>{job.totalDevices}</div>
                                             <div style={styles.tableRow}>
-                                                <div style={styles.miniProgressTrack}>
-                                                    <div style={styles.miniProgressFill(percent, c.dot)} />
-                                                </div>
-                                                <div style={styles.progressPercentText}>{percent}%</div>
+                                                {['Scheduled', 'SCHEDULED'].includes(job.status) ? (
+                                                    <div style={{ color: '#3b82f6', fontWeight: 600, fontSize: '12px' }} title={job.scheduledTime}>
+                                                        📅 {formatTimestamp(job.scheduledTime)}
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <div style={styles.miniProgressTrack}>
+                                                            <div style={styles.miniProgressFill(percent, c.dot)} />
+                                                        </div>
+                                                        <div style={styles.progressPercentText}>{percent}%</div>
+                                                    </>
+                                                )}
                                             </div>
                                             <div style={styles.tableRow}>
                                                 <span style={styles.statusPill(job.status)}>{job.status}</span>
@@ -877,7 +888,7 @@ const ScanningDashboard = () => {
                                             <div style={styles.tableRow}>{formatTimestamp(job.createdTimestamp)}</div>
                                             <div style={styles.tableRow}>
                                                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                                    {['RUNNING', 'QUEUED', 'In Progress'].includes(job.status) && (
+                                                    {['RUNNING', 'QUEUED', 'In Progress', 'Scheduled', 'SCHEDULED'].includes(job.status) && (
                                                         <button
                                                             type="button"
                                                             style={styles.actionBtn("cancel", isNotAdmin)}
@@ -1010,10 +1021,18 @@ const ScanningDashboard = () => {
                                     </div>
                                     <div style={styles.tableRow}>{job.totalDevices}</div>
                                     <div style={styles.tableRow}>
-                                        <div style={styles.miniProgressTrack}>
-                                            <div style={styles.miniProgressFill(percent, c.dot)} />
-                                        </div>
-                                        <div style={styles.progressPercentText}>{percent}% ({job.completedDevices}/{job.totalDevices})</div>
+                                        {['Scheduled', 'SCHEDULED'].includes(job.status) ? (
+                                            <div style={{ color: '#3b82f6', fontWeight: 600, fontSize: '12px' }} title={job.scheduledTime}>
+                                                📅 {formatTimestamp(job.scheduledTime)}
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div style={styles.miniProgressTrack}>
+                                                    <div style={styles.miniProgressFill(percent, c.dot)} />
+                                                </div>
+                                                <div style={styles.progressPercentText}>{percent}% ({job.completedDevices}/{job.totalDevices})</div>
+                                            </>
+                                        )}
                                     </div>
                                     <div style={styles.tableRow}>
                                         <span style={styles.statusPill(job.status)}>{job.status}</span>
@@ -1022,7 +1041,7 @@ const ScanningDashboard = () => {
                                     <div style={styles.tableRow}>{formatTimestamp(job.createdTimestamp)}</div>
                                     <div style={styles.tableRow}>
                                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                            {['RUNNING', 'QUEUED', 'In Progress'].includes(job.status) && (
+                                            {['RUNNING', 'QUEUED', 'In Progress', 'Scheduled', 'SCHEDULED'].includes(job.status) && (
                                                 <button
                                                     type="button"
                                                     style={styles.actionBtn("cancel", isNotAdmin)}
