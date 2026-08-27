@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles, colors } from "../styles/files/reportsDashboardStyles";
 import Sidebar from "./Sidebar";
+import apiRequest from "../api/apiClient";
 
 // Icons
 const FileTextIcon = () => (
@@ -132,8 +133,8 @@ const ReportsDashboard = () => {
     setLoadingReports(true);
     try {
       // 1. Fetch saved reports
-      const repRes = await fetch("http://localhost:8080/api/reports");
-      if (repRes.ok) {
+      const repRes = await apiRequest("/api/reports");
+      if (repRes && repRes.ok) {
         const repData = await repRes.json();
         // Sort reports: newest uploaded/generated first
         const sorted = repData.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
@@ -141,8 +142,8 @@ const ReportsDashboard = () => {
       }
 
       // 2. Fetch devices to calculate live fleet metrics
-      const devRes = await fetch("http://localhost:8080/api/devices?size=1000");
-      if (devRes.ok) {
+      const devRes = await apiRequest("/api/devices?size=1000");
+      if (devRes && devRes.ok) {
         const devData = await devRes.json();
         const devices = devData.content || [];
         const total = devices.length;
@@ -163,9 +164,9 @@ const ReportsDashboard = () => {
     fetchData();
 
     if (empId && empId !== "EMP-USER") {
-      fetch(`http://localhost:8080/api/users/${empId}`)
+      apiRequest(`/api/users/${empId}`)
         .then(res => {
-          if (res.ok) return res.json();
+          if (res && res.ok) return res.json();
           throw new Error("Failed to fetch");
         })
         .then(data => {
@@ -185,8 +186,8 @@ const ReportsDashboard = () => {
   const handleExportExcel = async () => {
     try {
       showToast("Generating live Excel sheet...", "success");
-      const res = await fetch("http://localhost:8080/api/reports/export/excel");
-      if (!res.ok) throw new Error("Excel export failed");
+      const res = await apiRequest("/api/reports/export/excel");
+      if (!res || !res.ok) throw new Error("Excel export failed");
 
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -217,8 +218,8 @@ const ReportsDashboard = () => {
   const handleExportPdf = async () => {
     try {
       showToast("Compiling PDF fleet summary report...", "success");
-      const res = await fetch("http://localhost:8080/api/reports/export/pdf");
-      if (!res.ok) throw new Error("PDF export failed");
+      const res = await apiRequest("/api/reports/export/pdf");
+      if (!res || !res.ok) throw new Error("PDF export failed");
 
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -315,12 +316,12 @@ const ReportsDashboard = () => {
       formData.append("file", fileToUpload);
 
       try {
-        const res = await fetch("http://localhost:8080/api/reports/import/excel/preview", {
+        const res = await apiRequest("/api/reports/import/excel/preview", {
           method: "POST",
           body: formData,
         });
 
-        if (!res.ok) {
+        if (!res || !res.ok) {
           const errText = await res.text();
           throw new Error(errText || "Failed parsing Excel sheet");
         }
@@ -343,12 +344,12 @@ const ReportsDashboard = () => {
       formData.append("description", uploadDescription || "Uploaded external PDF report");
 
       try {
-        const res = await fetch("http://localhost:8080/api/reports/upload", {
+        const res = await apiRequest("/api/reports/upload", {
           method: "POST",
           body: formData,
         });
 
-        if (!res.ok) throw new Error("Report upload failed");
+        if (!res || !res.ok) throw new Error("Report upload failed");
 
         setUploadStatus("success");
         setFileToUpload(null);
@@ -398,13 +399,13 @@ const ReportsDashboard = () => {
       };
 
       try {
-        const res = await fetch('http://localhost:8080/api/devices', {
+        const res = await apiRequest('/api/devices', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
-        if (res.ok) {
+        if (res && res.ok) {
           successCount++;
         } else {
           failedCount++;
@@ -424,7 +425,7 @@ const ReportsDashboard = () => {
       const formData = new FormData();
       formData.append("file", fileToUpload);
       formData.append("description", `Excel device source file (imported ${successCount} devices)`);
-      await fetch("http://localhost:8080/api/reports/upload", {
+      await apiRequest("/api/reports/upload", {
         method: "POST",
         body: formData,
       });
@@ -452,11 +453,11 @@ const ReportsDashboard = () => {
     if (!window.confirm(`Are you sure you want to delete report: ${fileName}?`)) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/reports/${id}`, {
+      const res = await apiRequest(`/api/reports/${id}`, {
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error("Delete failed");
+      if (!res || !res.ok) throw new Error("Delete failed");
 
       showToast("Report deleted from logs archives.", "success");
       fetchData();

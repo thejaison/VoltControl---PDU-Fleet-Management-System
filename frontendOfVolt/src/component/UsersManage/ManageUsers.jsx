@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../../styles/Usermanaging";
 import Sidebar from "../Sidebar";
+import apiRequest from "../../api/apiClient";
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
@@ -12,9 +13,9 @@ const ManageUsers = () => {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:8080/api/auth/users?role=user");
+            const response = await apiRequest("/api/auth/users?role=user");
 
-            if (response.ok) {
+            if(response && response.ok) {
                 const data = await response.json();
                 setUsers(data);
             }
@@ -35,16 +36,15 @@ const ManageUsers = () => {
         setTogglingKey(key);
 
         try {
-            const response = await fetch(
-                `http://localhost:8080/api/auth/users/${username}/${empId}/status`,
+            const response = await apiRequest(
+                `/api/auth/users/${username}/${empId}/status`,
                 {
                     method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ enabled: !user.enabled }),
                 }
             );
 
-            if(response.ok) {
+            if(response && response.ok) {
                 const updated = await response.json();
                 setUsers((prev) =>
                     prev.map((u) =>
@@ -53,7 +53,7 @@ const ManageUsers = () => {
                             : u
                     )
                 );
-            } else {
+            } else if(response) {
                 alert("Failed to update user status. Please try again.");
             }
         } catch (error) {

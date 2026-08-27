@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { styles, colors, statusColors } from "../../styles/ScanJobDashboard";
 import Sidebar from "../Sidebar";
 import voltlogo from "../../assets/voltlog1.png";
+import apiRequest from "../../api/apiClient";
 
 const SunIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -161,8 +162,8 @@ const ScanningDashboard = () => {
 
     const fetchScanJobs = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/scan-jobs");
-            if (response.ok) {
+            const response = await apiRequest("/api/scan-jobs");
+            if (response && response.ok) {
                 const data = await response.json();
                 setScanJobs(data);
             }
@@ -175,8 +176,8 @@ const ScanningDashboard = () => {
 
     const fetchRecentResults = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/scan-jobs/recent-results");
-            if (response.ok) {
+            const response = await apiRequest("/api/scan-jobs/recent-results");
+            if (response && response.ok) {
                 const data = await response.json();
                 setRecentResults(data);
             }
@@ -187,8 +188,8 @@ const ScanningDashboard = () => {
 
     const fetchResultsDatabase = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/scan-jobs/results");
-            if (response.ok) {
+            const response = await apiRequest("/api/scan-jobs/results");
+            if (response && response.ok) {
                 const data = await response.json();
                 setResultsDatabase(data);
             }
@@ -209,8 +210,8 @@ const ScanningDashboard = () => {
         } else if (empId) {
             const fetchProfileData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8080/api/users/${empId}`);
-                    if (response.ok) {
+                    const response = await apiRequest(`/api/users/${empId}`);
+                    if (response && response.ok) {
                         const databaseUser = await response.json();
                         setUserData({
                             username: databaseUser.username || "",
@@ -373,10 +374,10 @@ const ScanningDashboard = () => {
 
     const handleCancelJob = async (uuid) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/scan-jobs/${uuid}/cancel`, {
+            const response = await apiRequest(`/api/scan-jobs/${uuid}/cancel`, {
                 method: "POST"
             });
-            if (response.ok) {
+            if (response && response.ok) {
                 fetchScanJobs();
             } else {
                 console.error("Failed to cancel job:", response.statusText);
@@ -388,10 +389,10 @@ const ScanningDashboard = () => {
 
     const handleContinueJob = async (uuid) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/scan-jobs/${uuid}/continue`, {
+            const response = await apiRequest(`/api/scan-jobs/${uuid}/continue`, {
                 method: "POST"
             });
-            if (response.ok) {
+            if (response && response.ok) {
                 fetchScanJobs();
             } else {
                 console.error("Failed to continue job:", response.statusText);
@@ -403,10 +404,10 @@ const ScanningDashboard = () => {
 
     const handleScanAgain = async (uuid) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/scan-jobs/${uuid}/scan-again`, {
+            const response = await apiRequest(`/api/scan-jobs/${uuid}/scan-again`, {
                 method: "POST"
             });
-            if (response.ok) {
+            if (response && response.ok) {
                 fetchScanJobs();
             } else {
                 console.error("Failed to start scan again:", response.statusText);

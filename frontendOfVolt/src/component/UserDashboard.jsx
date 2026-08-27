@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { styles } from "../styles/files/AdminDashboardStyles";
 import Sidebar from "./Sidebar";
 import voltlogo from "../assets/voltlog1.png";
+import apiRequest from "../api/apiClient";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState({
@@ -48,12 +49,12 @@ const UserDashboard = () => {
   const handleVerifyPasswordSubmit = async () => {
     if (!verifyPasswordDevice) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/devices/${verifyPasswordDevice.dbId}/verify-password`, {
+      const res = await apiRequest(`/api/devices/${verifyPasswordDevice.dbId}/verify-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: verifyPasswordInput })
       });
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data.matches) {
           setActiveDetailsDevice(verifyPasswordDevice);
@@ -75,12 +76,12 @@ const UserDashboard = () => {
   const handleUnlockBulkDevice = async (device) => {
     const inputPassword = bulkPasswordInputs[device.id] || '';
     try {
-      const res = await fetch(`http://localhost:8080/api/devices/${device.dbId}/verify-password`, {
+      const res = await apiRequest(`/api/devices/${device.dbId}/verify-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: inputPassword })
       });
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data.matches) {
           setBulkUnlocked(prev => ({ ...prev, [device.id]: true }));
@@ -117,8 +118,8 @@ const UserDashboard = () => {
 
     const fetchProfileData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${empId}`);
-        if (response.ok) {
+        const response = await apiRequest(`/api/users/${empId}`);
+        if (response && response.ok) {
           const databaseUser = await response.json();
           setUserData({
             username: databaseUser.username || '',
@@ -168,7 +169,7 @@ const UserDashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/devices?size=1000')
+    apiRequest('/api/devices?size=1000')
       .then(res => res.json())
       .then(data => {
         const content = data.content || [];
@@ -275,7 +276,7 @@ const UserDashboard = () => {
     const empId = localStorage.getItem('loggedInEmpId');
 
     try {
-      const response = await fetch("http://localhost:8080/api/scan-jobs", {
+      const response = await apiRequest("/api/scan-jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -284,7 +285,7 @@ const UserDashboard = () => {
         })
       });
 
-      if (response.ok) {
+      if (response && response.ok) {
         navigate('/job/scan', { state: location.state });
       } else {
         const text = await response.text();

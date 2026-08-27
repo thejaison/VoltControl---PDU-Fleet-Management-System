@@ -24,6 +24,7 @@ import com.voltcontrol.ibm.dto.UserSummaryDto;
 import com.voltcontrol.ibm.entity.User;
 import com.voltcontrol.ibm.entity.UserId;
 import com.voltcontrol.ibm.repository.UserRepository;
+import com.voltcontrol.ibm.security.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,6 +35,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
@@ -72,8 +76,18 @@ public class UserController {
             }
 
             if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+                String token = jwtUtil.generateTokens(
+                        user.getId().getUsername(),
+                        user.getRole(),
+                        user.getId().getEmpId());
+
                 user.setPassword(null);
-                return ResponseEntity.ok(user);
+
+                Map<String, Object> response = new java.util.HashMap<>();
+                response.put("token", token);
+                response.put("user", user);
+
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Password.");
             }

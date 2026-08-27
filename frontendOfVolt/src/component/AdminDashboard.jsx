@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { styles } from "../styles/files/AdminDashboardStyles";
 import Sidebar from "./Sidebar";
 import voltlogo from "../assets/voltlog1.png";
+import apiRequest from "../api/apiClient";
 
 const AdminDashboard = () => {
 
@@ -52,8 +53,8 @@ const AdminDashboard = () => {
 
     const fetchProfileData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${empId}`);
-        if(response.ok) {
+        const response = await apiRequest(`/api/users/${empId}`);
+        if(response && response.ok) {
           const databaseUser = await response.json();
 
           setUserData({
@@ -154,12 +155,12 @@ const AdminDashboard = () => {
   const handleVerifyPasswordSubmit = async () => {
     if (!verifyPasswordDevice) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/devices/${verifyPasswordDevice.dbId}/verify-password`, {
+      const res = await apiRequest(`/api/devices/${verifyPasswordDevice.dbId}/verify-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: verifyPasswordInput })
       });
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data.matches) {
           setActiveDetailsDevice(verifyPasswordDevice);
@@ -181,12 +182,12 @@ const AdminDashboard = () => {
   const handleUnlockBulkDevice = async (device) => {
     const inputPassword = bulkPasswordInputs[device.id] || '';
     try {
-      const res = await fetch(`http://localhost:8080/api/devices/${device.dbId}/verify-password`, {
+      const res = await apiRequest(`/api/devices/${device.dbId}/verify-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: inputPassword })
       });
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data.matches) {
           setBulkUnlocked(prev => ({ ...prev, [device.id]: true }));
@@ -296,7 +297,7 @@ const AdminDashboard = () => {
   const handleSaveEdit = async () => {
     const deviceToUpdate = devices.find(d => d.id === editingDevice);
 
-    await fetch(`http://localhost:8080/api/devices/${deviceToUpdate.dbId}`, {
+    await apiRequest(`/api/devices/${deviceToUpdate.dbId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedData)
@@ -342,7 +343,7 @@ const AdminDashboard = () => {
   const handleSavePassword = async () => {
     if (!passwordModalDevice || !currentPasswordVerified) return;
 
-    await fetch(`http://localhost:8080/api/devices/${passwordModalDevice.dbId}`, {
+    await apiRequest(`/api/devices/${passwordModalDevice.dbId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...passwordModalDevice, password: passwordModalValue })
@@ -353,11 +354,12 @@ const AdminDashboard = () => {
   }
 
   const handleVerifyCurrentPassword = async () => {
-    const res = await fetch(`http://localhost:8080/api/devices/${passwordModalDevice.dbId}/verify-password`, {
+    const res = await apiRequest(`/api/devices/${passwordModalDevice.dbId}/verify-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: currentPasswordInput })
     });
+    if (!res) return;
     const { matches } = await res.json();
 
     if(matches) {
@@ -403,11 +405,12 @@ const AdminDashboard = () => {
       lastSeen: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
       createdByEmpId: empId,
     };
-    const res = await fetch('http://localhost:8080/api/devices', {
+    const res = await apiRequest('/api/devices', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+    if (!res) return;
     const saved = await res.json();
     await fetchDevices();
     setShowCreateModal(false);
@@ -442,7 +445,7 @@ const AdminDashboard = () => {
 
     await Promise.all(
         toDelete.map(device =>
-            fetch(`http://localhost:8080/api/devices/${device.dbId}`, { method: 'DELETE' })
+            apiRequest(`/api/devices/${device.dbId}`, { method: 'DELETE' })
         )
     );
 
@@ -464,7 +467,7 @@ const AdminDashboard = () => {
     const empId = localStorage.getItem('loggedInEmpId');
 
     try {
-      const response = await fetch("http://localhost:8080/api/scan-jobs", {
+      const response = await apiRequest("/api/scan-jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -473,7 +476,7 @@ const AdminDashboard = () => {
         })
       });
 
-      if (response.ok) {
+      if (response && response.ok) {
         navigate('/job/scan', { state: { ...location.state, selectedUuids } });
       } else {
         const text = await response.text();
@@ -505,7 +508,8 @@ const AdminDashboard = () => {
     if (filterEnabledStatus !== 'None')
       params.append('enabledStatus', filterEnabledStatus);
 
-    const res = await fetch(`http://localhost:8080/api/devices?${params.toString()}`);
+    const res = await apiRequest(`/api/devices?${params.toString()}`);
+    if (!res) return;
     const data = await res.json();
 
     if (data.totalPages > 0 && currentPage >= data.totalPages) {
@@ -543,7 +547,7 @@ const AdminDashboard = () => {
           const device = devices.find(d => d.id === id);
           if (!device) return Promise.resolve();
 
-          return fetch(`http://localhost:8080/api/devices/${device.dbId}`, {
+          return apiRequest(`/api/devices/${device.dbId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(device)

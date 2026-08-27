@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { styles } from "../../styles/files/AdminDetailViewStyles";
+import apiRequest from "../../api/apiClient";
 
 const colors = {
     primary: "#ff7043",
@@ -66,8 +67,8 @@ const AdminDetailView = () => {
 
     const fetchOtherAdminNotifications = async (allUsers) => {
         try {
-            const response = await fetch("http://localhost:8080/api/scan-jobs");
-            if (response.ok) {
+            const response = await apiRequest("/api/scan-jobs");
+            if (response && response.ok) {
                 const jobs = await response.json();
                 const otherJobs = jobs.filter(job => job.createdByEmpId && job.createdByEmpId !== empId);
 
@@ -96,9 +97,10 @@ const AdminDetailView = () => {
 
     const fetchUsers = () => {
         setUsersLoading(true);
-        fetch("http://localhost:8080/api/users")
-            .then(res => res.json())
+        apiRequest("/api/users")
+            .then(res => res && res.json())
             .then(data => {
+                if (!data) return;
                 setUsersList(data);
                 fetchOtherAdminNotifications(data);
             })
@@ -110,9 +112,10 @@ const AdminDetailView = () => {
         if (!empId) return;
 
         // Fetch user details to get saved profile picture and username
-        fetch(`http://localhost:8080/api/users/${empId}`)
-            .then(res => res.json())
+        apiRequest(`/api/users/${empId}`)
+            .then(res => res && res.json())
             .then(data => {
+                if (!data) return;
                 if (data.profileImage) {
                     setProfileImage(data.profileImage);
                     localStorage.setItem("loggedInProfileImage", data.profileImage);
@@ -136,9 +139,10 @@ const AdminDetailView = () => {
             .catch(err => console.error("Failed to fetch user details:", err));
 
         // Fetch user's own added devices
-        fetch(`http://localhost:8080/api/devices/by-admin/${empId}`)
-            .then(res => res.json())
+        apiRequest(`/api/devices/by-admin/${empId}`)
+            .then(res => res && res.json())
             .then(data => {
+                if (!data) return;
                 const mapped = data.map((d, i) => ({
                     ...d,
                     id: (i + 1).toString().padStart(2, '0'),
@@ -224,12 +228,12 @@ const AdminDetailView = () => {
                 setProfileImage(base64Data);
 
                 try {
-                    const response = await fetch(`http://localhost:8080/api/users/${empId}/update-profile-image`, {
+                    const response = await apiRequest(`/api/users/${empId}/update-profile-image`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ profileImage: base64Data })
                     });
-                    if (response.ok) {
+                    if (response && response.ok) {
                         localStorage.setItem("loggedInProfileImage", base64Data);
                     } else {
                         console.error("Failed to upload profile image to server");
@@ -246,13 +250,13 @@ const AdminDetailView = () => {
         if (!newUsername.trim()) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${empId}/update-username`, {
+            const response = await apiRequest(`/api/users/${empId}/update-username`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: newUsername })
             });
 
-            if (response.ok) {
+            if (response && response.ok) {
                 const data = await response.json();
                 setCurrentUsername(data.username);
                 localStorage.setItem("loggedInUsername", data.username);
@@ -271,11 +275,11 @@ const AdminDetailView = () => {
 
     const handleToggleStatus = async (userEmpId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${userEmpId}/toggle-status`, {
+            const response = await apiRequest(`/api/users/${userEmpId}/toggle-status`, {
                 method: "PUT"
             });
 
-            if (response.ok) {
+            if (response && response.ok) {
                 // Update local list state
                 setUsersList(prev => prev.map(u =>
                     u.empId === userEmpId ? { ...u, enabled: !u.enabled } : u

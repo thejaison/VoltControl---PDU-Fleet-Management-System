@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import { styles, colors, statusColors } from "../../styles/ScanJobDashboard";
 import voltlogo from "../../assets/voltlog1.png";
+import apiRequest from "../../api/apiClient";
 
 const ArrowLeftIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -36,8 +37,8 @@ const CreateScanJob = () => {
     useEffect(() => {
         const fetchAllDevices = async () => {
             try {
-                const res = await fetch("http://localhost:8080/api/devices?size=1000");
-                if (res.ok) {
+                const res = await apiRequest("/api/devices?size=1000");
+                if (res && res.ok) {
                     const data = await res.json();
                     setDevices(data.content || []);
                 }
@@ -129,13 +130,13 @@ const CreateScanJob = () => {
                 payload.scheduledTime = scheduledTime + ":00";
             }
 
-            const response = await fetch("http://localhost:8080/api/scan-jobs", {
+            const response = await apiRequest("/api/scan-jobs", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
+            if (response && response.ok) {
                 navigate("/job/scan", { state: location.state });
             } else {
                 const text = await response.text();

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { styles, colors, animations } from "../styles/Overalldashboardstyles";
 import Sidebar from "./Sidebar";
 import voltlogo2 from "../assets/voltlog2.png";
+import apiRequest from "../api/apiClient";
 
 // SVG Icons
 const WifiIcon = () => (
@@ -133,22 +134,22 @@ const OverAllDashboard = () => {
     setLoading(true);
     try {
       // 1. Fetch devices
-      const devRes = await fetch("http://localhost:8080/api/devices?size=1000");
-      if (devRes.ok) {
+      const devRes = await apiRequest("/api/devices?size=1000");
+      if (devRes && devRes.ok) {
         const data = await devRes.json();
         setDevices(data.content || []);
       }
 
       // 2. Fetch scan jobs
-      const scanRes = await fetch("http://localhost:8080/api/scan-jobs");
-      if (scanRes.ok) {
+      const scanRes = await apiRequest("/api/scan-jobs");
+      if (scanRes && scanRes.ok) {
         const data = await scanRes.json();
         setScanJobs(data || []);
       }
 
       // 3. Fetch report logs
-      const repRes = await fetch("http://localhost:8080/api/reports");
-      if (repRes.ok) {
+      const repRes = await apiRequest("/api/reports");
+      if (repRes && repRes.ok) {
         const data = await repRes.json();
         setReportLogsCount(data.length);
       }
@@ -169,8 +170,8 @@ const OverAllDashboard = () => {
     setShowReportDropdown(false);
     showToast("Compiling PDF fleet report...", "success");
     try {
-      const res = await fetch("http://localhost:8080/api/reports/export/pdf");
-      if (!res.ok) throw new Error();
+      const res = await apiRequest("/api/reports/export/pdf");
+      if (!res || !res.ok) throw new Error();
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -189,8 +190,8 @@ const OverAllDashboard = () => {
     setShowReportDropdown(false);
     showToast("Generating Excel database...", "success");
     try {
-      const res = await fetch("http://localhost:8080/api/reports/export/excel");
-      if (!res.ok) throw new Error();
+      const res = await apiRequest("/api/reports/export/excel");
+      if (!res || !res.ok) throw new Error();
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");

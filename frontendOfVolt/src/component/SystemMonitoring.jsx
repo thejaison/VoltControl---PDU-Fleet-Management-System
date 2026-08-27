@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { styles, colors } from "../styles/ScanJobDashboard";
 import Sidebar from "./Sidebar";
 import voltlogo from "../assets/voltlog1.png";
+import apiRequest from "../api/apiClient";
 
 // SVG Icons matching the clean modern design
 const ActivityIcon = () => (
@@ -243,8 +244,8 @@ const SystemMonitoring = () => {
     } else if (empId) {
       const fetchProfileData = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/api/users/${empId}`);
-          if (response.ok) {
+          const response = await apiRequest(`/api/users/${empId}`);
+          if (response && response.ok) {
             const databaseUser = await response.json();
             setUserData({
               username: databaseUser.username || "",
@@ -267,18 +268,18 @@ const SystemMonitoring = () => {
     if (!silent) setIsLoading(true);
     try {
       // 1. Health
-      const healthRes = await fetch("http://localhost:8080/api/monitor/health");
-      if (!healthRes.ok) throw new Error("Health check failed");
+      const healthRes = await apiRequest("/api/monitor/health");
+      if (!healthRes || !healthRes.ok) throw new Error("Health check failed");
       const health = await healthRes.json();
 
       // 2. Readiness
-      const readinessRes = await fetch("http://localhost:8080/api/monitor/readiness");
-      if (!readinessRes.ok) throw new Error("Readiness check failed");
+      const readinessRes = await apiRequest("/api/monitor/readiness");
+      if (!readinessRes || !readinessRes.ok) throw new Error("Readiness check failed");
       const readiness = await readinessRes.json();
 
       // 3. Metrics
-      const metricsRes = await fetch("http://localhost:8080/api/monitor/metrics");
-      if (!metricsRes.ok) throw new Error("Metrics collection failed");
+      const metricsRes = await apiRequest("/api/monitor/metrics");
+      if (!metricsRes || !metricsRes.ok) throw new Error("Metrics collection failed");
       const metrics = await metricsRes.json();
 
       setHealthData(health);

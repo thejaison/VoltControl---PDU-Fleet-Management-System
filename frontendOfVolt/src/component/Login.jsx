@@ -33,18 +33,20 @@ const Login = () => {
 
         if(response.ok) {
             const data = await response.json();
+            const { token, user } = data;
 
-            localStorage.setItem("loggedInEmpId", formData.empId);
-            localStorage.setItem("loggedInRole", data.role);
-            localStorage.setItem("loggedInUsername", data.id.username);
-            localStorage.setItem("loggedInEmail", data.officeEmail);
+            localStorage.setItem("token", token);
+            localStorage.setItem("loggedInEmpId", user.id.empId);
+            localStorage.setItem("loggedInRole", user.role);
+            localStorage.setItem("loggedInUsername", user.id.username);
+            localStorage.setItem("loggedInEmail", user.officeEmail);
 
             navigate("/dashboard", {
                 state: {
-                    username: data.id.username,
-                    role: data.role,
-                    joiningDate: data.joiningDate,
-                    officeEmail: data.officeEmail
+                    username: user.id.username,
+                    role: user.role,
+                    joiningDate: user.joiningDate,
+                    officeEmail: user.officeEmail
                 }
             });
         } else {
