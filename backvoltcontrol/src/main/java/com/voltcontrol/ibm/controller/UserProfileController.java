@@ -89,7 +89,8 @@ public class UserProfileController {
 
     @org.springframework.transaction.annotation.Transactional
     @PutMapping("/{empId}/update-username")
-    public ResponseEntity<?> updateUsername(@PathVariable String empId, @RequestBody java.util.Map<String, String> body) {
+    public ResponseEntity<?> updateUsername(@PathVariable String empId,
+            @RequestBody java.util.Map<String, String> body) {
         String newUsername = body.get("username");
         if (newUsername == null || newUsername.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username cannot be empty");
@@ -102,13 +103,14 @@ public class UserProfileController {
 
         // Check if new username is already taken by another user with a different empId
         boolean exists = userRepository.findAll().stream()
-                .anyMatch(u -> u.getId().getUsername().equalsIgnoreCase(newUsername) && !u.getId().getEmpId().equals(empId));
+                .anyMatch(u -> u.getId().getUsername().equalsIgnoreCase(newUsername)
+                        && !u.getId().getEmpId().equals(empId));
         if (exists) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken by another employee");
         }
 
         userRepository.updateUsername(empId, newUsername);
-        
+
         // Return updated user DTO
         Optional<User> updatedUserOpt = userRepository.findByEmpId(empId);
         if (updatedUserOpt.isPresent()) {
@@ -124,7 +126,8 @@ public class UserProfileController {
     }
 
     @PutMapping("/{empId}/update-profile-image")
-    public ResponseEntity<?> updateProfileImage(@PathVariable String empId, @RequestBody java.util.Map<String, String> body) {
+    public ResponseEntity<?> updateProfileImage(@PathVariable String empId,
+            @RequestBody java.util.Map<String, String> body) {
         String profileImage = body.get("profileImage");
         Optional<User> userOpt = userRepository.findByEmpId(empId);
         if (userOpt.isEmpty()) {

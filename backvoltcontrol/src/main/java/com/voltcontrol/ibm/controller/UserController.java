@@ -28,7 +28,6 @@ import com.voltcontrol.ibm.security.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     @Autowired
     private UserRepository userRepository;

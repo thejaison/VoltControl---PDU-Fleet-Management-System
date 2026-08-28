@@ -745,7 +745,7 @@ const OverAllDashboard = () => {
                       </tr>
                     ) : (
                       scanJobs.slice(0, 5).map((job) => (
-                        <tr key={job.id}>
+                        <tr key={job.uuid}>
                           <td style={{
                             ...styles.td,
                             fontWeight: "700",

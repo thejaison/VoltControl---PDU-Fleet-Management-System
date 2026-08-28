@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles } from "../styles/sidebarStyles";
+import apiRequest from "../api/apiClient";
 import voltlogo from "../assets/voltlog1.png";
 
 import homeIcon from "../icons/home.png";
@@ -38,12 +39,13 @@ const Sidebar = () => {
         const empId = localStorage.getItem("loggedInEmpId");
         if (!empId) return;
 
-        fetch(`http://localhost:8080/api/users/${empId}`)
+        apiRequest(`/api/users/${empId}`)
             .then(res => {
-                if (res.ok) return res.json();
+                if (res && res.ok) return res.json();
                 throw new Error("Failed to fetch");
             })
             .then(data => {
+                if (!data) return;
                 if (data.profileImage) {
                     setProfileImage(data.profileImage);
                     localStorage.setItem("loggedInProfileImage", data.profileImage);
