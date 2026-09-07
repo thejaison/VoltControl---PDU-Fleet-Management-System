@@ -1,40 +1,40 @@
 const colors = {
-  white: "#121215",
-  bgPage: "transparent",
-  textPrimary: "#ffffff",
-  textSecondary: "#a1a1aa",
-  textMuted: "#71717a",
-  border: "#1f1f24",
-  orange: "#ffffff", 
-  orangeLight: "rgba(255, 255, 255, 0.08)",
-  green: "#10b981",
-  greenLight: "rgba(16, 185, 129, 0.08)",
-  red: "#71717a",
-  redLight: "rgba(255, 255, 255, 0.08)",
-  gray: "#71717a",
-  grayLight: "rgba(255, 255, 255, 0.08)",
+  white: "#ffffff",
+  bgPage: "#f3f5f0",
+  textPrimary: "#12241b",
+  textSecondary: "#697a70",
+  textMuted: "#8e9f95",
+  border: "#e4e9e1",
+  orange: "#0c3427", 
+  orangeLight: "rgba(12, 52, 39, 0.08)",
+  green: "#22865d",
+  greenLight: "rgba(34, 134, 93, 0.12)",
+  red: "#d9534f",
+  redLight: "rgba(217, 83, 79, 0.12)",
+  gray: "#8e9f95",
+  grayLight: "rgba(142, 159, 149, 0.15)",
 };
 
 const statusColors = {
-  Scheduled: { bg: "rgba(59, 130, 246, 0.08)", text: "#3b82f6", dot: "#3b82f6" },
-  SCHEDULED: { bg: "rgba(59, 130, 246, 0.08)", text: "#3b82f6", dot: "#3b82f6" },
-  Queued: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  QUEUED: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  Running: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  RUNNING: { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  "In Progress": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  Completed: { bg: colors.greenLight, text: colors.green, dot: colors.green },
-  COMPLETED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
-  Succeeded: { bg: colors.greenLight, text: colors.green, dot: colors.green },
-  SUCCEEDED: { bg: colors.greenLight, text: colors.green, dot: colors.green },
-  "Completed with errors": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  "COMPLETED WITH ERRORS": { bg: colors.grayLight, text: colors.textSecondary, dot: colors.textSecondary },
-  Failed: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
-  FAILED: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
-  "Timed out": { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
-  "TIMED OUT": { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
-  Cancelled: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
-  CANCELLED: { bg: colors.grayLight, text: colors.textMuted, dot: colors.textMuted },
+  Scheduled: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  SCHEDULED: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  Queued: { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
+  QUEUED: { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
+  Running: { bg: "rgba(235, 195, 81, 0.2)", text: "#a47e1b", dot: "#ebc351" },
+  RUNNING: { bg: "rgba(235, 195, 81, 0.2)", text: "#a47e1b", dot: "#ebc351" },
+  "In Progress": { bg: "rgba(235, 195, 81, 0.2)", text: "#a47e1b", dot: "#ebc351" },
+  Completed: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  COMPLETED: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  Succeeded: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  SUCCEEDED: { bg: "rgba(34, 134, 93, 0.12)", text: "#22865d", dot: "#22865d" },
+  "Completed with errors": { bg: "rgba(235, 195, 81, 0.2)", text: "#a47e1b", dot: "#ebc351" },
+  "COMPLETED WITH ERRORS": { bg: "rgba(235, 195, 81, 0.2)", text: "#a47e1b", dot: "#ebc351" },
+  Failed: { bg: "rgba(217, 83, 79, 0.12)", text: "#c9302c", dot: "#c9302c" },
+  FAILED: { bg: "rgba(217, 83, 79, 0.12)", text: "#c9302c", dot: "#c9302c" },
+  "Timed out": { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
+  "TIMED OUT": { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
+  Cancelled: { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
+  CANCELLED: { bg: "rgba(142, 159, 149, 0.15)", text: "#697a70", dot: "#697a70" },
 };
 
 export const styles = {
@@ -55,7 +55,7 @@ export const styles = {
     borderRadius: "24px",
     padding: "14px 20px",
     marginBottom: "20px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)", 
+    boxShadow: "0 4px 20px rgba(12, 52, 39, 0.04)", 
     border: `1px solid ${colors.border}`,
   },
 
@@ -69,12 +69,12 @@ export const styles = {
     width: "38px",
     height: "38px",
     borderRadius: "12px",
-    background: "linear-gradient(135deg, #10b981, #059669)",
+    background: "linear-gradient(135deg, #0c3427, #1b4d3e)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: "#ffffff",
-    boxShadow: "0 8px 16px rgba(16, 185, 129, 0.25)",
+    boxShadow: "0 4px 12px rgba(12, 52, 39, 0.2)",
   },
 
   logoText: {
@@ -87,10 +87,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "4px",
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
     borderRadius: "999px",
     padding: "4px",
-    border: "1px solid #27272a",
+    border: "1px solid #dbe2d8",
   },
 
   navPill: (isActive) => ({
@@ -100,7 +100,7 @@ export const styles = {
     borderRadius: "999px",
     fontSize: "14px",
     fontWeight: isActive ? 600 : 500,
-    background: isActive ? "linear-gradient(135deg, #10b981, #059669)" : "transparent",
+    background: isActive ? "#0c3427" : "transparent",
     color: isActive ? "#ffffff" : colors.textSecondary,
     transition: "all 0.15s ease",
   }),
@@ -122,7 +122,7 @@ export const styles = {
     color: colors.textPrimary,
     cursor: "pointer",
     position: "relative",
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
   },
 
   notificationDot: {
@@ -132,7 +132,7 @@ export const styles = {
     width: "7px",
     height: "7px",
     borderRadius: "50%",
-    backgroundColor: "#10b981",
+    backgroundColor: "#22865d",
   },
 
   profilePill: {
@@ -150,7 +150,7 @@ export const styles = {
     width: "28px",
     height: "28px",
     borderRadius: "50%",
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -184,11 +184,11 @@ export const styles = {
     width: "52px",
     height: "52px",
     borderRadius: "16px",
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "#ebefe8",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#ffffff",
+    color: "#0c3427",
     flexShrink: 0,
   },
 
@@ -211,13 +211,13 @@ export const styles = {
     gap: "8px",
     border: "none",
     cursor: "pointer",
-    background: "linear-gradient(135deg, #10b981, #059669)",
+    background: "#0c3427",
     color: "#ffffff",
     fontSize: "14px",
     fontWeight: 600,
     padding: "13px 20px",
     borderRadius: "12px",
-    boxShadow: "0 6px 16px rgba(16, 185, 129, 0.25)",
+    boxShadow: "0 4px 14px rgba(12, 52, 39, 0.2)",
   },
 
   statRow: {
@@ -231,10 +231,10 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     gap: "14px",
-    background: isHighlighted ? "linear-gradient(135deg, #10b981, #059669)" : colors.white,
-    borderRadius: "16px",
+    background: isHighlighted ? "linear-gradient(135deg, #0c3427 0%, #154536 100%)" : colors.white,
+    borderRadius: "20px",
     padding: "18px",
-    boxShadow: isHighlighted ? "0 12px 28px rgba(16, 185, 129, 0.25)" : "0 8px 30px rgba(0, 0, 0, 0.3)",
+    boxShadow: isHighlighted ? "0 12px 28px rgba(12, 52, 39, 0.2)" : "0 4px 20px rgba(12, 52, 39, 0.04)",
     border: `1px solid ${colors.border}`,
   }),
 
@@ -246,8 +246,8 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: isHighlighted ? "rgba(255,255,255,0.2)" : tint,
-    color: "#ffffff",
+    backgroundColor: isHighlighted ? "rgba(255,255,255,0.15)" : (tint || "#ebefe8"),
+    color: isHighlighted ? "#ffffff" : "#0c3427",
   }),
 
   statLabel: (isHighlighted) => ({
@@ -286,7 +286,7 @@ export const styles = {
     backgroundColor: colors.white,
     borderRadius: "24px",
     padding: "20px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)",
+    boxShadow: "0 4px 20px rgba(12, 52, 39, 0.04)",
     border: `1px solid ${colors.border}`,
   },
 
@@ -329,7 +329,7 @@ export const styles = {
     gap: "4px",
     fontSize: "13px",
     fontWeight: 600,
-    color: colors.green,
+    color: "#0c3427",
     background: "none",
     border: "none",
     cursor: "pointer",
@@ -376,7 +376,7 @@ export const styles = {
     width: "100%",
     height: "10px",
     borderRadius: "999px",
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
     overflow: "hidden",
     marginBottom: "16px",
   },
@@ -385,7 +385,7 @@ export const styles = {
     width: `${percent}%`,
     height: "100%",
     borderRadius: "999px",
-    background: `linear-gradient(90deg, #71717a, #059669)`,
+    background: `linear-gradient(90deg, #ebc351, #22865d)`,
     transition: "width 0.4s ease",
   }),
 
@@ -393,8 +393,8 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#18181c",
-    borderRadius: "12px",
+    backgroundColor: "#f8faf6",
+    borderRadius: "16px",
     padding: "14px 16px",
     border: `1px solid ${colors.border}`,
   },
@@ -409,11 +409,11 @@ export const styles = {
     width: "36px",
     height: "36px",
     borderRadius: "10px",
-    backgroundColor: "#121215",
+    backgroundColor: "#ebefe8",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: colors.textSecondary,
+    color: "#0c3427",
     border: `1px solid ${colors.border}`,
   },
 
@@ -442,7 +442,7 @@ export const styles = {
       fontWeight: 600,
       color: c.text,
       backgroundColor: c.bg,
-      border: `1px solid ${c.text}`,
+      border: `1px solid ${c.dot}`,
       padding: "5px 12px",
       borderRadius: "999px",
     };
@@ -563,7 +563,7 @@ export const styles = {
     width: "100%",
     height: "6px",
     borderRadius: "999px",
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
     overflow: "hidden",
   },
 
@@ -591,7 +591,7 @@ export const styles = {
     height: "28px",
     borderRadius: "8px",
     border: `1px solid ${colors.border}`,
-    backgroundColor: "#18181c",
+    backgroundColor: "#ebefe8",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -600,16 +600,16 @@ export const styles = {
   },
 
   actionBtn: (type, isDisabled) => {
-    let bg = "rgba(255, 255, 255, 0.08)";
-    let text = colors.textSecondary;
+    let bg = "#ebefe8";
+    let text = colors.textPrimary;
     let border = colors.border;
     if (!isDisabled) {
       if (type === "cancel") {
-        bg = "rgba(255, 255, 255, 0.08)";
+        bg = "#ebefe8";
         text = colors.textSecondary;
         border = colors.border;
       } else if (type === "continue") {
-        bg = "rgba(255, 255, 255, 0.08)";
+        bg = "#ebefe8";
         text = colors.textSecondary;
         border = colors.border;
       } else if (type === "again") {

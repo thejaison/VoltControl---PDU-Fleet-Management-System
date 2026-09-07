@@ -307,7 +307,7 @@ const CreateScanJob = () => {
                                                 key={d.uuid}
                                                 style={{
                                                     borderBottom: `1px solid ${colors.border}`,
-                                                    backgroundColor: isSelected ? 'rgba(255, 90, 31, 0.04)' : 'transparent',
+                                                    backgroundColor: isSelected ? 'rgba(12, 52, 39, 0.06)' : 'transparent',
                                                     transition: 'background-color 0.15s ease'
                                                 }}
                                             >
@@ -375,7 +375,7 @@ const CreateScanJob = () => {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, paddingBottom: '8px' }}>
                                 <span style={{ color: colors.textSecondary }}>Selected Fleet PDUs:</span>
-                                <strong style={{ color: colors.orange, fontSize: '15px' }}>{selectedUuids.length}</strong>
+                                <strong style={{ color: colors.green, fontSize: '15px' }}>{selectedUuids.length}</strong>
                             </div>
                         </div>
 
@@ -409,7 +409,7 @@ const CreateScanJob = () => {
                             </label>
                             <div style={{
                                 display: 'flex',
-                                backgroundColor: '#18181c',
+                                backgroundColor: '#ebefe8',
                                 borderRadius: '10px',
                                 padding: '3px',
                                 border: `1px solid ${colors.border}`
@@ -425,7 +425,7 @@ const CreateScanJob = () => {
                                         fontSize: '12px',
                                         fontWeight: 600,
                                         cursor: 'pointer',
-                                        backgroundColor: executionType === "immediate" ? '#27272a' : 'transparent',
+                                        backgroundColor: executionType === "immediate" ? '#0c3427' : 'transparent',
                                         color: executionType === "immediate" ? '#ffffff' : colors.textSecondary,
                                         transition: 'all 0.15s ease'
                                     }}
@@ -443,7 +443,7 @@ const CreateScanJob = () => {
                                         fontSize: '12px',
                                         fontWeight: 600,
                                         cursor: 'pointer',
-                                        backgroundColor: executionType === "scheduled" ? '#27272a' : 'transparent',
+                                        backgroundColor: executionType === "scheduled" ? '#0c3427' : 'transparent',
                                         color: executionType === "scheduled" ? '#ffffff' : colors.textSecondary,
                                         transition: 'all 0.15s ease'
                                     }}
@@ -488,14 +488,14 @@ const CreateScanJob = () => {
                                 gap: '8px',
                                 border: 'none',
                                 cursor: (submitting || !isAdmin) ? 'not-allowed' : 'pointer',
-                                backgroundColor: isAdmin ? colors.orange : colors.gray,
-                                color: colors.white,
+                                backgroundColor: isAdmin ? '#0c3427' : colors.gray,
+                                color: '#ffffff',
                                 fontSize: '14px',
                                 fontWeight: 600,
                                 padding: '14px',
                                 borderRadius: '12px',
                                 marginTop: '24px',
-                                boxShadow: isAdmin ? "0 6px 16px rgba(255,90,31,0.24)" : "none",
+                                boxShadow: isAdmin ? "0 4px 14px rgba(12, 52, 39, 0.2)" : "none",
                                 opacity: (submitting || !isAdmin) ? 0.7 : 1,
                                 transition: 'all 0.15s ease'
                             }}

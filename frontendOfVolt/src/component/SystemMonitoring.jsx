@@ -457,7 +457,7 @@ const SystemMonitoring = () => {
 
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           {isAutoRefresh && (
-            <div style={{ fontSize: "13px", color: colors.textSecondary, backgroundColor: "#f1f5f9", padding: "8px 14px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+            <div style={{ fontSize: "13px", color: colors.textSecondary, backgroundColor: "#ebefe8", padding: "8px 14px", borderRadius: "10px", border: "1px solid #dbe2d8" }}>
               Refreshing in <strong>{countdown}s</strong>
             </div>
           )}
@@ -465,10 +465,10 @@ const SystemMonitoring = () => {
             type="button"
             style={{
               ...styles.createButton,
-              background: isAutoRefresh ? "linear-gradient(135deg, #34d399, #10b981)" : "#f1f5f9",
+              background: isAutoRefresh ? "#0c3427" : "#ebefe8",
               color: isAutoRefresh ? "#ffffff" : colors.textSecondary,
-              boxShadow: isAutoRefresh ? "0 6px 16px rgba(16, 185, 129, 0.2)" : "none",
-              border: isAutoRefresh ? "none" : "1px solid #e2e8f0",
+              boxShadow: isAutoRefresh ? "0 4px 14px rgba(12, 52, 39, 0.2)" : "none",
+              border: isAutoRefresh ? "none" : "1px solid #dbe2d8",
               padding: "10px 16px",
               fontSize: "13px"
             }}
@@ -618,7 +618,7 @@ const SystemMonitoring = () => {
             <h2 style={styles.panelTitle}>Available Monitor Endpoints</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginTop: "10px" }}>
-            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#fafafa" }}>
+            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#f8faf6" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "14px", fontWeight: "700", fontFamily: "monospace" }}>GET /api/monitor/health</span>
                 <span style={{ backgroundColor: colors.greenLight, color: colors.green, padding: "4px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>ACTIVE</span>
@@ -628,7 +628,7 @@ const SystemMonitoring = () => {
               </p>
             </div>
 
-            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#fafafa" }}>
+            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#f8faf6" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "14px", fontWeight: "700", fontFamily: "monospace" }}>GET /api/monitor/readiness</span>
                 <span style={{ backgroundColor: colors.greenLight, color: colors.green, padding: "4px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>ACTIVE</span>
@@ -638,7 +638,7 @@ const SystemMonitoring = () => {
               </p>
             </div>
 
-            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#fafafa" }}>
+            <div style={{ border: `1px solid ${colors.border}`, borderRadius: "12px", padding: "16px", backgroundColor: "#f8faf6" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "14px", fontWeight: "700", fontFamily: "monospace" }}>GET /api/monitor/metrics</span>
                 <span style={{ backgroundColor: colors.greenLight, color: colors.green, padding: "4px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>ACTIVE</span>

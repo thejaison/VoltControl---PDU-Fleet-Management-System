@@ -1560,47 +1560,47 @@ const AdminDashboard = () => {
                           )}
 
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span style={{ fontWeight: '700', color: '#10b981', fontSize: '12px' }}>{device.id}</span>
+                            <span style={{ fontWeight: '700', color: '#22865d', fontSize: '12px' }}>{device.id}</span>
                             <div style={{ display: 'flex', gap: '6px' }}>
                               <span style={styles.badge(device.operationalStatus)}>● {device.operationalStatus}</span>
                               <span style={styles.badge(device.enabledStatus)}>● {device.enabledStatus}</span>
                             </div>
                           </div>
 
-                          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#ffffff', textAlign: 'left' }}>{device.deviceName}</h3>
+                          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#12241b', textAlign: 'left' }}>{device.deviceName}</h3>
                           
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Asset ID</span>
-                              <span style={{ color: '#ffffff', fontWeight: '700' }}>{device.assetId}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Asset ID</span>
+                              <span style={{ color: '#12241b', fontWeight: '700' }}>{device.assetId}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Model</span>
-                              <span style={{ color: '#ffffff' }}>{device.model}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Model</span>
+                              <span style={{ color: '#12241b' }}>{device.model}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>IP Address</span>
-                              <span style={{ color: '#ffffff', fontFamily: 'monospace' }}>{device.ipAddress}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>IP Address</span>
+                              <span style={{ color: '#12241b', fontFamily: 'monospace' }}>{device.ipAddress}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Hostname</span>
-                              <span style={{ color: '#ffffff', fontFamily: 'monospace' }}>{device.hostname}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Hostname</span>
+                              <span style={{ color: '#12241b', fontFamily: 'monospace' }}>{device.hostname}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Site</span>
-                              <span style={{ color: '#ffffff' }}>{device.site}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Site</span>
+                              <span style={{ color: '#12241b' }}>{device.site}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Location</span>
-                              <span style={{ color: '#ffffff' }}>{device.location}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Location</span>
+                              <span style={{ color: '#12241b' }}>{device.location}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #1f1f24', paddingBottom: '6px' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Serial No</span>
-                              <span style={{ color: '#ffffff', fontFamily: 'monospace' }}>{device.serialNumber}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e4e9e1', paddingBottom: '6px' }}>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Serial No</span>
+                              <span style={{ color: '#12241b', fontFamily: 'monospace' }}>{device.serialNumber}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <span style={{ color: '#a1a1aa', fontWeight: '600' }}>Last Seen</span>
-                              <span style={{ color: '#a1a1aa', fontSize: '11px' }}>{device.lastSeen}</span>
+                              <span style={{ color: '#697a70', fontWeight: '600' }}>Last Seen</span>
+                              <span style={{ color: '#697a70', fontSize: '11px' }}>{device.lastSeen}</span>
                             </div>
                           </div>
                         </div>

@@ -1,8 +1,8 @@
 UI Enhancement is done 👍
-❌ Main Frontent
+✅ Main Frontent
 🔥 Core Features ->
 ✅ Login / Authentication
-❌ JWT Authentication
+✅ JWT Authentication
 ✅ Role-Based Access Control
 ✅ User Management (CRUD)
 ✅ Device Registration (Create Device)
@@ -11,7 +11,7 @@ UI Enhancement is done 👍
 ✅ Enable / Disable Device
 ✅ Device List
 ✅ Search Devices
-❌ Sorting
+✅ Sorting
 ✅ Filtering
 ✅ Device Details Page
 ✅ CSV Import Preview
@@ -47,4 +47,4 @@ UI Enhancement is done 👍
 
 ⭐ Nice-to-Have Features ->
 ❌ Reports (PDF / Exc / CSV)
-❌ Scheduled Scans
+✅ Scheduled Scans

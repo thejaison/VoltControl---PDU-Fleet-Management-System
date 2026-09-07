@@ -280,7 +280,7 @@ const OverAllDashboard = () => {
     if (total === 0) {
       return (
         <svg width="130" height="130" viewBox="0 0 140 140">
-          <circle cx="70" cy="70" r="50" fill="transparent" stroke="#1f1f24" strokeWidth="12" />
+          <circle cx="70" cy="70" r="50" fill="transparent" stroke="#e4e9e1" strokeWidth="12" />
         </svg>
       );
     }
@@ -298,7 +298,7 @@ const OverAllDashboard = () => {
 
     return (
       <svg width="130" height="130" viewBox="0 0 140 140" style={{ transform: "rotate(-90deg)" }}>
-        <circle cx="70" cy="70" r={r} fill="transparent" stroke="#1f1f24" strokeWidth="14" />
+        <circle cx="70" cy="70" r={r} fill="transparent" stroke="#e4e9e1" strokeWidth="14" />
         {val1 > 0 && (
           <circle
             cx="70" cy="70" r={r}
@@ -352,7 +352,7 @@ const OverAllDashboard = () => {
       <div style={styles.donutContainer}>
         <div style={{ position: "relative" }}>
           <svg width="130" height="130" viewBox="0 0 140 140" style={{ transform: "rotate(-90deg)" }}>
-            <circle cx="70" cy="70" r={r} fill="transparent" stroke="#1f1f24" strokeWidth="14" />
+            <circle cx="70" cy="70" r={r} fill="transparent" stroke="#e4e9e1" strokeWidth="14" />
             <circle cx="70" cy="70" r={r} fill="transparent" stroke={colors.green} strokeWidth="14" strokeDasharray={`${strokeFull} ${circ}`} strokeDashoffset={0} />
             <circle cx="70" cy="70" r={r} fill="transparent" stroke={colors.orange} strokeWidth="14" strokeDasharray={`${strokeNet} ${circ}`} strokeDashoffset={-strokeFull} />
             <circle cx="70" cy="70" r={r} fill="transparent" stroke={colors.blue} strokeWidth="14" strokeDasharray={`${strokeSnmp} ${circ}`} strokeDashoffset={-(strokeFull + strokeNet)} />
@@ -410,12 +410,12 @@ const OverAllDashboard = () => {
           bottom: "24px",
           right: "24px",
           background: toast.type === "success"
-            ? 'linear-gradient(135deg, #10b981, #059669)'
-            : 'linear-gradient(135deg, #27272a, #18181c)',
+            ? 'linear-gradient(135deg, #0c3427, #1b4d3e)'
+            : 'linear-gradient(135deg, #c9302c, #a9221e)',
           color: "#ffffff",
           padding: "16px 24px",
           borderRadius: "16px",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+          boxShadow: "0 10px 30px rgba(12, 52, 39, 0.2)",
           zIndex: 9999,
           display: "flex",
           alignItems: "center",
@@ -476,11 +476,7 @@ const OverAllDashboard = () => {
           </div>
 
           <div style={styles.headerRight}>
-            <div style={{
-              ...styles.searchBarContainer,
-              background: '#18181c',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-            }}>
+            <div style={styles.searchBarContainer}>
               <span style={styles.searchIcon}><SearchIcon /></span>
               <input
                 type="text"
@@ -491,11 +487,7 @@ const OverAllDashboard = () => {
               />
             </div>
 
-            <div style={{
-              ...styles.timeDisplay,
-              background: '#18181c',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-            }}>
+            <div style={styles.timeDisplay}>
               <CalendarIcon />
               <span>{formatTimeDisplay(currentTime)}</span>
             </div>
@@ -503,11 +495,7 @@ const OverAllDashboard = () => {
             <div style={styles.dropdownContainer} ref={dropdownRef}>
               <button
                 type="button"
-                style={{
-                  ...styles.reportBtn,
-                  background: '#121215',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
-                }}
+                style={styles.reportBtn}
                 onClick={() => setShowReportDropdown(!showReportDropdown)}
               >
                 <span>📊</span>
@@ -515,18 +503,13 @@ const OverAllDashboard = () => {
                 <span style={{ marginLeft: '4px' }}><ChevronDownIcon /></span>
               </button>
               {showReportDropdown && (
-                <div style={{
-                  ...styles.dropdownMenu,
-                  background: '#121215',
-                  border: '1px solid #1f1f24',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-                }}>
+                <div style={styles.dropdownMenu}>
                   <button
                     type="button"
                     style={styles.dropdownItem}
                     onClick={handleExportPDF}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(16, 185, 129, 0.08)';
+                      e.currentTarget.style.background = 'rgba(12, 52, 39, 0.05)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'transparent';
@@ -539,7 +522,7 @@ const OverAllDashboard = () => {
                     style={styles.dropdownItem}
                     onClick={handleExportExcel}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(16, 185, 129, 0.08)';
+                      e.currentTarget.style.background = 'rgba(12, 52, 39, 0.05)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'transparent';
@@ -553,12 +536,7 @@ const OverAllDashboard = () => {
 
             <button
               type="button"
-              style={{
-                ...styles.refreshBtn,
-                background: '#18181c',
-                border: '1px solid #27272a',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              }}
+              style={styles.refreshBtn}
               onClick={fetchData}
               disabled={loading}
               title="Refresh data"
@@ -574,12 +552,7 @@ const OverAllDashboard = () => {
           <div style={styles.leftColumn}>
 
             {/* Premium Fleet Card */}
-            <div style={{
-              ...styles.fleetCard,
-              background: 'linear-gradient(135deg, #0f172a, #1e293b)',
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
+            <div style={styles.fleetCard}>
               <div style={{
                 position: 'absolute',
                 top: '-50%',
@@ -587,7 +560,7 @@ const OverAllDashboard = () => {
                 width: '300px',
                 height: '300px',
                 borderRadius: '50%',
-                background: 'rgba(34, 197, 94, 0.05)',
+                background: 'rgba(235, 195, 81, 0.08)',
                 pointerEvents: 'none',
               }} />
               <div style={{
@@ -597,7 +570,7 @@ const OverAllDashboard = () => {
                 width: '200px',
                 height: '200px',
                 borderRadius: '50%',
-                background: 'rgba(34, 197, 94, 0.03)',
+                background: 'rgba(235, 195, 81, 0.05)',
                 pointerEvents: 'none',
               }} />
 
@@ -921,8 +894,10 @@ const OverAllDashboard = () => {
                 {recentErrors.map((err, idx) => (
                   <div key={idx} style={{
                     ...styles.alertRow(err.tag),
-                    background: '#18181c',
+                    background: '#ffffff',
+                    border: '1px solid #e4e9e1',
                     borderLeft: `4px solid ${err.color}`,
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)',
                   }}>
                     <div style={styles.alertLeft}>
                       <div style={styles.alertIcon(err.color)} className={err.tag === "critical" ? "animate-pulse-red" : ""}>
@@ -991,18 +966,18 @@ const OverAllDashboard = () => {
               </defs>
 
               {/* Grid Lines */}
-              <line x1="50" y1="20" x2="950" y2="20" stroke="#1f1f24" strokeWidth="1.5" strokeDasharray="4 4" />
-              <line x1="50" y1="60" x2="950" y2="60" stroke="#1f1f24" strokeWidth="1.5" strokeDasharray="4 4" />
-              <line x1="50" y1="100" x2="950" y2="100" stroke="#1f1f24" strokeWidth="1.5" strokeDasharray="4 4" />
-              <line x1="50" y1="140" x2="950" y2="140" stroke="#1f1f24" strokeWidth="1.5" strokeDasharray="4 4" />
-              <line x1="50" y1="170" x2="950" y2="170" stroke="#1f1f24" strokeWidth="1.5" strokeDasharray="4 4" />
+              <line x1="50" y1="20" x2="950" y2="20" stroke="#e4e9e1" strokeWidth="1.5" strokeDasharray="4 4" />
+              <line x1="50" y1="60" x2="950" y2="60" stroke="#e4e9e1" strokeWidth="1.5" strokeDasharray="4 4" />
+              <line x1="50" y1="100" x2="950" y2="100" stroke="#e4e9e1" strokeWidth="1.5" strokeDasharray="4 4" />
+              <line x1="50" y1="140" x2="950" y2="140" stroke="#e4e9e1" strokeWidth="1.5" strokeDasharray="4 4" />
+              <line x1="50" y1="170" x2="950" y2="170" stroke="#e4e9e1" strokeWidth="1.5" strokeDasharray="4 4" />
 
               {/* Y Axis Labels */}
-              <text x="15" y="24" fill="#71717a" fontSize="10" fontWeight="700">200</text>
-              <text x="15" y="64" fill="#71717a" fontSize="10" fontWeight="700">150</text>
-              <text x="15" y="104" fill="#71717a" fontSize="10" fontWeight="700">100</text>
-              <text x="20" y="144" fill="#71717a" fontSize="10" fontWeight="700">50</text>
-              <text x="25" y="174" fill="#71717a" fontSize="10" fontWeight="700">0</text>
+              <text x="15" y="24" fill="#8e9e94" fontSize="10" fontWeight="700">200</text>
+              <text x="15" y="64" fill="#8e9e94" fontSize="10" fontWeight="700">150</text>
+              <text x="15" y="104" fill="#8e9e94" fontSize="10" fontWeight="700">100</text>
+              <text x="20" y="144" fill="#8e9e94" fontSize="10" fontWeight="700">50</text>
+              <text x="25" y="174" fill="#8e9e94" fontSize="10" fontWeight="700">0</text>
 
               {/* Online Devices Area */}
               <path d="M 50 120 C 150 110, 200 95, 300 85 C 450 70, 550 75, 680 50 C 780 30, 850 40, 950 30 L 950 170 L 50 170 Z" fill="url(#gradOnline)" />
@@ -1017,13 +992,13 @@ const OverAllDashboard = () => {
               <path d="M 50 162 C 150 162, 200 160, 300 161 C 450 159, 550 161, 680 155 C 780 153, 850 156, 950 150" fill="none" stroke={colors.red} strokeWidth="2" strokeLinecap="round" />
 
               {/* X Axis Labels */}
-              <text x="45" y="192" fill="#71717a" fontSize="10" fontWeight="700">22 Jul</text>
-              <text x="195" y="192" fill="#71717a" fontSize="10" fontWeight="700">23 Jul</text>
-              <text x="345" y="192" fill="#71717a" fontSize="10" fontWeight="700">24 Jul</text>
-              <text x="495" y="192" fill="#71717a" fontSize="10" fontWeight="700">25 Jul</text>
-              <text x="645" y="192" fill="#71717a" fontSize="10" fontWeight="700">26 Jul</text>
-              <text x="795" y="192" fill="#71717a" fontSize="10" fontWeight="700">27 Jul</text>
-              <text x="945" y="192" fill="#71717a" fontSize="10" fontWeight="700">28 Jul</text>
+              <text x="45" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">22 Jul</text>
+              <text x="195" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">23 Jul</text>
+              <text x="345" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">24 Jul</text>
+              <text x="495" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">25 Jul</text>
+              <text x="645" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">26 Jul</text>
+              <text x="795" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">27 Jul</text>
+              <text x="945" y="192" fill="#8e9e94" fontSize="10" fontWeight="700">28 Jul</text>
             </svg>
           </div>
         </section>

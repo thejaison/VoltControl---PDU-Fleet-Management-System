@@ -451,7 +451,7 @@ const ScanningDashboard = () => {
                     maxWidth: '800px',
                     maxHeight: '90vh',
                     overflowY: 'auto',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+                    boxShadow: '0 20px 50px rgba(12, 52, 39, 0.15)',
                     border: `1px solid ${colors.border}`,
                     boxSizing: 'border-box'
                 }}>
@@ -461,7 +461,7 @@ const ScanningDashboard = () => {
                         justifyContent: 'space-between',
                         padding: '24px 32px',
                         borderBottom: `1px solid ${colors.border}`,
-                        backgroundColor: '#18181c',
+                        backgroundColor: '#f8faf6',
                         borderTopLeftRadius: '24px',
                         borderTopRightRadius: '24px'
                     }}>

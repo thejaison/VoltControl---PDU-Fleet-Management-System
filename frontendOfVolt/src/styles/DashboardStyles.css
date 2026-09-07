@@ -2,22 +2,23 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(12, 12, 14, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid #1f1f24;
+  border-bottom: 1px solid #e4e9e1;
 }
 
 .dvc-logo-badge {
   width: 36px;
   height: 36px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0c3427, #144837);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   font-weight: 700;
+  box-shadow: 0 4px 12px rgba(12, 52, 39, 0.15);
 }
 
 .dvc-nav-btn {
@@ -28,34 +29,35 @@
   font-family: inherit;
   font-weight: 600;
   font-size: 14px;
-  color: #a1a1aa;
+  color: #697a70;
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.2s ease, background-color 0.2s ease;
 }
-.dvc-nav-btn:hover { background-color: #1f1f24; color: #ffffff; }
-.dvc-nav-btn.is-active { color: #ffffff; background: #10b981; }
+.dvc-nav-btn:hover { background-color: rgba(12, 52, 39, 0.05); color: #0c3427; }
+.dvc-nav-btn.is-active { color: #ffffff; background: #0c3427; }
 .dvc-nav-btn.is-active::after {
   content: '';
   position: absolute;
   left: 14px; right: 14px; bottom: -2px;
   height: 2px; border-radius: 2px;
-  background: #10b981;
+  background: #0c3427;
 }
 
 .dvc-admin-chip {
   display: flex; align-items: center; gap: 8px;
   padding: 5px 16px 5px 6px;
-  background: #18181c; border: 1px solid #27272a; border-radius: 22px;
-  color: white; font-family: inherit; font-weight: 600; font-size: 14px;
+  background: #ffffff; border: 1px solid #e4e9e1; border-radius: 22px;
+  color: #12241b; font-family: inherit; font-weight: 600; font-size: 14px;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
-.dvc-admin-chip:hover { background: #27272a; transform: translateY(-1px); }
+.dvc-admin-chip:hover { background: #f4f6f1; transform: translateY(-1px); }
 
 .dvc-admin-avatar {
   width: 26px; height: 26px; border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #0c3427, #144837);
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700;
   color: white;
@@ -67,19 +69,20 @@
   position: relative;
 }
 
-.dvc-search-wrap svg { position: absolute; left: 14px; color: #71717a; pointer-events: none; }
+.dvc-search-wrap svg { position: absolute; left: 14px; color: #8e9e94; pointer-events: none; }
 .dvc-search-input {
   padding: 10px 16px 10px 38px !important;
   border-radius: 999px !important;
-  border: 1px solid #27272a !important;
-  background: #18181c !important;
-  color: #ffffff !important;
+  border: 1px solid #e4e9e1 !important;
+  background: #ebefe8 !important;
+  color: #12241b !important;
   min-width: 220px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .dvc-search-input:focus {
-  border-color: #10b981 !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14) !important;
+  border-color: #0c3427 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(12, 52, 39, 0.08) !important;
 }
 
 .dvc-icon-btn,
@@ -88,20 +91,21 @@
   margin-left: 5px;
   white-space: nowrap;
 }
-.dvc-icon-btn:hover { background-color: #27272a !important; transform: scale(1.06); }
+.dvc-icon-btn:hover { background-color: rgba(12, 52, 39, 0.05) !important; transform: scale(1.04); }
 
 .dvc-scan-btn {
   display: flex; align-items: center; gap: 7px;
   padding: 9px 20px;
-  background: #121215;
-  border: 1px solid #27272a;
+  background: #ffffff;
+  border: 1px solid #e4e9e1;
   border-radius: 999px;
   font-family: inherit; font-size: 14px; font-weight: 600;
-  color: #ffffff;
+  color: #12241b;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
   transition: all 0.2s ease;
 }
-.dvc-scan-btn:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
+.dvc-scan-btn:hover { border-color: #0c3427; background: rgba(12, 52, 39, 0.04); color: #0c3427; }
 .dvc-scan-btn svg { flex-shrink: 0; }
 
 .dvc-section { margin-bottom: 26px; }
@@ -110,28 +114,29 @@
 .dvc-action-btn {
   display: flex; align-items: center; gap: 7px;
   border-radius: 999px !important;
-  background-color: #10b981 !important;
+  background-color: #0c3427 !important;
   color: white !important;
-  border: 1px solid #10b981 !important;
+  border: 1px solid #0c3427 !important;
   padding: 9px 20px !important;
+  box-shadow: 0 4px 12px rgba(12, 52, 39, 0.15);
 }
-.dvc-action-btn:hover { background-color: #059669 !important; border-color: #059669 !important; }
+.dvc-action-btn:hover { background-color: #144837 !important; border-color: #144837 !important; }
 .dvc-action-btn svg { flex-shrink: 0; }
 
 .dvc-section-title {
   display: flex; align-items: center; gap: 7px;
   font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-  text-transform: uppercase; color: #71717a;
+  text-transform: uppercase; color: #697a70;
   margin-bottom: 14px;
 }
-.dvc-section-title svg { flex-shrink: 0; color: #10b981; }
+.dvc-section-title svg { flex-shrink: 0; color: #0c3427; }
 
 .dvc-section-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 18px 28px;
   padding-left: 14px;
-  border-left: 2px solid rgba(16, 185, 129, 0.24);
+  border-left: 2px solid rgba(12, 52, 39, 0.18);
 }
 
 .dvc-mono {
@@ -143,20 +148,21 @@
 .dvc-status-row {
   display: flex; gap: 24px; flex-wrap: wrap;
   padding-left: 14px;
-  border-left: 2px solid rgba(16, 185, 129, 0.24);
+  border-left: 2px solid rgba(12, 52, 39, 0.18);
 }
 .dvc-status-field { display: flex; flex-direction: column; gap: 6px; }
 
 .dvc-timestamp-bar {
   display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
   margin-top: 22px; padding: 12px 16px;
-  background: #18181c; border-radius: 16px;
-  border: 1px solid #27272a;
+  background: #ffffff; border-radius: 16px;
+  border: 1px solid #e4e9e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
-.dvc-timestamp-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #a1a1aa; }
-.dvc-timestamp-chip strong { color: #ffffff; font-weight: 600; margin-left: 2px; }
-.dvc-timestamp-chip svg { color: #10b981; flex-shrink: 0; }
-.dvc-timestamp-sep { width: 1px; height: 12px; background: #27272a; }
+.dvc-timestamp-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #697a70; }
+.dvc-timestamp-chip strong { color: #12241b; font-weight: 600; margin-left: 2px; }
+.dvc-timestamp-chip svg { color: #0c3427; flex-shrink: 0; }
+.dvc-timestamp-sep { width: 1px; height: 12px; background: #e4e9e1; }
 
 .dvc-sort-select {
   display: flex;
@@ -165,18 +171,18 @@
   margin-left: 10px;
   flex-shrink: 0;
 }
-.dvc-sort-select:hover { border-color: #10b981; }
+.dvc-sort-select:hover { border-color: #0c3427; }
 .dvc-sort-select select {
   padding: 8px 12px;
   border-radius: 14px;
-  border: 1px solid #27272a;
+  border: 1px solid #e4e9e1;
   font-size: 14px;
-  background: #121215;
-  color: #ffffff;
+  background: #ffffff;
+  color: #12241b;
   cursor: pointer;
   min-width: 0;
 }
-.dvc-sort-select svg { color: #10b981; flex-shrink: 0; pointer-events: none; }
+.dvc-sort-select svg { color: #0c3427; flex-shrink: 0; pointer-events: none; }
 
 .dvc-delete-btn {
   flex-shrink: 0;

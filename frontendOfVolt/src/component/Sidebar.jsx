@@ -322,20 +322,22 @@ const Sidebar = () => {
                             <line x1="12" y1="15" x2="12" y2="15" />
                             <line x1="12" y1="11" x2="12" y2="11" />
                         </svg>
-                        <h3 style={styles.upgradeTitle}>Upgrade to Pro</h3>
-                        <p style={styles.upgradeSubtitle}>Upgrade your account for a fuller experience.</p>
+                        <h3 style={styles.upgradeTitle}>
+                            Get Premium <span style={{ color: "#ebc351", fontSize: "15px" }}>★</span>
+                        </h3>
+                        <p style={styles.upgradeSubtitle}>Unlimited functions and statistics memory</p>
                         <button
                             type="button"
                             style={styles.upgradeButton}
                             onClick={() => alert("Upgrade feature coming soon!")}
                         >
-                            Upgrade Now
+                            Upgrade
                         </button>
                     </div>
                 )}
 
                 {/* Bottom Navigation Links: Support & Logout */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "12px", borderTop: "1px solid rgba(255, 255, 255, 0.05)", paddingTop: "14px", marginBottom: "8px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "12px", borderTop: "1px solid #e4e9e1", paddingTop: "14px", marginBottom: "8px" }}>
                     <button
                         type="button"
                         style={{ ...styles.navItemButton(false, false, isCollapsed), padding: isCollapsed ? "12px 0" : "12px 16px", justifyContent: isCollapsed ? "center" : "flex-start" }}
@@ -352,7 +354,7 @@ const Sidebar = () => {
                             ...styles.navItemButton(false, false, isCollapsed), 
                             padding: isCollapsed ? "12px 0" : "12px 16px", 
                             justifyContent: isCollapsed ? "center" : "flex-start",
-                            color: "#f87171" 
+                            color: "#dc2626" 
                         }}
                         onClick={() => {
                             localStorage.clear();
@@ -361,7 +363,7 @@ const Sidebar = () => {
                         className="sidebar-nav-btn"
                         title={isCollapsed ? "Log Out" : undefined}
                     >
-                        <span style={{ fontSize: "16px", display: "flex", alignItems: "center", color: "#f87171" }}>🚪</span>
+                        <span style={{ fontSize: "16px", display: "flex", alignItems: "center", color: "#dc2626" }}>🚪</span>
                         {!isCollapsed && <span>Log Out</span>}
                     </button>
                 </div>
