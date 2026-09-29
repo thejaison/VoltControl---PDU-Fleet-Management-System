@@ -1,0 +1,17 @@
+Audit logging
+    I did not find any audit-trail entity, service, or table for user actions / system events.
+    This is still a real gap.
+Backend testing (JUnit / Mockito)
+    The test folder only contains JWT-related tests:
+    JwtAuthFilterTest.java
+    JwtUtilTest.java
+    There is no meaningful controller/service test coverage for scan jobs, devices, reports, or user flows.
+Docker / Docker Compose
+    I did not find Dockerfiles or compose configuration in the repo.
+    Deployment packaging is not yet containerized.
+Environment variables / secrets management
+    The project still appears to depend on application property files instead of a proper .env or secret-management setup.
+    No env-based config structure is present.
+Logging (SLF4J / Logback)
+    I did not find structured logging configuration such as logback-spring.xml or app logger setup.
+    Application logs are still not centralized or production-ready.

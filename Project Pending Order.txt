@@ -32,7 +32,7 @@ UI Enhancement is done 👍
 ✅ Form Validation
 ✅ Responsive Design
 ✅ Global Exception Handler (@ControllerAdvice)
-❌ Swagger / OpenAPI Documentation
+✅ Swagger / OpenAPI Documentation
 ✅ Health Check APIs (/health, /ready) 
 
 📈 Production Quality -> 
